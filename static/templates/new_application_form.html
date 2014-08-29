@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <h1>Solicitud de Salida DCC</h1>
+        <form method="POST" action=""> {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
+    </body>
+</html>
