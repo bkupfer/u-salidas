@@ -4,64 +4,65 @@ from django.utils.encoding import smart_text
 # Create your models here.
 class Currency(models.Model):
     id = models.AutoField(primary_key=True)
-    currency = models.CharField()
+    currency = models.CharField(max_length=5)
 class Finance_type(models.Model):
     id = models.AutoField(primary_key=True)
-    type = models.CharField()
+    type = models.CharField(max_length=20)
 class Finance(models.Model):
-    id_application = models.ForeignKey('Application.id')
-    id_finance_type = models.ForeignKey('Finance.id')
-    id_currency = models.ForeignKey('Currency.id')
+    id_application = models.ForeignKey('Application')
+    id_finance_type = models.ForeignKey('Finance')
+    id_currency = models.ForeignKey('Currency')
     amount = models.FloatField()
-class Country(model.Model):
+class Country(models.Model):
     id = models.AutoField(primary_key=True)
-    country = models.CharField()
+    country = models.CharField(max_length=100)
 class City(models.Model):
     id = models.AutoField(primary_key=True)
-    country = models.ForeignKey('Country.id')
-    city = models.CharField()
+    country = models.ForeignKey('Country')
+    city = models.CharField(max_length=100)
 class Destination(models.Model):
-    id_Application = models.ForeignKey('Application.id')
-    id_city = models.ForeignKey('City.id')
+    id_Application = models.ForeignKey('Application')
+    id_city = models.ForeignKey('City')
     start_date = models.DateField()
     end_date = models.DateField()
-class Application_state(models.Model):
+class Commission_type(models.Model):
+    id = models.AutoField(primary_key=True)
+    type = models.CharField(max_length=20)
+
+class Application(models.Model):
     id = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=10)
-    id_commission_type = models.ForeignKey('Commission_type.type')
+    id_commission_type = models.ForeignKey('Commission_type')
     motive = models.TextField()#blank=True
     creation_date = models.DateTimeField()
-    id_days_validation_state =  models.ForeignKey('State.id')
-    id_funds_validation_state = models.ForeignKey('State.id')
+    id_days_validation_state = models.ForeignKey('State', related_name='+' )#? related name porque si
+    id_funds_validation_state = models.ForeignKey('State')
     directors_name = models.CharField(max_length=30)
     directors_rut = models.CharField(max_length=10)
 class Application_state(models.Model):
     id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=20)
-class Application_Application_state(models.Model):
-    id_Application = models.ForeignKey('Application.id')
-    id_Application_state = models.ForeignKey('Application_State.id')
+class Application_has_Application_state(models.Model):
+    id_Application = models.ForeignKey('Application')
+    id_Application_state = models.ForeignKey('Application_state')
     date =models.DateTimeField()
-class Commission_type(models.Model):
-    id = models.AutoField(primary_key=True)
-    type = models.CharField()
 class Document(models.Model):
     id = models.AutoField(primary_key=True)
-    path = models.CharField(blank=True, null=True)
-    id_application = models.ForeignKey('Application.id')
+    path = models.CharField(blank=True, null=True,max_length=200)
+    id_application = models.ForeignKey('Application')
 class Teacher(models.Model):
     rut = models.CharField(max_length=10, primary_key=True)
     signature_path = models.CharField(max_length=100, blank=True, null=True)
 class Replacement(models.Model):
     id = models.AutoField(primary_key=True)
-    rut_teacher = models.ForeignKey('Teacher.rut')
-    id_Application = models.ForeignKey('Application.id')
+    rut_teacher = models.ForeignKey('Teacher')
+    id_Application = models.ForeignKey('Application')
     #id_curso
     answer_date = models.DateTimeField(blank=True, null=True)
-    id_state = mdoels.ForeignKey('State.id')
+    id_state = models.ForeignKey('State')
 class State(models.Model):
     id = models.AutoField(primary_key=True)
-    state = models.CharField(10)
+    state = models.CharField(max_length=30)
 class inactive_period(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()#blank=True, null=True
