@@ -4,7 +4,7 @@ from .new_application import NewApplicationForm
 
 # Create your views here.
 def home(request):
-    return render_to_response("index.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
 def new_application(request):
     form = NewApplicationForm(request.POST or None)
