@@ -15,4 +15,13 @@ def new_application(request):
 
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
+def formulario_test(request):
+    form = NewApplicationForm(request.POST or None)
+
+    if form.is_valid():
+        save_it = form.save(commit=False)
+        save_it.save()
+
+    return render_to_response("formulario_test.html", locals(), context_instance=RequestContext(request))
+
 
