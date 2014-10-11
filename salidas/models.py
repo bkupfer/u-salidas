@@ -19,6 +19,7 @@ class Finance(models.Model):
     amount = models.FloatField()
 
 
+'''
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
@@ -28,14 +29,15 @@ class City(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
-
+'''
 
 class Destination(models.Model):
     id_Application = models.ForeignKey('Application')
-    id_city = models.ForeignKey('City')
+    #  id_city = models.ForeignKey('City')
     start_date = models.DateField()
-    end_date = models.DateField()
-
+    end_date   = models.DateField()
+    country = models.TextField(max_length=30)
+    city    = models.CharField(max_length=30)
 
 class CommissionType(models.Model):
     id = models.AutoField(primary_key=True)
