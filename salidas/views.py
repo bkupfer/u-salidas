@@ -7,12 +7,8 @@ def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
 def new_application(request):
-    commission = CommissionTypeForm(request.POST or None)
     application = NewApplicationForm(request.POST or None)
-    destination = DestinationForm(request.POST or None)
-    if commission.is_valid():
-        save_it = commission.save(commit=False)
-        save_it.save()
+    destination = DestinationFormSet(request.POST or None)
     if application.is_valid():
         save_it = application.save(commit=False)
         save_it.save()
