@@ -45,33 +45,10 @@
 			<br />
 			<div class="row">
 				<div class="form-group">
-					<label class="col-sm-2 control-label">Tipo de comisión</label>
-    				<div class="col-sm-5">
-					     <select class="form-control input-sm" name="">
-							<option value="">Seleccione tipo de comisión</option>
-							<option value="1">Comisión de estudio</option>
-							<option value="2">Comisión de servicio</option>
-							<option value="3">Comisión académica</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<br />
-			<div class="row">
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Motivo</label>
-    				<div class="col-sm-5">
-					     <textarea class="form-control input-sm" name="" rows="3">Fundamentos</textarea>
-					</div>
-				</div>
-			</div>
-			<br />
-			<div class="row">
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Financiamiento</label>
-    				<div class="col-sm-5">
-					     <textarea class="form-control input-sm" name="" rows="3">Indique quién financia y montos</textarea>
-					</div>
+                    <form method="POST" action=""> {%csrf_token %}
+                        {{ commission.as_p }}
+                        {{ application.as_p }}
+                    </form>
 				</div>
 			</div>
 			<br />

@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import FormData
+from .models import *
 
-class FormDataAdmin(admin.ModelAdmin):
+class CurrencyAdmin(admin.ModelAdmin):
     class Meta:
-        model = FormData
+        model = Currency
 
-admin.site.register(FormData, FormDataAdmin)
+admin.site.register(Currency, CurrencyAdmin)
