@@ -1,0 +1,86 @@
+[
+    {
+        "model": "salidas.Currency",
+        "pk": 1,
+        "fields": {
+            "currency": "USD"
+        }
+    },
+    {
+        "model": "salidas.Currency",
+        "pk": 2,
+        "fields": {
+            "currency": "CLP"
+        }
+    },
+    {
+        "model": "salidas.CommissionType",
+        "pk": 1,
+        "fields": {
+            "type": "Académica"
+        }
+    },
+    {
+        "model": "salidas.CommissionType",
+        "pk": 2,
+        "fields": {
+            "type": "Estudio"
+        }
+    },
+    {
+        "model": "salidas.CommissionType",
+        "pk": 3,
+        "fields": {
+            "type": "Servicio"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 1,
+        "fields": {
+            "state": "Pre acta"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 2,
+        "fields": {
+            "state": "Acta"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 3,
+        "fields": {
+            "state": "Resolución"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 1,
+        "fields": {
+            "state": "Decreto"
+        }
+    },
+    {
+        "model": "salidas.State",
+        "pk": 1,
+        "fields": {
+            "state": "Pendiente"
+        }
+    },
+    {
+        "model": "salidas.State",
+        "pk": 2,
+        "fields": {
+            "state": "Aceptado"
+        }
+    },
+    {
+        "model": "salidas.State",
+        "pk": 3,
+        "fields": {
+            "state": "Rechazado"
+        }
+    }
+]
