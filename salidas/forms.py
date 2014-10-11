@@ -12,4 +12,4 @@ class NewApplicationForm(forms.ModelForm):
 
 
 class CommissionTypeForm(forms.Form):
-    commission_type = forms.ModelChoiceField(queryset=Commission_type.objects.all())
+    commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all().type())
