@@ -1,39 +1,27 @@
 /*
-	*	Original script by: Shafiul Azam
-	*	Version 4.0
-	*	Modified by: Luigi Balzano
-
-	*	Description:
-	*	Inserts Countries and/or States as Dropdown List
-	*	How to Use:
-
-		In Head section:
-		----------------
-		<script type= "text/javascript" src = "countries.js"></script>
-		
-		In Body Section:
-		----------------
-		Select Country (with states):   <select id="country" name ="country"></select>
-			
-		Select State: <select name ="state" id ="state"></select>
-
-        Select Country (without states):   <select id="country2" name ="country2"></select>
-			
-		<script language="javascript">
-			populateCountries("country", "state");
-			populateCountries("country2");
-		</script>
-
+	*	Author : Shafiul Azam								*
+	*	ishafiul@gmail.com
+        *	Version 2.0
+        *	Update: Now works in MSIE!						*
+	*	Description:										*
+	*	Inserts Countries and/or States as Dropdown List	*
+	*	How to Use:											*
+	*														*
+			In Head section:
+			<script type= "text/javascript" src = "countries.js"></script>
+			In Body Section:
+			Select Country:   <select onchange="print_state('state',this.selectedIndex);" id="country" name ="country"></select>
+			<br />
+			City/District/State: <select name ="state" id ="state"></select>
+			<script language="javascript">print_country("country");</script>	
 	*
-	*	License: Free to copy, distribute, modify, whatever you want to.
-	*	Aurthor's Website: http://bdhacker.wordpress.com
+	*	License: OpenSource, Permission for modificatin Granted, KEEP AUTHOR INFORMATION INTACT
+	*	Aurthor's Website: http://shafiul.progmaatic.com
 	*
 */
 
-// Countries
 var country_arr = new Array("Afghanistan", "Albania", "Algeria", "American Samoa", "Angola", "Anguilla", "Antartica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Ashmore and Cartier Island", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Clipperton Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czeck Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Europa Island", "Falkland Islands (Islas Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern and Antarctic Lands", "Gabon", "Gambia, The", "Gaza Strip", "Georgia", "Germany", "Ghana", "Gibraltar", "Glorioso Islands", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Holy See (Vatican City)", "Honduras", "Hong Kong", "Howland Island", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Ireland, Northern", "Israel", "Italy", "Jamaica", "Jan Mayen", "Japan", "Jarvis Island", "Jersey", "Johnston Atoll", "Jordan", "Juan de Nova Island", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Man, Isle of", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Midway Islands", "Moldova", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcaim Islands", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romainia", "Russia", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Scotland", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and South Sandwich Islands", "Spain", "Spratly Islands", "Sri Lanka", "Sudan", "Suriname", "Svalbard", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Tobago", "Toga", "Tokelau", "Tonga", "Trinidad", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "USA", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands", "Wales", "Wallis and Futuna", "West Bank", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
 
-// States
 var s_a = new Array();
 s_a[0]="";
 s_a[1]="Badakhshan|Badghis|Baghlan|Balkh|Bamian|Farah|Faryab|Ghazni|Ghowr|Helmand|Herat|Jowzjan|Kabol|Kandahar|Kapisa|Konar|Kondoz|Laghman|Lowgar|Nangarhar|Nimruz|Oruzgan|Paktia|Paktika|Parvan|Samangan|Sar-e Pol|Takhar|Vardak|Zabol";
@@ -149,7 +137,7 @@ s_a[108]="Al Anbar|Al Basrah|Al Muthanna|Al Qadisiyah|An Najaf|Arbil|As Sulayman
 s_a[109]="Carlow|Cavan|Clare|Cork|Donegal|Dublin|Galway|Kerry|Kildare|Kilkenny|Laois|Leitrim|Limerick|Longford|Louth|Mayo|Meath|Monaghan|Offaly|Roscommon|Sligo|Tipperary|Waterford|Westmeath|Wexford|Wicklow";
 s_a[110]="Antrim|Ards|Armagh|Ballymena|Ballymoney|Banbridge|Belfast|Carrickfergus|Castlereagh|Coleraine|Cookstown|Craigavon|Derry|Down|Dungannon|Fermanagh|Larne|Limavady|Lisburn|Magherafelt|Moyle|Newry and Mourne|Newtownabbey|North Down|Omagh|Strabane";
 s_a[111]="Central|Haifa|Jerusalem|Northern|Southern|Tel Aviv";
-s_a[112]="Abruzzo|Basilicata|Calabria|Campania|Emilia-Romagna|Friuli-Venezia Giulia|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino-Alto Adige|Umbria|Valle d'Aosta|Veneto";
+s_a[112]="Abruzzi|Basilicata|Calabria|Campania|Emilia-Romagna|Friuli-Venezia Giulia|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino-Alto Adige|Umbria|Valle d'Aosta|Veneto";
 s_a[113]="Clarendon|Hanover|Kingston|Manchester|Portland|Saint Andrew|Saint Ann|Saint Catherine|Saint Elizabeth|Saint James|Saint Mary|Saint Thomas|Trelawny|Westmoreland";
 s_a[114]="Jan Mayen";
 s_a[115]="Aichi|Akita|Aomori|Chiba|Ehime|Fukui|Fukuoka|Fukushima|Gifu|Gumma|Hiroshima|Hokkaido|Hyogo|Ibaraki|Ishikawa|Iwate|Kagawa|Kagoshima|Kanagawa|Kochi|Kumamoto|Kyoto|Mie|Miyagi|Miyazaki|Nagano|Nagasaki|Nara|Niigata|Oita|Okayama|Okinawa|Osaka|Saga|Saitama|Shiga|Shimane|Shizuoka|Tochigi|Tokushima|Tokyo|Tottori|Toyama|Wakayama|Yamagata|Yamaguchi|Yamanashi";
@@ -291,39 +279,20 @@ s_a[250]="Kosovo|Montenegro|Serbia|Vojvodina";
 s_a[251]="Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western";
 s_a[252]="Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands";
 
-
-function populateStates( countryElementId, stateElementId ){
-	
-	var selectedCountryIndex = document.getElementById( countryElementId ).selectedIndex;
-
-	var stateElement = document.getElementById( stateElementId );
-	
-	stateElement.length=0;	// Fixed by Julian Woods
-	stateElement.options[0] = new Option('Select State','');
-	stateElement.selectedIndex = 0;
-	
-	var state_arr = s_a[selectedCountryIndex].split("|");
-	
-	for (var i=0; i<state_arr.length; i++) {
-		stateElement.options[stateElement.length] = new Option(state_arr[i],state_arr[i]);
+function print_country(country_id){
+	// given the id of the <select> tag as function argument, it inserts <option> tags
+	var option_str = document.getElementById(country_id);
+	var x, i=0;
+	for(x in country_arr){
+		option_str.options[i++] = new Option(country_arr[x],country_arr[x]);
 	}
 }
 
-function populateCountries(countryElementId, stateElementId){
-	// given the id of the <select> tag as function argument, it inserts <option> tags
-	var countryElement = document.getElementById(countryElementId);
-	countryElement.length=0;
-	countryElement.options[0] = new Option('Select Country','-1');
-	countryElement.selectedIndex = 0;
-	for (var i=0; i<country_arr.length; i++) {
-		countryElement.options[countryElement.length] = new Option(country_arr[i],country_arr[i]);
-	}
-
-	// Assigned all countries. Now assign event listener for the states.
-
-	if( stateElementId ){
-		countryElement.onchange = function(){
-			populateStates( countryElementId, stateElementId );
-		};
+function print_state(state_id, state_index){
+	var option_str = document.getElementById(state_id);
+	var x, i=0; state_index++;
+	var state_arr = s_a[state_index].split("|");
+	for(x in state_arr){
+            option_str.options[i++] = new Option(state_arr[x],state_arr[x]);
 	}
 }
