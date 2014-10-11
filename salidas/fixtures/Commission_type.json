@@ -1,0 +1,16 @@
+[
+  {
+    "model": "salidas.Commission_type",
+    "pk": 1,
+    "fields": {
+      "type": "asd"
+    }
+  },
+  {
+    "model": "salidas.Commission_type",
+    "pk": 2,
+    "fields": {
+      "type": "asdasd"
+    }
+  }
+]
