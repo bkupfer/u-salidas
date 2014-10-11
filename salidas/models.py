@@ -75,7 +75,7 @@ class Replacement(models.Model):
 
 class State(models.Model):
     id = models.AutoField(primary_key=True)
-    state = models.CharField(max_length=30)
+    state = models.CharField(max_length=16)
 
 class inactive_period(models.Model):
     start_date = models.DateField()
