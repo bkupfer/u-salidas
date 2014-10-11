@@ -14,49 +14,49 @@
         }
     },
     {
-        "model": "salidas.Commission_type",
+        "model": "salidas.CommissionType",
         "pk": 1,
         "fields": {
             "type": "Académica"
         }
     },
     {
-        "model": "salidas.Commission_type",
+        "model": "salidas.CommissionType",
         "pk": 2,
         "fields": {
             "type": "Estudio"
         }
     },
     {
-        "model": "salidas.Commission_type",
+        "model": "salidas.CommissionType",
         "pk": 3,
         "fields": {
             "type": "Servicio"
         }
     },
     {
-        "model": "salidas.Application_state",
+        "model": "salidas.ApplicationState",
         "pk": 1,
         "fields": {
             "state": "Pre acta"
         }
     },
     {
-        "model": "salidas.Application_state",
+        "model": "salidas.ApplicationState",
         "pk": 2,
         "fields": {
             "state": "Acta"
         }
     },
     {
-        "model": "salidas.Application_state",
+        "model": "salidas.ApplicationState",
         "pk": 3,
         "fields": {
             "state": "Resolución"
         }
     },
     {
-        "model": "salidas.Application_state",
+        "model": "salidas.ApplicationState",
         "pk": 1,
         "fields": {
             "state": "Decreto"
