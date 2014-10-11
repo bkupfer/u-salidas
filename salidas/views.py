@@ -9,7 +9,7 @@ def home(request):
 def new_application(request):
     commission = CommissionTypeForm(request.POST or None)
     application = NewApplicationForm(request.POST or None)
-    destination = DestinationDateForm(request.POST or None)
+    destination = DestinationForm(request.POST or None)
     if commission.is_valid():
         save_it = commission.save(commit=False)
         save_it.save()
