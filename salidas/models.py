@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils.encoding import smart_text
 
-
+#Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
+#"[Tabla.name] object"
 class Currency(models.Model):
-    #Esta mini funcion de __unicode__ es el nombre con el que se representa en la pantalla de admin, por defecto diria
-    #"an Currency object"
-    def __unicode__(self):
+
+    def __str__(self):
        return self.currency
     id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=4)
@@ -25,8 +25,8 @@ class Finance(models.Model):
 
 
 class Country(models.Model):
-    def __unicode__(self):
-       return self.name
+    def __str__(self):
+       return self.country
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
 
