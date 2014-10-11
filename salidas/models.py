@@ -3,6 +3,10 @@ from django.utils.encoding import smart_text
 
 
 class Currency(models.Model):
+    #Esta mini funcion de __unicode__ es el nombre con el que se representa en la pantalla de admin, por defecto diria
+    #"an Currency object"
+    def __unicode__(self):
+       return self.currency
     id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=4)
 
@@ -19,8 +23,10 @@ class Finance(models.Model):
     amount = models.FloatField()
 
 
-'''
+
 class Country(models.Model):
+    def __unicode__(self):
+       return self.name
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
 
@@ -29,7 +35,9 @@ class City(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
-'''
+    def __unicode__(self):
+       return self.city
+
 
 class Destination(models.Model):
     id_Application = models.ForeignKey('Application')
