@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.encoding import smart_text
 
-# Create your models here.
+
 class Currency(models.Model):
     id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=4)
@@ -47,9 +47,9 @@ class CommissionType(models.Model):
 class Application(models.Model):
     id = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=10)
-    id_commission_type = models.ForeignKey('CommissionType')
-    motive = models.TextField()
-    financed_by = models.TextField()
+    id_commission_type = models.ForeignKey('CommissionType', name="Tipo de comisión")
+    motive = models.TextField(name="Motivo")
+    financed_by = models.TextField(name="Financiado por")
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name becuase related name
     id_funds_validation_state = models.ForeignKey('State')
