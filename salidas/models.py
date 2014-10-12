@@ -51,6 +51,8 @@ class Destination(models.Model):
 class CommissionType(models.Model):
     id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=20)
+    def __str__(self):
+       return self.type
 
 
 class Application(models.Model):
