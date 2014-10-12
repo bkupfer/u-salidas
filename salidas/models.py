@@ -27,26 +27,20 @@ class Country(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
 
-    def __str__(self):
-       return self.country
-
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
 
-    def __unicode__(self):
-       return self.city
-
 
 class Destination(models.Model):
-    id_Application = models.ForeignKey('Application')
-    #  id_city = models.ForeignKey('City')
-    country = models.CharField(max_length=30)
-    city    = models.CharField(max_length=30)
+    id = models.AutoField(primary_key=True)
+    country = models.CharField(max_length=55)
+    city    = models.CharField(max_length=55)
     start_date = models.DateField(name="Fecha de Inicio")
     end_date   = models.DateField(name="Fecha de Término")
+
 
 class CommissionType(models.Model):
     id = models.AutoField(primary_key=True)
@@ -61,6 +55,7 @@ class Application(models.Model):
     id_commission_type = models.ForeignKey('CommissionType', name="Tipo de comisión")
     motive = models.TextField(name="Motivo")
     financed_by = models.TextField(name="Financiado por")
+    id_destination = models.ForeignKey('Destination')
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
     id_funds_validation_state = models.ForeignKey('State')
@@ -74,8 +69,8 @@ class ApplicationState(models.Model):
 
 
 class ApplicationHasApplicationState(models.Model):
-    id_Application = models.ForeignKey('Application')
-    id_Application_state = models.ForeignKey('ApplicationState')
+    id_application = models.ForeignKey('Application')
+    id_application_state = models.ForeignKey('ApplicationState')
     date = models.DateTimeField()
 
 
