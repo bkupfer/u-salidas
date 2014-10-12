@@ -25,7 +25,7 @@
     <div class="row hidden-print">
     <div class="col-md-12">
     	<ul class="nav nav-justified">
-    	
+
     		<!-- Aca colocar la barra de nevegacion correspondiente -->
 			<li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
 			<li><a href="" title="">Calendario</a></li>
@@ -40,23 +40,35 @@
     
     <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
    		<!-- Aca colocar el contenido correspondiente -->
-   		
-   		
-		<form action="form-horizontal" method="post" accept-charset="utf-8" class="" role="form">
-			<br />
-			<h1>Formulario de solicitud de salidas</h1>
-			<br />
-			<div class="row">
-				<div class="col-sm-7">
-					<div class="form-group">
-                            <form method="POST" action=""> {%csrf_token %}
-                                {{ commission.as_p }}
-                                {{ application.as_p }}
-                            </form>
+
+
+        <form action="form-horizontal" method="post" accept-charset="utf-8" class="" role="form">
+            <br/>
+
+            <h1>Formulario de solicitud de salidas</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Información de viaje</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-5">
+                                        <form method="POST" action=""> {% csrf_token %}
+                                            {{ commission.as_p }}
+                                            {{ application.as_p }}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                 </div>
-			</div>
-			<br />
+            </div>
+            <br/>
+
 			<div class="row">
 				<div class="col-sm-7">
 					<div class="panel panel-primary">
@@ -149,7 +161,7 @@
 							<!-- fin para cada curso -->
 							<div class="row">
 								<div class="col-sm-4">
-									<button class="btn btn-danger"><span class="glyphicon glyphicon-plus"></button>
+									<button class="btn btn-danger"><span class="glyphicon glyphicon-plus"/></button>
 								</div>
 							</div>
 					  	</div>
@@ -196,7 +208,7 @@
 							
 							<div class="row">
 								<div class="col-sm-4">
-									<button class="btn btn-success"><span class="glyphicon glyphicon-plus"></button>
+									<button class="btn btn-success"><span class="glyphicon glyphicon-plus"/></button>
 								</div>
 							</div>
 					  	</div>

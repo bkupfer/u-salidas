@@ -4,11 +4,11 @@ from django.utils.encoding import smart_text
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
 #"[Tabla.name] object"
 class Currency(models.Model):
+    id = models.AutoField(primary_key=True)
+    currency = models.CharField(max_length=4)
 
     def __str__(self):
        return self.currency
-    id = models.AutoField(primary_key=True)
-    currency = models.CharField(max_length=4)
 
 
 class FinanceType(models.Model):
@@ -23,18 +23,19 @@ class Finance(models.Model):
     amount = models.FloatField()
 
 
-
 class Country(models.Model):
-    def __str__(self):
-       return self.country
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
+
+    def __str__(self):
+       return self.country
 
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
+
     def __unicode__(self):
        return self.city
 
@@ -54,6 +55,7 @@ class CommissionType(models.Model):
     def __str__(self):
         return smart_text(self.type)
 
+
 class Application(models.Model):
     id = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=10)
@@ -61,7 +63,7 @@ class Application(models.Model):
     motive = models.TextField(name="Motivo")
     financed_by = models.TextField(name="Financiado por")
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
-    id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name becuase related name
+    id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
     id_funds_validation_state = models.ForeignKey('State')
     directors_name = models.CharField(max_length=30)
     directors_rut = models.CharField(max_length=10)
@@ -93,7 +95,7 @@ class Replacement(models.Model):
     id = models.AutoField(primary_key=True)
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
-    #id_curso  ·· revisar si este campo es necesario - depende de los datos provistos por u-pasaporte.
+    #id_curso  // revisar si este campo es necesario - depende de los datos provistos por u-pasaporte.
     answer_date = models.DateTimeField(blank=True, null=True)
     id_state = models.ForeignKey('State')
 
@@ -107,6 +109,7 @@ class InactivePeriod(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
+
 
 
 '''
