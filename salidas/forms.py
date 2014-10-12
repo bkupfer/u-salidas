@@ -13,15 +13,16 @@ class NewApplicationForm(forms.ModelForm):
         #fields = ('motive','financed_by')
 
 class DestinationForm(forms.ModelForm):
-    start_date = forms.DateField(initial=datetime.date.today)
-    end_date = forms.DateField(initial=datetime.date.today)
     country = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
     city = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
+
     class Meta:
         model = Destination
         exclude = {'id_Application'}
-
-
+        widget = {
+            'start_date': forms.DateInput(attrs={'class':'datepicker'}),
+            'end_date': forms.DateInput(attrs={'class':'datepicker'}),
+        }
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 

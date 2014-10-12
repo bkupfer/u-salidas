@@ -10,7 +10,10 @@
 <link href="../static/public/css/bootstrap.min.css" rel="stylesheet">
 <link href="../static/public/css/docs.min.css" rel="stylesheet">
 <link href="../static/css/estilos.css" rel="stylesheet" type="text/css">
+<link href="../static/css/jquery-ui.min.css" rel="stylesheet" >
+<script src="../static/external/jquery/jquery.js"></script>
 <script src="../static/public/js/jquery-1.11.0.min.js"></script>
+<script src="../static/js/jquery-ui.min.js"></script>
 
 <title>Salidas DCC</title>
 
@@ -44,25 +47,71 @@
 			<h1>Formulario de solicitud de salidas</h1>
 			<br />
 			<div class="row">
-				<div class="form-group">
-                    <form method="POST" action=""> {%csrf_token %}
-                        {{ commission.as_p }}
-                        {{ application.as_p }}
-                        {{ destination.as_p }}
-                    </form>
-				</div>
+				<div class="col-sm-7">
+					<div class="form-group">
+                            <form method="POST" action=""> {%csrf_token %}
+                                {{ commission.as_p }}
+                                {{ application.as_p }}
+                            </form>
+                        </div>
+                </div>
 			</div>
 			<br />
 			<div class="row">
 				<div class="col-sm-7">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
+					  	<div class="panel-body">
+					    	<div class="row">
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Destino</label>
+				    				<div class="col-sm-5">
+									     <select class="form-control input-sm" name="SelPais">
+											<option value="">Seleccione País</option>
+										</select>
+									</div>
+								</div>
+							</div>
+                            <br>
+							<div class="row">
+								<div class="form-group">
+									<label class="col-sm-4 control-label"></label>
+				    				<div class="col-sm-5">
+									     <select class="form-control input-sm" name="SelCiudad">
+											<option value="">Seleccione Ciudad</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="form-group">
+                                    <div class="col-sm-10">
+				    				    {{ destination.as_p }}
+                                    </div>
+                                </div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-sm-4">
+									<button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+								</div>
+							</div>
+					  	</div>
+					</div><!-- end panel -->
+				</div><!-- end col -->
+			</div><!-- end row -->
+            <br>
+            <div class="row">
+				<div class="col-sm-7">
 					<div class="panel panel-danger">
 						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante</div>
 					  	<div class="panel-body">
-					  	
+
 					  		<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group">
-									<label class="col-sm-4 control-label">CC3001</label>
+									<label class="col-sm-4 control-label">Reemplazo Académico</label>
 				    				<div class="col-sm-5">
 									     <select multiple  class="form-control input-sm" name="">
 											<option value="">Seleccionar profesor</option>
@@ -78,11 +127,11 @@
 							</div>
 							<hr />
 							<!-- fin para cada curso -->
-							
+
 							<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group">
-									<label class="col-sm-4 control-label">CC4101</label>
+									<label class="col-sm-4 control-label">Reemplazo Administrativo</label>
 				    				<div class="col-sm-5">
 									     <select multiple  class="form-control input-sm" name="">
 											<option value="">Seleccionar profesor</option>
@@ -98,28 +147,6 @@
 							</div>
 							<hr />
 							<!-- fin para cada curso -->
-							
-							<!-- para cada curso -->
-					    	<div class="row">
-								<div class="form-group">
-									<label class="col-sm-4 control-label">CC5502</label>
-				    				<div class="col-sm-5">
-									     <select multiple  class="form-control input-sm" name="">
-											<option value="">Seleccionar profesor</option>
-											<option value="1">Profesor 1</option>
-											<option value="2">Profesor 2</option>
-											<option value="3">Profesor 3</option>
-										</select>
-									</div>
-									<div class="col-sm-3">
-										
-									</div>
-								</div>
-							</div>
-							<hr />
-							<!-- fin para cada curso -->
-							
-							
 							<div class="row">
 								<div class="col-sm-4">
 									<button class="btn btn-danger"><span class="glyphicon glyphicon-plus"></button>
@@ -209,6 +236,12 @@
 </div><!--end container-->
 <script src="../static//public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/filestyle.js"> </script>
+<script>
+  $(function() {
+    $( "input[name='form-0-Fecha de Inicio']").datepicker();
+    $( "input[name='form-0-Fecha de Término']").datepicker();
+  });
+  </script>
 </body>
 </html>
  
