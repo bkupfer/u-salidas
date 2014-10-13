@@ -31,10 +31,10 @@ def new_application(request):
 
 
 def application_detail(request):
-    rut_profesor = "123456789-0"          #  este valor tiene que ser el rut del profesor
-    query = Application.objects.get(rut__exact = rut_profesor)  # application query
-    comm = CommissionType.objects.get(id = query.id_commission_type)
-    dest = Destination.objects.get(id = query.id_destination)
+    rut_profesor = "17704795-3"  # IMPORTANTE!! este valor tiene que ser el rut del profesor
+    query = Application.objects.get(rut__exact = rut_profesor)  # Application query
+    comm_type = query.id_commission_type
+    dest = query.id_destination
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
 
 
