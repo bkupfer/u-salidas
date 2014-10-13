@@ -7,9 +7,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
+    # Pages:
     url(r'^$', 'salidas.views.home', name='home'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
+    url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
