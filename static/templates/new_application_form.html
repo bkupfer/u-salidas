@@ -64,12 +64,14 @@
                                                </div>
                                             </div>
                                             <div  class="col-sm-12">
+                                                <br/>
                                                 <label class="control-label col-sm-7" for="nombre">Motivo</label>
                                                 <div class="col-sm-5">
                                                    {{ application.motive }}
                                                </div>
                                             </div>
                                             <div  class="col-sm-12">
+                                                <br/>
                                                 <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
                                                 <div class="col-sm-5">
                                                    {{ application.financed_by }}
@@ -93,32 +95,43 @@
 					    	<div id="destination_form" >
                                 <div class="row">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">Destino</label>
-                                        <div class="col-sm-5">
-                                             <select class="form-control input-sm" name="SelPais">
-                                                <option value="">Seleccione País</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label"></label>
-                                        <div class="col-sm-5">
-                                             <select class="form-control input-sm" name="SelCiudad">
-                                                <option value="">Seleccione Ciudad</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="col-sm-10">
-                                            <form method="POST" action=""> {% csrf_token %}
-                                                {{ destination.as_p }}
-                                            </form>
+                                        <div class="col-sm-12">
+                                            {{ destinationFormSet.management_form }}
+                                            <table>
+                                                {% for destination in destinationFormSet %}
+                                                <tr id="destination_id_0">
+                                                    <div class="col-sm-12">
+                                                        <label class="col-sm-2 control-label">Destino</label>
+                                                        <div class="col-sm-5">
+                                                         <select class="form-control input-sm" name="SelPais">
+                                                            <option value="">Seleccione Pais</option>
+                                                        </select>
+                                                        {{ destination.country }}
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                             <select class="form-control input-sm" name="SelCiudad">
+                                                                <option value="">Seleccione Ciudad</option>
+                                                            </select>
+                                                            {{ destination.city }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <br/>
+                                                        <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
+                                                        <div class="col-sm-5">
+                                                        {{ destination.start_date }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <br/>
+                                                        <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
+                                                        <div class="col-sm-5">
+                                                        {{ destination.end_date }}
+                                                        </div>
+                                                    </div>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -267,12 +280,12 @@
     </div><!-- end contenido-->
     </div><!-- end row-->
 </div><!--end container-->
-<script src="../static//public/js/bootstrap.min.js"></script>
+<script src="../static/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/filestyle.js"> </script>
 <script>
   $(function() {
-    $( "input[name='form-0-Fecha de Inicio']").datepicker();
-    $( "input[name='form-0-Fecha de Término']").datepicker();
+    $( "#id_form-0-start_date").datepicker();
+    $( "#id_form-0-end_date").datepicker();
 
     $('#agregar_tarea').click(function(){
         var revisiones = $('.tarea').length;

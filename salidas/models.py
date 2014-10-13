@@ -37,8 +37,8 @@ class Destination(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=55)
     city    = models.CharField(max_length=55)
-    start_date = models.DateField(name="Fecha de Inicio")
-    end_date   = models.DateField(name="Fecha de Término")
+    start_date = models.DateField()
+    end_date   = models.DateField()
 
 
 class CommissionType(models.Model):

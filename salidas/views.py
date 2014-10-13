@@ -8,13 +8,13 @@ def home(request):
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
-    destination = DestinationFormSet(request.POST or None)
+    destinationFormSet = DestinationFormSet(request.POST or None)
     if application.is_valid():
-        save_it = application.save(commit=False)
-        save_it.save()
-    if destination.is_valid():
-        save_it = destination.save(commit=False)
-        save_it.save()
+        new_app = application.save(commit=False)
+        new_app.save()
+    if destinationFormSet.is_valid():
+        new_destination = destinationFormSet.save(commit=False)
+        new_destination.save()
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 

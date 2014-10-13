@@ -16,14 +16,12 @@ class NewApplicationForm(forms.ModelForm):
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
     city = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
-
+    start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
+    end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     class Meta:
         model = Destination
-        exclude = {'id_Application'}
-        widget = {
-            'start_date': forms.DateInput(attrs={'class':'datepicker'}),
-            'end_date': forms.DateInput(attrs={'class':'datepicker'}),
-        }
+        exclude = {'id'}
+
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
