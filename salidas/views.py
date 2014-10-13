@@ -37,6 +37,7 @@ def teacher_calendar(request):
 
 # Views for administrative people
 def list_of_applications(request):
+    apps = Application.objects.all()
     return render_to_response("list_of_applications.html", locals(), context_instance=RequestContext(request))
 
 

@@ -23,7 +23,7 @@
     <div class="row hidden-print">
         <div class="col-md-12">
             <ul class="nav nav-justified">
-                <li class="active"><a href="" title="">Detalle de solicitudes</a></li>
+                <li class="active"><a href="" title="">Listado de solicitudes</a></li>
                 <li><a href="" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
             </ul>
@@ -34,12 +34,40 @@
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
-        <h1>Listado de solicitudes</h1>
+
+            <div class="pannel panel-primary">
+                <div class="panel-body">
+                        <h1>Listado de solicitudes</h1>
+
+                        <table class="table">
+                            <tr>
+                                <th>Profesor</th>
+                                <th>Fecha de inicio</th>
+                                <th>Fecha de envio a facultad</th>
+                                <th>Estado</th>
+                                <th>Detalle</th>
+                            </tr>
+                            {% for app in apps %}
+                                <tr>
+                                    <td>
+                                        Rut: {{ app.rut }}
+                                        <br>
+                                        Comisión: {{ app.id_commission_type }}
+                                    </td>
+                                    <td>{{ app.creation_date }}</td>
+                                    <td> (?) </td>
+                                    <td>  (?)   </td>
+                                    <td> <a href="application_detail">Ver detalle</a> <!-- se debe dar el rut correcto como parametro!--></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                </div>
+            </div>
 
         </div>
     </div>
 
 </div>
-
 </body>
 </html>
