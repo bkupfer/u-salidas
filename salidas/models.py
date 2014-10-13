@@ -50,7 +50,7 @@ class CommissionType(models.Model):
 
 class Application(models.Model):
     id = models.AutoField(primary_key=True)
-    rut = models.CharField(max_length=10)
+    rut = models.ForeignKey('Teacher')
     id_commission_type = models.ForeignKey('CommissionType')    #, name="Tipo de comisión")
     motive = models.TextField()                                 # name="Motivo")
     financed_by = models.TextField()                            # name="Financiado por")
@@ -87,7 +87,7 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=100)
     signature_path = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
-        return self.name + self.last_name
+        return self.name + " " + self.last_name
 
 
 class Replacement(models.Model):

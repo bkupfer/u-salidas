@@ -42,18 +42,20 @@
                         <table class="table">
                             <tr>
                                 <th>Profesor</th>
+                                <th>Comisión</th>
                                 <th>Fecha de inicio</th>
-                                <th>Fecha de envio a facultad</th>
+                                <th>Fecha de envio<br>a facultad</th>
                                 <th>Estado</th>
                                 <th>Detalle</th>
                             </tr>
                             {% for app in apps %}
                                 <tr>
                                     <td>
-                                        Rut: {{ app.rut }}
+                                        {{ app.rut }}
                                         <br>
-                                        Comisión: {{ app.id_commission_type }}
+                                        {{ app.rut.rut }}
                                     </td>
+                                    <td>{{ app.id_commission_type }}</td>
                                     <td>{{ app.creation_date }}</td>
                                     <td>  (?)   </td>
                                     <td>  (?)   </td>
