@@ -1,9 +1,9 @@
 from django.shortcuts import render, render_to_response, RequestContext
-from django.utils.safestring import mark_safe
 
+from salidas.models import *    #  for data
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
-
+from django.utils.safestring import mark_safe   #  for calendar
 
 def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
@@ -22,8 +22,10 @@ def new_application(request):
 
 
 def application_detail(request):
-    CommissionType.objects
-    b = CommissionType(pk=1)
+    rut_profesor = "123456789-0"          #  este valor tiene que ser el rut del profesor
+    query = Application.objects.get(rut__exact = rut_profesor)  # application query
+    comm = CommissionType.objects.get(id = query.id_commission_type)
+    dest = Destination.objects.get(id = query.id_destination)
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
 
 

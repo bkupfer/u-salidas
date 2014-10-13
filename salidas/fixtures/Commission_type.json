@@ -17,7 +17,7 @@
         "model": "salidas.CommissionType",
         "pk": 1,
         "fields": {
-            "type": "Académica"
+            "type": "Academica"
         }
     },
     {
@@ -52,7 +52,7 @@
         "model": "salidas.ApplicationState",
         "pk": 3,
         "fields": {
-            "state": "Resolución"
+            "state": "Resolucion"
         }
     },
     {

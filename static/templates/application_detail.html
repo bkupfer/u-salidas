@@ -9,27 +9,27 @@
     <table>
     <tr>
         <td>Tipo de Comisi&oacute;n</td>
-        <th>{{ CommissionTypes  }}</th>
+        <td>{{ comm.type }}</td>
     </tr>
     <tr>
         <td>Motivo</td>
-        <td><td>
+        <td>{{ query.motive }}<td>
     </tr>
     <tr>
         <td>Financiamiento</td>
-        <td></td>
+        <td>{{ query.financed_by }}</td>
     </tr>
     <tr>
         <td>Destino</td>
-        <td></td>
+        <td>{{ dest.country }}, {{ dest.city }}</td>
     </tr>
     <tr>
         <td>Fecha de inicio</td>
-        <td></td>
+        <td>{{ dest.start_date }}</td>
     </tr>
     <tr>
         <td>Fecha de regreso</td>
-        <td></td>
+        <td>{{ dest.end_date }}</td>
     </tr>
     <tr>
         <td>Profesor reemplazante</td>
@@ -37,7 +37,7 @@
     </tr>
     <tr>
         <td>Director a cargo</td>
-        <td></td>
+        <td>{{ query.directors_name }}</td>
     </tr>
 </table>
 
