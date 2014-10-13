@@ -57,7 +57,7 @@
     },
     {
         "model": "salidas.ApplicationState",
-        "pk": 1,
+        "pk": 4,
         "fields": {
             "state": "Decreto"
         }

@@ -6,7 +6,6 @@ from django.utils.encoding import smart_text
 class Currency(models.Model):
     id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=4)
-
     def __str__(self):
        return self.currency
 
@@ -66,6 +65,8 @@ class Application(models.Model):
 class ApplicationState(models.Model):
     id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=20)
+    def __str__(self):
+        return self.state
 
 
 class ApplicationHasApplicationState(models.Model):
@@ -97,13 +98,14 @@ class Replacement(models.Model):
 class State(models.Model):
     id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=16)
+    def __str__(self):
+        return self.state
 
 
 class InactivePeriod(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
-
 
 
 '''
