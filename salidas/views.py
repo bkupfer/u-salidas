@@ -34,10 +34,12 @@ def prueba(request):
     application = NewApplicationForm(request.POST or None)
     if application.is_valid():
         rut1 = application.cleaned_data['rut']
-        ct = application.cleaned_data['commission_type']
+        ct = application.cleaned_data['id_commission_type']
         fb = application.cleaned_data['financed_by']
         motive = application.cleaned_data['motive']
-        newApp = Application(rut=rut1,commission_type=ct,financed_by=fb,motive=motive)
+        daysv = State.objects.get(pk=2)
+        faysv = State.objects.get(pk=2)
+        newApp = Application(rut=rut1,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=faysv)
         newApp.save()
     return render_to_response("prueba.html", locals(), context_instance=RequestContext(request))
 
