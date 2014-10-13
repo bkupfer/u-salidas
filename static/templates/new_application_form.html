@@ -49,16 +49,32 @@
             <br/>
 
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="panel panel-primary">
                         <div class="panel-heading">Información de viaje</div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-8">
                                         <form method="POST" action=""> {% csrf_token %}
-                                            {{ commission.as_p }}
-                                            {{ application.as_p }}
+                                            <div  class="col-sm-12">
+                                                <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
+                                                <div class="col-sm-5">
+                                                   {{ application.commission_type }}
+                                               </div>
+                                            </div>
+                                            <div  class="col-sm-12">
+                                                <label class="control-label col-sm-7" for="nombre">Motivo</label>
+                                                <div class="col-sm-5">
+                                                   {{ application.motive }}
+                                               </div>
+                                            </div>
+                                            <div  class="col-sm-12">
+                                                <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
+                                                <div class="col-sm-5">
+                                                   {{ application.financed_by }}
+                                               </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -70,45 +86,50 @@
             <br/>
 
 			<div class="row">
-				<div class="col-sm-7">
+				<div class="col-sm-8">
 					<div class="panel panel-primary">
 						<div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
 					  	<div class="panel-body">
-					    	<div class="row">
-								<div class="form-group">
-									<label class="col-sm-4 control-label">Destino</label>
-				    				<div class="col-sm-5">
-									     <select class="form-control input-sm" name="SelPais">
-											<option value="">Seleccione País</option>
-										</select>
-									</div>
-								</div>
-							</div>
-                            <br>
-							<div class="row">
-								<div class="form-group">
-									<label class="col-sm-4 control-label"></label>
-				    				<div class="col-sm-5">
-									     <select class="form-control input-sm" name="SelCiudad">
-											<option value="">Seleccione Ciudad</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<br />
-							<div class="row">
-								<div class="form-group">
-                                    <div class="col-sm-10">
-				    				    {{ destination.as_p }}
+					    	<div id="destination_form" >
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Destino</label>
+                                        <div class="col-sm-5">
+                                             <select class="form-control input-sm" name="SelPais">
+                                                <option value="">Seleccione País</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-							</div>
-							<br />
-							<div class="row">
-								<div class="col-sm-4">
-									<button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
-								</div>
-							</div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"></label>
+                                        <div class="col-sm-5">
+                                             <select class="form-control input-sm" name="SelCiudad">
+                                                <option value="">Seleccione Ciudad</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <form method="POST" action=""> {% csrf_token %}
+                                                {{ destination.as_p }}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div id="add_destination" class="col-sm-12" align="right">
+                                        <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+                                        <label class="control-label">Agregar Destino</label>
+                                    </div>
+                                </div>
+                            </div>
 					  	</div>
 					</div><!-- end panel -->
 				</div><!-- end col -->
@@ -252,6 +273,32 @@
   $(function() {
     $( "input[name='form-0-Fecha de Inicio']").datepicker();
     $( "input[name='form-0-Fecha de Término']").datepicker();
+
+    $('#agregar_tarea').click(function(){
+        var revisiones = $('.tarea').length;
+        var prefix = 'tar';
+        var current = revisiones++;
+        var tr = $('#emptyForm').clone(false).get(0);
+        $(tr).children().each(function () {
+            updateElementIndex(this, prefix, current);
+            $(this).val("");
+        });
+        if($(tr).children('span').children('i').length==0)
+            $(tr).append('<span class="help-inline"><i class="icon-remove remove icon-2x"></i></span>');
+        $(tr).removeClass('hide');
+        $(tr).addClass('tarea');
+        $(tr).removeAttr('id');
+        $('#tareas').append(tr);
+        $(tr).children('span').children('i').click(function(){
+            var tr = $(this).parent('span').parent('div');
+            tr.hide('fade').delay(300).queue(function(){
+                tr.remove();
+                $(this).dequeue();
+            });
+             $("#id_" + prefix + "-TOTAL_FORMS").val($("#id_" + prefix + "-TOTAL_FORMS").val() - 1);
+        });
+        $("#id_" + prefix + "-TOTAL_FORMS").val(parseInt($("#id_" + prefix + "-TOTAL_FORMS").val()) + 1);
+    });
   });
   </script>
 </body>
