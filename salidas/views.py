@@ -1,10 +1,13 @@
 from django.shortcuts import render, render_to_response, RequestContext
+from django.utils.safestring import mark_safe
 
-from salidas.forms import *
+from salidas.forms import *     #  for calendar
+from salidas.calendar import *  #  for calendar
 
-# Create your views here.
+
 def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
+
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
@@ -26,3 +29,20 @@ def application_detail(request):
 
 def teacher_calendar(request):
     return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))
+
+
+def calendar(request, year, month):
+    # primero debemos obtenemos los datos de la base de datos, luego le damos la query a WorkoutCalendar
+    # un ejemplo de cómo hacer esto es el que se muestra a continuación.
+
+    # para ver el resultado o mas detalles de como se supone funciona esto, revisar el siguiente link
+    #   http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
+
+    '''
+    my_workouts = Workouts.objects.order_by('my_date').filter(
+        my_date__year=year, my_date__month=month
+    )
+
+    cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
+    return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
+    '''
