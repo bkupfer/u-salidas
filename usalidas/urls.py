@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
+    url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),

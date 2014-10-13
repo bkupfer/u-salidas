@@ -48,6 +48,8 @@ def application_detail(request):
     dest = query.id_destination
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
 
+def historic_calendar(request):
+    return render_to_response("historic_calendar.html", locals(), content_type=RequestContext(request))
 
 # Aditional views
 def calendar(request, year, month):
