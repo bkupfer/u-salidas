@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #'south',
     'salidas',
-    'cities_light',
 )
 
 MIDDLEWARE_CLASSES = (

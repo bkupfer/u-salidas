@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/public/css/docs.min.css" rel="stylesheet">
+    <link href="../static/css/estilos.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/jquery-ui.min.css" rel="stylesheet" >
+    <script src="../static/external/jquery/jquery.js"></script>
+    <script src="../static/public/js/jquery-1.11.0.min.js"></script>
+    <script src="../static/js/jquery-ui.min.js"></script>
+
+    <title>Salidas DCC</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <!-- navegation bar -->
+    <div class="row hidden-print">
+        <div class="col-md-12">
+            <ul class="nav nav-justified">
+                <li class="active"><a href="" title="">Listado de solicitudes</a></li>
+                <li><a href="" title="">Calendario</a></li>
+                <li><a href="" title="">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- page content -->
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+
+
+            <div class="pannel panel-primary">
+                <div class="panel-body">
+                        <h1>Listado de solicitudes</h1>
+
+                        <table class="table">
+                            <tr>
+                                <th>Profesor</th>
+                                <th>Fecha de inicio</th>
+                                <th>Fecha de envio a facultad</th>
+                                <th>Estado</th>
+                                <th>Detalle</th>
+                            </tr>
+                            {% for app in apps %}
+                                <tr>
+                                    <td>
+                                        Rut: {{ app.rut }}
+                                        <br>
+                                        Comisión: {{ app.id_commission_type }}
+                                    </td>
+                                    <td>{{ app.creation_date }}</td>
+                                    <td> (?) </td>
+                                    <td>  (?)   </td>
+                                    <td> <a href="application_detail">Ver detalle</a> <!-- se debe dar el rut correcto como parametro!--></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

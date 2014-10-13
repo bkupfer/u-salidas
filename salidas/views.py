@@ -5,11 +5,12 @@ from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
 from django.utils.safestring import mark_safe   #  for calendar
 
-
+# Views for all users
 def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
 
+#Views for teachers
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
     destinationFormSet = DestinationFormSet(request.POST or None)
@@ -30,18 +31,25 @@ def new_application(request):
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 
-def application_detail(request):
-    rut_profesor = "123456789-0"          #  este valor tiene que ser el rut del profesor
-    query = Application.objects.get(rut__exact = rut_profesor)  # application query
-    comm = CommissionType.objects.get(id = query.id_commission_type)
-    dest = Destination.objects.get(id = query.id_destination)
-    return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
-
-
 def teacher_calendar(request):
     return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
 
+# Views for administrative people
+def list_of_applications(request):
+    apps = Application.objects.all()
+    return render_to_response("list_of_applications.html", locals(), context_instance=RequestContext(request))
+
+
+def application_detail(request):
+    rut_profesor = "17704795-3"  # IMPORTANTE!! este valor tiene que ser el rut del profesor
+    query = Application.objects.get(rut__exact = rut_profesor)  # Application query
+    comm_type = query.id_commission_type
+    dest = query.id_destination
+    return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
+
+
+# Aditional views
 def calendar(request, year, month):
     # primero debemos obtenemos los datos de la base de datos, luego le damos la query a WorkoutCalendar
     # un ejemplo de cómo hacer esto es el que se muestra a continuación.

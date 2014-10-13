@@ -51,9 +51,9 @@ class CommissionType(models.Model):
 class Application(models.Model):
     id = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=10)
-    id_commission_type = models.ForeignKey('CommissionType', name="Tipo de comisión")
-    motive = models.TextField(name="Motivo")
-    financed_by = models.TextField(name="Financiado por")
+    id_commission_type = models.ForeignKey('CommissionType')    #, name="Tipo de comisión")
+    motive = models.TextField()                                 # name="Motivo")
+    financed_by = models.TextField()                            # name="Financiado por")
     id_destination = models.ForeignKey('Destination')
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
