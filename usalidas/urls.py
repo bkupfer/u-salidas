@@ -8,10 +8,14 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Pages:
+    # Teacher view pages
     url(r'^$', 'salidas.views.home', name='home'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
-    url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
+
+    # Administrative view pages
+    url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
+    url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
