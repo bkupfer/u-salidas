@@ -18,3 +18,7 @@ def new_application(request):
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 
+def application_detail(request):
+    CommissionType.objects
+    b = CommissionType(pk=1)
+    return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
