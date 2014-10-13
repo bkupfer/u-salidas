@@ -83,8 +83,10 @@ class Document(models.Model):
 
 class Teacher(models.Model):
     rut = models.CharField(max_length=10, primary_key=True)
+    replacement_name = models.CharField(max_length=50)
     signature_path = models.CharField(max_length=100, blank=True, null=True)
-
+    def __str__(self):
+        return self.replacement_name
 
 class Replacement(models.Model):
     id = models.AutoField(primary_key=True)
