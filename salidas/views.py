@@ -22,3 +22,7 @@ def application_detail(request):
     CommissionType.objects
     b = CommissionType(pk=1)
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
+
+
+def teacher_calendar(request):
+    return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))

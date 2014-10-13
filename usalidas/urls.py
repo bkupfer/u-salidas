@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^$', 'salidas.views.home', name='home'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
+    url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
