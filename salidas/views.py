@@ -5,6 +5,7 @@ from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
 
 
+
 def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
@@ -12,12 +13,20 @@ def home(request):
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
     destinationFormSet = DestinationFormSet(request.POST or None)
+    academicReplacement = ReplacementApplicationForm(request.POST or None)
+    executiveReplacement = ReplacementApplicationForm(request.POST or None)
     if application.is_valid():
         new_app = application.save(commit=False)
         new_app.save()
     if destinationFormSet.is_valid():
         new_destination = destinationFormSet.save(commit=False)
         new_destination.save()
+    if academicReplacement.is_valid():
+        replacement = academicReplacement.save(commit=False)
+        replacement.save()
+    if executiveReplacement.is_valid():
+        replacement = executiveReplacement.save(commit=False)
+        replacement.save()
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 

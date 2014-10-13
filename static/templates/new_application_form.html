@@ -146,7 +146,7 @@
 			</div><!-- end row -->
             <br>
             <div class="row">
-				<div class="col-sm-7">
+				<div class="col-sm-8">
 					<div class="panel panel-danger">
 						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante</div>
 					  	<div class="panel-body">
@@ -155,15 +155,10 @@
 					    	<div class="row">
 								<div class="form-group">
 									<label class="col-sm-4 control-label">Reemplazo Académico</label>
-				    				<div class="col-sm-5">
-									     <select multiple  class="form-control input-sm" name="">
-											<option value="">Seleccionar profesor</option>
-											<option value="1">Profesor 1</option>
-											<option value="2">Profesor 2</option>
-											<option value="3">Profesor 3</option>
-										</select>
+				    				<div class="col-sm-3">
+									     {{academicReplacement }}
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-5">
 										<p class="text-danger">*Este profesor tiene tope de horario</p>
 									</div>
 								</div>
@@ -175,26 +170,16 @@
 					    	<div class="row">
 								<div class="form-group">
 									<label class="col-sm-4 control-label">Reemplazo Administrativo</label>
-				    				<div class="col-sm-5">
-									     <select multiple  class="form-control input-sm" name="">
-											<option value="">Seleccionar profesor</option>
-											<option value="1">Profesor 1</option>
-											<option value="2">Profesor 2</option>
-											<option value="3">Profesor 3</option>
-										</select>
+				    				<div class="col-sm-3">
+									    {{ executiveReplacement }}
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-5">
 										<p class="text-info">*Existe docencia compartida</p>
 									</div>
 								</div>
 							</div>
 							<hr />
 							<!-- fin para cada curso -->
-							<div class="row">
-								<div class="col-sm-4">
-									<button class="btn btn-danger"><span class="glyphicon glyphicon-plus"/></button>
-								</div>
-							</div>
 					  	</div>
 					</div><!-- end panel -->
 				</div><!-- end col -->
