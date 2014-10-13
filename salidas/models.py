@@ -4,14 +4,12 @@ from django.utils.encoding import smart_text
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
 #"[Tabla.name] object"
 class Currency(models.Model):
-    id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=4)
     def __str__(self):
        return self.currency
 
 
 class FinanceType(models.Model):
-    id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=20)
 
 
@@ -23,18 +21,16 @@ class Finance(models.Model):
 
 
 class Country(models.Model):
-    id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100)
 
 
 class City(models.Model):
-    id = models.AutoField(primary_key=True)
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
 
 
 class Destination(models.Model):
-    id = models.AutoField(primary_key=True)
+    application = models.ForeignKey('Application')
     country = models.CharField(max_length=55)
     city    = models.CharField(max_length=55)
     start_date = models.DateField()
@@ -42,19 +38,16 @@ class Destination(models.Model):
 
 
 class CommissionType(models.Model):
-    id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=20)
     def __str__(self):
        return self.type
 
 
 class Application(models.Model):
-    id = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=10)
     id_commission_type = models.ForeignKey('CommissionType')    #, name="Tipo de comisión")
     motive = models.TextField()                                 # name="Motivo")
     financed_by = models.TextField()                            # name="Financiado por")
-    id_destination = models.ForeignKey('Destination')
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
     id_funds_validation_state = models.ForeignKey('State')
@@ -63,7 +56,6 @@ class Application(models.Model):
 
 
 class ApplicationState(models.Model):
-    id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=20)
     def __str__(self):
         return self.state
@@ -76,7 +68,6 @@ class ApplicationHasApplicationState(models.Model):
 
 
 class Document(models.Model):
-    id = models.AutoField(primary_key=True)
     path = models.CharField(blank=True, null=True, max_length=200)
     id_application = models.ForeignKey('Application')
 
@@ -91,7 +82,6 @@ class Teacher(models.Model):
 
 
 class Replacement(models.Model):
-    id = models.AutoField(primary_key=True)
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
     answer_date = models.DateTimeField(blank=True, null=True)
@@ -99,7 +89,6 @@ class Replacement(models.Model):
 
 
 class State(models.Model):
-    id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=16)
     def __str__(self):
         return self.state

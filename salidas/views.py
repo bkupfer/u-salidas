@@ -30,6 +30,15 @@ def new_application(request):
         replacement.save()
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
+def prueba(request):
+    application = NewApplicationForm(request.POST or None)
+    # if application.is_valid():
+    #     rut1 = application.cleaned_data['rut']
+    #     ct = application.cleaned_data['commission_type']
+    #     fb = application.cleaned_data['financed_by']
+    #     motive = application.cleaned_data['motive']
+    #     newApp = Application()
+    return render_to_response("prueba.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):
     return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))

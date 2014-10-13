@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     # Teacher view pages
     url(r'^$', 'salidas.views.home', name='home'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
+    url(r'^prueba', 'salidas.views.prueba', name='prueba'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
 
     # Administrative view pages

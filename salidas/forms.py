@@ -4,13 +4,14 @@ import datetime
 from django.forms.models import inlineformset_factory,formset_factory
 
 class NewApplicationForm(forms.ModelForm):
+    rut = forms.CharField()
     commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),widget=forms.Select(attrs={'placeholder':u'Seleccione el tipo de comisión'}))
     motive = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Fundamentos'}))
     financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
 
     class Meta:
         model = Application
-        exclude = ('id_days_validation_state', 'id_funds_validation_state','rut','directors_name','directors_rut')
+        exclude = ('id_days_validation_state', 'id_funds_validation_state','directors_name','directors_rut')
         #fields = ('motive','financed_by')
 
 class DestinationForm(forms.ModelForm):
