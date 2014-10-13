@@ -153,13 +153,16 @@
 
 					  		<!-- para cada curso -->
 					    	<div class="row">
-								<div class="form-group">
+								<div class="form-group" id="academicReplacement">
 									<label class="col-sm-4 control-label">Reemplazo Académico</label>
-				    				<div class="col-sm-3">
+				    				<div class="col-sm-3" onClick="replacement()">
 									     {{academicReplacement }}
 									</div>
-									<div class="col-sm-5">
+									<div class="col-sm-5" style="display: none" id="topeHorario">
 										<p class="text-danger">*Este profesor tiene tope de horario</p>
+									</div>
+									<div class="col-sm-5" style="display: none" id="docenciaCompartida">
+										<p class="text-info">*Existe docencia compartida</p>
 									</div>
 								</div>
 							</div>
@@ -168,13 +171,10 @@
 
 							<!-- para cada curso -->
 					    	<div class="row">
-								<div class="form-group">
+								<div class="form-group" id="executiveReplacement">
 									<label class="col-sm-4 control-label">Reemplazo Administrativo</label>
 				    				<div class="col-sm-3">
 									    {{ executiveReplacement }}
-									</div>
-									<div class="col-sm-5">
-										<p class="text-info">*Existe docencia compartida</p>
 									</div>
 								</div>
 							</div>
@@ -268,7 +268,9 @@
   $(function() {
     $( "#id_form-0-start_date").datepicker();
     $( "#id_form-0-end_date").datepicker();
-
+    function replacement(){
+       $("#id_teachers")[0].click(function(){ $("#")})
+    }
     $('#agregar_tarea').click(function(){
         var revisiones = $('.tarea').length;
         var prefix = 'tar';
