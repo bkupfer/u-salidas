@@ -44,7 +44,7 @@ class CommissionType(models.Model):
 
 
 class Application(models.Model):
-    rut = models.CharField(max_length=10)
+    rut = models.ForeignKey('Teacher')
     id_commission_type = models.ForeignKey('CommissionType')    #, name="Tipo de comisión")
     motive = models.TextField()                                 # name="Motivo")
     financed_by = models.TextField()                            # name="Financiado por")

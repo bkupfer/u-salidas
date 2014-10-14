@@ -1,0 +1,37 @@
+[
+    {
+        "model": "salidas.Application",
+        "pk": 1,
+        "fields": {
+            "rut": "17704795-3",
+            "id_commission_type": 1,
+            "motive": "Just because...",
+            "financed_by": "DCC",
+            "id_days_validation_state": 1,
+            "id_funds_validation_state": 2,
+            "directors_name": "Nelson Baloian",
+            "directors_rut": "12345-6"
+        }
+    },
+    {
+        "model": "salidas.Destination",
+        "pk": 1,
+        "fields": {
+            "application": 1,
+            "country": "Francia",
+            "city": "Lyon",
+            "start_date": "2014-10-13",
+            "end_date": "2014-10-30"
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": "17704795-3",
+        "fields": {
+            "rut_teacher": "17704795-3",
+            "name": "Bernardo",
+            "last_name": "Kupfer",
+            "signature_path": ""
+        }
+    }
+]
