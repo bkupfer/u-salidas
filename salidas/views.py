@@ -4,6 +4,10 @@ from salidas.models import *    #  for data
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
 from django.utils.safestring import mark_safe   #  for calendar
+from django.contrib import auth
+from django.contrib.auth import  authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 
 # Views for all users
 def home(request):
@@ -79,3 +83,16 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = auth.authenticate(username=username,password=password)
+    if user is not None and user.is_active:
+        # Clave correcta, y el usuario está marcado "activo"
+        login(request, user)
+        # Redirigir a una página de éxito.
+
+        return redirect(new_application)
+    else:
+        # Mostrar una página de error
+        return redirect(login)

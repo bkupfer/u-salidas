@@ -95,3 +95,5 @@ if DEBUG:
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static',  'static'),
     )
+    LOGIN_REDIRECT_URL = 'new_application'
+    LOGIN_URL = 'login'

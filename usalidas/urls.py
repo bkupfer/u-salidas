@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
+    url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
