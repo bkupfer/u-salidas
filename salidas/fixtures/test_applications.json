@@ -1,5 +1,15 @@
 [
     {
+        "model": "salidas.Teacher",
+        "pk": "17704795-3",
+        "fields": {
+            "rut": "17704795-3",
+            "name": "Bernardo",
+            "last_name": "Kupfer",
+            "signature_path": ""
+        }
+    },
+    {
         "model": "salidas.Application",
         "pk": 1,
         "fields": {
@@ -7,6 +17,7 @@
             "id_commission_type": 1,
             "motive": "Just because...",
             "financed_by": "DCC",
+            "creation_date": "2014-11-1T08:16:59.844Z",
             "id_days_validation_state": 1,
             "id_funds_validation_state": 2,
             "directors_name": "Nelson Baloian",
@@ -18,20 +29,21 @@
         "pk": 1,
         "fields": {
             "application": 1,
-            "country": "Francia",
-            "city": "Lyon",
+            "country": "Mongolia",
+            "city": "Ulambator",
             "start_date": "2014-10-13",
             "end_date": "2014-10-30"
         }
     },
     {
-        "model": "salidas.Teacher",
-        "pk": "17704795-3",
+        "model": "salidas.Destination",
+        "pk": 2,
         "fields": {
-            "rut_teacher": "17704795-3",
-            "name": "Bernardo",
-            "last_name": "Kupfer",
-            "signature_path": ""
+            "application": 1,
+            "country": "Francia",
+            "city": "Paris",
+            "start_date": "2014-11-1",
+            "end_date": "2014-11-12"
         }
     }
 ]

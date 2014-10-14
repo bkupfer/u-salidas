@@ -6,8 +6,6 @@ How to get this up and running.
 3.- python manage.py migrate
 4.- python manage.py loaddata Commission_type.json
 5.- python manage.py loaddata test_applications.json
-   5.1- this could bring some errors, if it does, just ignore them.
-      In case of an error, enter data manualy in /admin
 6.- python manage.py runserver
 7.- enter to the pages in 127.0.0.1:8000 (localhost:8000)
 
