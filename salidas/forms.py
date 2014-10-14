@@ -20,7 +20,6 @@ class DestinationForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     class Meta:
         model = Destination
-        exclude = {'id'}
 
 class ReplacementApplicationForm(forms.Form):
     teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),label='',widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))

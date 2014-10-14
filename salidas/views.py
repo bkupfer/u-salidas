@@ -41,6 +41,7 @@ def prueba(request):
         faysv = State.objects.get(pk=2)
         newApp = Application(rut=rut1,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=faysv)
         newApp.save()
+        return render_to_response("login.html",locals(),)
     return render_to_response("prueba.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):
@@ -51,7 +52,6 @@ def teacher_calendar(request):
 def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("list_of_applications.html", locals(), context_instance=RequestContext(request))
-
 
 def application_detail(request):
     rut_profesor = "17704795-3"  # IMPORTANTE!! este valor tiene que ser el rut del profesor

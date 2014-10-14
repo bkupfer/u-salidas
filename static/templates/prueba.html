@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link href="../static/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="../static/public/css/docs.min.css" rel="stylesheet">
+<link href="../static/css/estilos.css" rel="stylesheet" type="text/css">
+<link href="../static/css/jquery-ui.min.css" rel="stylesheet" >
+<script src="../static/external/jquery/jquery.js"></script>
+<script src="../static/public/js/jquery-1.11.0.min.js"></script>
+<script src="../static/js/jquery-ui.min.js"></script>
+
+<title>Salidas DCC</title>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row hidden-print">
+        <div class="col-md-12">
+            <ul class="nav nav-justified">
+                <!-- Aca colocar la barra de nevegacion correspondiente -->
+                <li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
+                <li><a href="teacher_calendar" title="">Calendario</a></li>
+                <li><a href="" title="">Logout</a></li>
+                <!-- fin barra de nevegacion -->
+            </ul>
+        </div> <!-- end nav bar-->
+    </div> <!-- end row-->
+    
+    <div class="row">
+    
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+   		<!-- Aca colocar el contenido correspondiente -->
+
+{#      <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
+            <br/>
+
+            <h1>Formulario de solicitud de salidas</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Información de viaje</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-8">
+                                        <form method="POST" action={% url 'prueba' %}"> {% csrf_token %}
+                                            <div  class="col-sm-12">
+                                                <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
+                                                <div class="col-sm-5">
+                                                   {{ application.as_table }}
+                                                    {# {{ application.rut }} #}
+                                                   {#{{ application.commission_type }}#}
+                                               </div>
+                                            </div>
+                                            <div  class="col-sm-12">
+                                                <br/>
+                                                <label class="control-label col-sm-7" for="nombre">Motivo</label>
+                                                <div class="col-sm-5">
+                                                  {#{{ application.motive }} #}
+                                               </div>
+                                            </div>
+                                            <div  class="col-sm-12">
+                                                <br/>
+                                                <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
+                                                <div class="col-sm-5">
+                                                   {#{{ application.financed_by }} #}
+                                               </div>
+                                            </div>
+                                            <input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+		<!-- fin contenido -->
+    </div><!-- end contenido-->
+    </div><!-- end row-->
+</div><!--end container-->
+<script src="../static/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/filestyle.js"> </script>
+<script>
+  $(function() {
+    $( "#id_form-0-start_date").datepicker();
+    $( "#id_form-0-end_date").datepicker();
+    function replacement(){
+       $("#id_teachers")[0].click(function(){ $("#")})
+    }
+  });
+  </script>
+</body>
+</html>
+ 
