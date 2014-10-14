@@ -22,7 +22,7 @@ class DestinationForm(forms.ModelForm):
         exclude = {'application'}
 
 class ReplacementApplicationForm(forms.Form):
-    teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),label='',widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
