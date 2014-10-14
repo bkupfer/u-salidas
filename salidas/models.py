@@ -78,7 +78,7 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=100)
     signature_path = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
-        return self.name + self.last_name
+        return self.name + " " + self.last_name
 
 
 class Replacement(models.Model):
