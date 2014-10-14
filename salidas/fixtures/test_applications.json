@@ -29,8 +29,8 @@
         "pk": 1,
         "fields": {
             "application": 1,
-            "country": "Francia",
-            "city": "Lyon",
+            "country": "Mongolia",
+            "city": "Ulambator",
             "start_date": "2014-10-13",
             "end_date": "2014-10-30"
         }

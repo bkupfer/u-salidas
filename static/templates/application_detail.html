@@ -35,7 +35,7 @@
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
             <div class="row">
-                <h1>Detalle de solicitudes</h1>
+                <h1>Detalle de solicitud</h1>
                 <div class="pannel panel-primary">
                     <div class="panel-body">
                         <table class="table">
@@ -53,15 +53,27 @@
                             </tr>
                             <tr>
                                 <td>Destino</td>
-                                <td>{{ dest.city }}, {{ dest.country }}</td>
+                                <td>
+                                    {% for d in dest %}
+                                        {{ d.city }}, {{ d.country }} <br>
+                                    {% endfor %}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Fecha de inicio</td>
-                                <td>{{ dest.start_date }}</td>
+                                <td>
+                                    {% for d in dest %}
+                                        {{ d.start_date }} <br>
+                                    {% endfor %}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Fecha de regreso</td>
-                                <td>{{ dest.end_date }}</td>
+                                <td>
+                                    {% for d in dest %}
+                                        {{ d.end_date }} <br>
+                                    {% endfor %}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Profesor reemplazante</td>
