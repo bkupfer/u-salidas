@@ -1,5 +1,15 @@
 [
     {
+        "model": "salidas.Teacher",
+        "pk": "17704795-3",
+        "fields": {
+            "rut_teacher": "17704795-3",
+            "name": "Bernardo",
+            "last_name": "Kupfer",
+            "signature_path": ""
+        }
+    },
+    {
         "model": "salidas.Application",
         "pk": 1,
         "fields": {
@@ -20,18 +30,19 @@
             "application": 1,
             "country": "Francia",
             "city": "Lyon",
-            "start_date": "2014-10-13",
-            "end_date": "2014-10-30"
+            "start_date": "2014-10-13T08:16:59.844Z",
+            "end_date": "2014-10-30T08:16:59.844Z"
         }
     },
     {
-        "model": "salidas.Teacher",
-        "pk": "17704795-3",
+        "model": "salidas.Destination",
+        "pk": 2,
         "fields": {
-            "rut_teacher": "17704795-3",
-            "name": "Bernardo",
-            "last_name": "Kupfer",
-            "signature_path": ""
+            "application": 1,
+            "country": "Francia",
+            "city": "Paris",
+            "start_date": "2014-11-1T08:16:59.844Z",
+            "end_date": "2014-11-12T08:16:59.844Z"
         }
     }
 ]
