@@ -13,35 +13,53 @@ def home(request):
 #Views for teachers
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
-    destinationFormSet = DestinationFormSet(request.POST or None)
-    academicReplacement = ReplacementApplicationForm(request.POST or None)
-    executiveReplacement = ReplacementApplicationForm(request.POST or None)
+    destinations = DestinationFormSet(request.POST or None)
     if application.is_valid():
-        new_app = application.save(commit=False)
-        new_app.save()
-    if destinationFormSet.is_valid():
-        new_destination = destinationFormSet.save(commit=False)
-        new_destination.save()
-    if academicReplacement.is_valid():
-        replacement = academicReplacement.save(commit=False)
-        replacement.save()
-    if executiveReplacement.is_valid():
-        replacement = executiveReplacement.save(commit=False)
-        replacement.save()
+        if destinations.is_valid():
+            #se arma la instancia Application
+            rut = Teacher.objects.get(rut="3238765-6") #EL PROFE ES EL PRIMERO EN MI LISTA
+            ct = application.cleaned_data['id_commission_type']
+            fb = application.cleaned_data['financed_by']
+            motive = application.cleaned_data['motive']
+            daysv = State.objects.get(pk=3)
+            fundsv = State.objects.get(pk=3)
+            newApp = Application(rut=rut,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
+            newApp.save()
+            #se arma la instancia Destination
+            for destination in destinations:
+                country = destination.cleaned_data['country']
+                city = destination.cleaned_data['city']
+                start_date = destination.cleaned_data['start_date']
+                end_date = destination.cleaned_data['end_date']
+                newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
+                newDestination.save()
+                return render_to_response("list_of_applications.html",locals(),context_instance=RequestContext(request))
+
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def prueba(request):
     application = NewApplicationForm(request.POST or None)
+    destinations = DestinationFormSet(request.POST or None)
     if application.is_valid():
-        rut1 = application.cleaned_data['rut']
-        ct = application.cleaned_data['id_commission_type']
-        fb = application.cleaned_data['financed_by']
-        motive = application.cleaned_data['motive']
-        daysv = State.objects.get(pk=2)
-        faysv = State.objects.get(pk=2)
-        newApp = Application(rut=rut1,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=faysv)
-        newApp.save()
-        return render_to_response("login.html",locals(),)
+        if destinations.is_valid():
+            #se arma la instancia Application
+            rut = Teacher.objects.get(rut="3238765-6") #EL PROFE ES EL PRIMERO EN MI LISTA
+            ct = application.cleaned_data['id_commission_type']
+            fb = application.cleaned_data['financed_by']
+            motive = application.cleaned_data['motive']
+            daysv = State.objects.get(pk=3)
+            fundsv = State.objects.get(pk=3)
+            newApp = Application(rut=rut,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
+            newApp.save()
+            #se arma la instancia Destination
+            for destination in destinations:
+                country = destination.cleaned_data['country']
+                city = destination.cleaned_data['city']
+                start_date = destination.cleaned_data['start_date']
+                end_date = destination.cleaned_data['end_date']
+                newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
+                newDestination.save()
+
     return render_to_response("prueba.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

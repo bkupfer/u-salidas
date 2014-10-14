@@ -45,7 +45,7 @@
 
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
-
+            <form method="POST" action="{% url 'new_application' %}"> {% csrf_token %}
             <div class="row">
                 <div class="col-sm-8">
                     <div class="panel panel-primary">
@@ -54,30 +54,26 @@
                             <div class="row">
                                 <div class="form-group">
                                     <div class="col-sm-8">
-                                        <form method="POST" action={% url 'new_application' %}"> {% csrf_token %}
-                                            <div  class="col-sm-12">
-                                                <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
-                                                <div class="col-sm-5">
-                                                    {{ application.rut }}
-                                                   {{ application.commission_type }}
-                                               </div>
-                                            </div>
-                                            <div  class="col-sm-12">
-                                                <br/>
-                                                <label class="control-label col-sm-7" for="nombre">Motivo</label>
-                                                <div class="col-sm-5">
-                                                   {{ application.motive }}
-                                               </div>
-                                            </div>
-                                            <div  class="col-sm-12">
-                                                <br/>
-                                                <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
-                                                <div class="col-sm-5">
-                                                   {{ application.financed_by }}
-                                               </div>
-                                            </div>
-                                            <input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud" />
-                                        </form>
+                                        <div  class="col-sm-12">
+                                            <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
+                                            <div class="col-sm-5">
+                                               {{ application.commission_type }}
+                                           </div>
+                                        </div>
+                                        <div  class="col-sm-12">
+                                            <br/>
+                                            <label class="control-label col-sm-7" for="nombre">Motivo</label>
+                                            <div class="col-sm-5">
+                                               {{ application.motive }}
+                                           </div>
+                                        </div>
+                                        <div  class="col-sm-12">
+                                            <br/>
+                                            <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
+                                            <div class="col-sm-5">
+                                               {{ application.financed_by }}
+                                           </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -96,53 +92,53 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            {{ destinationFormSet.management_form }}
-                                            <table>
-                                                {% for destination in destinationFormSet %}
-                                                <tr id="destination_id_0">
-                                                    <div class="col-sm-12">
-                                                        <label class="col-sm-2 control-label">Destino</label>
-                                                        <div class="col-sm-5">
-                                                             <!--<select class="form-control input-sm" name="SelPais">
-                                                            <option value="">Seleccione Pais</option>
+                                            {{ destinations.management_form }}
+                                            {% for destination in destinations %}
+                                            <div class="item">
+                                                <div class="col-sm-12">
+                                                    <label class="col-sm-2 control-label">Destino</label>
+                                                    <div class="col-sm-5">
+                                                         <!--<select class="form-control input-sm" name="SelPais">
+                                                        <option value="">Seleccione Pais</option>
+                                                    </select>
+                                                       -->
+                                                         País
+                                                         <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);" id="country" name ="country">
+                                                             <option value="">Seleccione Pais</option>
+                                                         </select>
+                                                        {{ destination.country }}
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                         <!--<select class="form-control input-sm" name="SelCiudad">
+                                                            <option value="">Seleccione Ciudad</option>
+                                                        </select>-->
+                                                         Ciudad
+                                                        <select class="form-control input-sm" name ="state" id ="state">
+                                                            <option value="">Seleccione Ciudad</option>
                                                         </select>
-                                                           -->
-                                                             País
-                                                             <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);" id="country" name ="country">
-                                                                 <option value="">Seleccione Pais</option>
-                                                             </select>
-                                                            {{ Destination.country }}
-                                                        </div>
-                                                        <div class="col-sm-5">
-                                                             <!--<select class="form-control input-sm" name="SelCiudad">
-                                                                <option value="">Seleccione Ciudad</option>
-                                                            </select>-->
-                                                             Ciudad
-                                                            <select class="form-control input-sm" name ="state" id ="state">
-                                                                <option value="">Seleccione Ciudad</option>
-                                                            </select>
-                                                            {{ destination.city }}
+                                                        {{ destination.city }}
 
-                                                            <script language="javascript">print_country("country");</script>
-                                                        </div>
+                                                        <script language="javascript">print_country("country");</script>
                                                     </div>
-                                                    <div class="col-sm-12">
-                                                        <br/>
-                                                        <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
-                                                        <div class="col-sm-5">
-                                                        {{ destination.start_date }}
-                                                        </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <br/>
+                                                    <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
+                                                    <div class="col-sm-5">
+                                                    {{ destination.start_date }}
                                                     </div>
-                                                    <div class="col-sm-12">
-                                                        <br/>
-                                                        <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
-                                                        <div class="col-sm-5">
-                                                        {{ destination.end_date }}
-                                                        </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <br/>
+                                                    <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
+                                                    <div class="col-sm-5">
+                                                    {{ destination.end_date }}
                                                     </div>
-                                                </tr>
-                                                {% endfor %}
-                                            </table>
+                                                </div>
+                                                 <div align="right"><a class="delete" href="#">Delete</a></div>
+                                                <hr>
+                                            </div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -268,6 +264,7 @@
 					</div>
 				</div>
 			</div>
+            </form>
 			
 
 		
@@ -276,17 +273,109 @@
     </div><!-- end contenido-->
     </div><!-- end row-->
 </div><!--end container-->
+</body>
 <script src="../static/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/filestyle.js"> </script>
 <script>
   $(function() {
-    $( "#id_form-0-start_date").datepicker();
-    $( "#id_form-0-end_date").datepicker();
-    function replacement(){
-       $("#id_teachers")[0].click(function(){ $("#")})
-    }
+    $( ".datepicker").datepicker();
+    $("#city").filter(":selected").change(function() {
+        var value = $(this).val();
+        $(this).next().val(value);
+  });
+     $("#country").filter(":selected").change(function() {
+         var value = $(this).val();
+        $(this).next().val(value);
+  });
   });
   </script>
-</body>
+<script type="text/javascript">
+$(document).ready(function() {
+  // Code adapted from http://djangosnippets.org/snippets/1389/
+
+  function updateElementIndex(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+    var replacement = prefix + '-' + ndx + '-';
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+ replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+  }
+
+  function deleteForm(btn, prefix) {
+    var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+    if (formCount > 1) {
+      // Delete the item/form
+      $(btn).parents('.item').remove();
+
+      var forms = $('.item'); // Get all the forms
+
+      // Update the total number of forms (1 less than before)
+      $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+      var i = 0;
+      // Go through the forms and set their indices, names and IDs
+      for (formCount = forms.length; i < formCount; i++) {
+        $(forms.get(i)).children().children().each(function() {
+          updateElementIndex(this, prefix, i);
+        });
+      }
+
+    } // End if
+    else {
+        alert("Debes agregar al menos un destino!");
+    }
+    return false;
+  }
+
+
+  function addForm(btn, prefix) {
+    var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+    // You can only submit a maximum of 10 todo items
+    if (formCount < 20) {
+      // Clone a form (without event handlers) from the first form
+      var row = $(".item:first").clone(false).get(0);
+      // Insert it after the last form
+      $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+      // Remove the bits we don't want in the new row/form
+      // e.g. error messages
+      $(".errorlist", row).remove();
+      $(row).children().removeClass('error');
+
+      // Relabel/rename all the relevant bits
+      $(row).children().children().each(function() {
+        updateElementIndex(this, prefix, formCount);
+        if ( $(this).attr('type') == 'text' )
+          $(this).val('');
+      });
+
+      // Add an event handler for the delete item/form link
+      $(row).find('.delete').click(function() {
+        return deleteForm(this, prefix);
+      });
+
+      // Update the total form count
+      $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+
+    } // End if
+    else {
+      alert("Lo siento, no más de 20 destinos.");
+    }
+    return false;
+  }
+
+  // Register the click event handlers
+  $("#add_destination").click(function() {
+    return addForm(this, 'form');
+  });
+
+  $(".delete").click(function() {
+    return deleteForm(this, 'form');
+  });
+});
+</script>
 </html>
  

@@ -22,12 +22,14 @@ class Finance(models.Model):
 
 class Country(models.Model):
     country = models.CharField(max_length=100)
-
+    def __str__(self):
+       return self.country
 
 class City(models.Model):
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
-
+    def __str__(self):
+       return self.city
 
 class Destination(models.Model):
     application = models.ForeignKey('Application')
