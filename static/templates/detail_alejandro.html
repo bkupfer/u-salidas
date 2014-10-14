@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/public/css/docs.min.css" rel="stylesheet">
+    <link href="../static/css/estilos.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/jquery-ui.min.css" rel="stylesheet" >
+    <script src="../static/external/jquery/jquery.js"></script>
+    <script src="../static/public/js/jquery-1.11.0.min.js"></script>
+    <script src="../static/js/jquery-ui.min.js"></script>
+
+    <title>Salidas DCC</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <!-- navegation bar -->
+    <div class="row hidden-print">
+        <div class="col-md-12">
+            <ul class="nav nav-justified">
+                <li class="active"><a href="list_alejandro" title="">Listado de solicitudes</a></li>
+                <li><a href="" title="">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- page content -->
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+
+            <div class="pannel panel-primary">
+                <div class="panel-body">
+                    <h1>Revisión de solicitud de {{ teacher }}</h1>
+                    <br>
+
+                    <table class="table">
+                        <tr>
+                            <th>Profesor solicitante</th>
+                            <td>{{ teacher }}</td>
+                        </tr>
+                        <tr>
+                            <th>Rut</th>
+                            <td>{{ teacher.rut }}</td>
+                        </tr>
+                        <tr>
+                            <th>Financiamiento</th>
+                            <td>{{ application.financed_by }}</td>
+                        </tr>
+                        <tr>
+                            <th>Destino(s)</th>
+                            <td>
+                                {% for d in destinations %}
+                                    {{ d.city }}, {{ d.country }} <br>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+
+                    <table class="table">
+                        <tr>
+                            <th>Montos</th>
+                            <th>cantidad</th>
+                            <th>moneda</th>
+                        </tr>
+                        <tr>
+                            <td>Pasajes</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Inscripci&oacute;n</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Vi&aacute;ticos</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

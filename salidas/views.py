@@ -14,6 +14,21 @@ def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
 
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = auth.authenticate(username=username,password=password)
+    if user is not None and user.is_active:
+        # Clave correcta, y el usuario está marcado "activo"
+        login(request, user)
+        # Redirigir a una página de éxito.
+
+        return redirect(new_application)
+    else:
+        # Mostrar una página de error
+        return redirect(login)
+
+
 #Views for teachers
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
@@ -34,6 +49,7 @@ def new_application(request):
         replacement.save()
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
+
 def prueba(request):
     application = NewApplicationForm(request.POST or None)
     if application.is_valid():
@@ -48,6 +64,7 @@ def prueba(request):
         return render_to_response("login.html",locals(),)
     return render_to_response("prueba.html", locals(), context_instance=RequestContext(request))
 
+
 def teacher_calendar(request):
     return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
@@ -57,15 +74,32 @@ def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("list_of_applications.html", locals(), context_instance=RequestContext(request))
 
+
 def application_detail(request):
-    rut_profesor = "17704795-3"  # IMPORTANTE!! este valor tiene que ser el rut del profesor
-    query = Application.objects.get(rut__exact = rut_profesor)  # Application query
+    id_app = 1  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
+    query = Application.objects.get(pk = id_app)  # Application query
+    profesor = query.rut
+
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))
 
+
 def historic_calendar(request):
     return render_to_response("historic_calendar.html", locals(), content_type=RequestContext(request))
+
+
+def list_alejandro(request):
+    apps = Application.objects.all()
+    return render_to_response("list_alejandro.html", locals(), context_instance=RequestContext(request))
+
+
+def detail_alejandro(request):
+    id_app = 1  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
+    application = Application.objects.get(pk = id_app)
+    destinations = Destination.objects.filter(application = id_app)
+    teacher = application.rut
+    return render_to_response("detail_alejandro.html", locals(), content_type=RequestContext(request))
 
 # Aditional views
 def calendar(request, year, month):
@@ -83,16 +117,4 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = auth.authenticate(username=username,password=password)
-    if user is not None and user.is_active:
-        # Clave correcta, y el usuario está marcado "activo"
-        login(request, user)
-        # Redirigir a una página de éxito.
 
-        return redirect(new_application)
-    else:
-        # Mostrar una página de error
-        return redirect(login)

@@ -8,6 +8,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Pages:
+    # General views
+    url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+
     # Teacher view pages
     url(r'^$', 'salidas.views.home', name='home'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
@@ -18,7 +21,9 @@ urlpatterns = patterns('',
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
-    url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
+    url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
+
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),

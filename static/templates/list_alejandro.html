@@ -24,7 +24,6 @@
         <div class="col-md-12">
             <ul class="nav nav-justified">
                 <li class="active"><a href="" title="">Listado de solicitudes</a></li>
-                <li><a href="historic_calendar" title="">Calendario Histórico</a></li>
                 <li><a href="" title="">Logout</a></li>
             </ul>
         </div>
@@ -36,33 +35,33 @@
 
             <div class="pannel panel-primary">
                 <div class="panel-body">
-                    <h1>Listado de solicitudes</h1>
-                    <br>
+                        <h1>Listado de solicitudes</h1>
+                        <br>
 
-                    <table class="table">
-                        <tr>
-                            <th>Profesor</th>
-                            <th>Comisión</th>
-                            <th>Fecha de inicio</th>
-                            <th>Fecha de envio<br>a facultad</th>
-                            <th>Estado</th>
-                            <th>Detalle</th>
-                        </tr>
-                        {% for app in apps %}
+                        <table class="table">
                             <tr>
-                                <td>
-                                    {{ app.rut }}
-                                    <br>
-                                    {{ app.rut.rut }}
-                                </td>
-                                <td>{{ app.id_commission_type }}</td>
-                                <td>{{ app.creation_date }}</td>
-                                <td>  (?)   </td>
-                                <td>  (?)   </td>
-                                <td> <a href="application_detail">Ver detalle</a>  <!-- se debe dar el id de la solicitud! --></td>
+                                <th>Profesor</th>
+                                <th>Comisión</th>
+                                <th>Fecha de inicio</th>
+                                <th>Fecha de envio<br>a facultad</th>
+                                <th>Estado</th>
+                                <th>Detalle</th>
                             </tr>
-                        {% endfor %}
-                    </table>
+                            {% for app in apps %}
+                                <tr>
+                                    <td>
+                                        {{ app.rut }}
+                                        <br>
+                                        {{ app.rut.rut }}
+                                    </td>
+                                    <td>{{ app.id_commission_type }}</td>
+                                    <td>{{ app.creation_date }}</td>
+                                    <td>  (?)   </td>
+                                    <td>  (?)   </td>
+                                    <td> <a href="detail_alejandro">Ver detalle</a> <!-- se debe dar el id de la solicitud! --></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
 
                 </div>
             </div>
