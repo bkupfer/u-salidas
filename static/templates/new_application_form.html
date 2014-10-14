@@ -57,7 +57,7 @@
                                         <div  class="col-sm-12">
                                             <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
                                             <div class="col-sm-5">
-                                               {{ application.commission_type }}
+                                               {{ application.id_commission_type }}
                                            </div>
                                         </div>
                                         <div  class="col-sm-12">
@@ -155,8 +155,7 @@
 				</div><!-- end col -->
 			</div><!-- end row -->
 
-{#            </form>#}
-            <br>
+                <br>
             <div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-danger">
@@ -278,7 +277,7 @@
 <script type="text/javascript" src="./js/filestyle.js"> </script>
 <script>
   $(function() {
-    $( ".datepicker").datepicker();
+
     $("#city").filter(":selected").change(function() {
         var value = $(this).val();
         $(this).next().val(value);
@@ -359,6 +358,7 @@ $(document).ready(function() {
 
       // Update the total form count
       $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+      $( ".datepicker").datepicker();
 
     } // End if
     else {

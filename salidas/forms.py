@@ -4,7 +4,7 @@ import datetime
 from django.forms.models import inlineformset_factory,formset_factory
 
 class NewApplicationForm(forms.ModelForm):
-    commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),widget=forms.Select(attrs={'placeholder':u'Seleccione el tipo de comisión'}))
+    id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),widget=forms.Select(attrs={'placeholder':u'Seleccione el tipo de comisión'}))
     motive = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Fundamentos'}))
     financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
     class Meta:

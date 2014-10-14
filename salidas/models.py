@@ -55,7 +55,8 @@ class Application(models.Model):
     id_funds_validation_state = models.ForeignKey('State')
     directors_name = models.CharField(max_length=30)
     directors_rut = models.CharField(max_length=10)
-
+    def __str__(self):
+        return "Application "+str(self.id)
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
