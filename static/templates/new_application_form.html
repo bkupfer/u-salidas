@@ -103,7 +103,7 @@
                                                     </select>
                                                        -->
                                                          País
-                                                         <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);" id="country" name ="country">
+                                                         <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);updateCountryTxt(this);" id="country" name ="country">
                                                              <option value="">Seleccione Pais</option>
                                                          </select>
                                                         {{ destination.country }}
@@ -113,7 +113,7 @@
                                                             <option value="">Seleccione Ciudad</option>
                                                         </select>-->
                                                          Ciudad
-                                                        <select class="form-control input-sm" name ="state" id ="state">
+                                                        <select class="form-control input-sm" onchange="updateStateTxt()" name="state" id ="state">
                                                             <option value="">Seleccione Ciudad</option>
                                                         </select>
                                                         {{ destination.city }}
@@ -287,6 +287,16 @@
         $(this).next().val(value);
   });
   });
+</script>
+<script>
+    function updateCountryTxt(select) {
+        var country_name = document.getElementById("country").value;
+        document.getElementById("id_form-0-country").value = country_name;
+    }
+    function updateStateTxt() {
+        var state_name = document.getElementById("state").value;
+        document.getElementById("id_form-0-city").value = state_name;
+    }
 </script>
 <script type="text/javascript">
 $(document).ready(function() {

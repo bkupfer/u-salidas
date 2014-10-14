@@ -12,9 +12,9 @@ urlpatterns = patterns('',
     url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
 
     # Teacher view pages
-    url(r'^$', 'salidas.views.home', name='home'),
+    url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
-     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
+    url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),

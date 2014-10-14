@@ -21,10 +21,10 @@ def login(request):
     user = auth.authenticate(username=username,password=password)
     if user is not None and user.is_active:
         # Clave correcta, y el usuario está marcado "activo"
-        login(request, user)
+        auth.login(request, user)
         # Redirigir a una página de éxito.
 
-        return redirect(new_application)
+        return redirect(list_of_applications)
     else:
         # Mostrar una página de error
         return redirect(login)
