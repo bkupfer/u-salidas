@@ -14,6 +14,7 @@
 <script src="../static/external/jquery/jquery.js"></script>
 <script src="../static/public/js/jquery-1.11.0.min.js"></script>
 <script src="../static/js/jquery-ui.min.js"></script>
+<script src="../static/js/countries.js"></script>
 
 <title>Salidas DCC</title>
 
@@ -102,16 +103,27 @@
                                                     <div class="col-sm-12">
                                                         <label class="col-sm-2 control-label">Destino</label>
                                                         <div class="col-sm-5">
-                                                         <select class="form-control input-sm" name="SelPais">
+                                                             <!--<select class="form-control input-sm" name="SelPais">
                                                             <option value="">Seleccione Pais</option>
                                                         </select>
-                                                        {{ destination.country }}
+                                                           -->
+                                                             País
+                                                             <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);" id="country" name ="country">
+                                                                 <option value="">Seleccione Pais</option>
+                                                             </select>
+                                                            {{ Destination.country }}
                                                         </div>
                                                         <div class="col-sm-5">
-                                                             <select class="form-control input-sm" name="SelCiudad">
+                                                             <!--<select class="form-control input-sm" name="SelCiudad">
+                                                                <option value="">Seleccione Ciudad</option>
+                                                            </select>-->
+                                                             Ciudad
+                                                            <select class="form-control input-sm" name ="state" id ="state">
                                                                 <option value="">Seleccione Ciudad</option>
                                                             </select>
                                                             {{ destination.city }}
+
+                                                            <script language="javascript">print_country("country");</script>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
@@ -172,7 +184,6 @@
 							</div>
 							<hr />
 							<!-- fin para cada curso -->
-
 							<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group" id="executiveReplacement">
