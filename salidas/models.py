@@ -57,6 +57,9 @@ class Application(models.Model):
     directors_rut = models.CharField(max_length=10)
     def __str__(self):
         return "Application "+str(self.id)
+    def get_state(self):
+        return ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
+
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)

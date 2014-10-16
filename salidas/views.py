@@ -76,8 +76,6 @@ def teachers_applications(request):
     rut = "11111111-1"
     rut = "17704795-3"
     apps = Application.objects.filter(rut=rut)
-    #TODO: Estado de la solicitud
-    #states = ApplicationHasApplicationState.objects.filter(id_application=)
     return render_to_response("teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 # Views for administrative people
