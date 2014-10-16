@@ -72,6 +72,12 @@ def new_application(request):
 def teacher_calendar(request):
     return render_to_response("teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
+def teachers_applications(request):
+    rut = "11111111-1"
+    rut = "17704795-3"
+    apps = Application.objects.filter(rut=rut)
+    #states = ApplicationHasApplicationState.objects.filter(id_application=)
+    return render_to_response("teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 # Views for administrative people
 def list_of_applications(request):
@@ -80,7 +86,7 @@ def list_of_applications(request):
 
 
 def application_detail(request):
-    id_app = 1  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
+    id_app = request.GET['id']  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
     query = Application.objects.get(pk = id_app)  # Application query
     profesor = query.rut
 

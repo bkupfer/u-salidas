@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
+    url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
