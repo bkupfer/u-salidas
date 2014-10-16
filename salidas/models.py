@@ -11,13 +11,17 @@ class Currency(models.Model):
 
 class FinanceType(models.Model):
     type = models.CharField(max_length=20)
+    def __str__(self):
+        return self.type
 
 
 class Finance(models.Model):
     id_application = models.ForeignKey('Application')
-    id_finance_type = models.ForeignKey('Finance')
+    id_finance_type = models.ForeignKey('FinanceType')
     id_currency = models.ForeignKey('Currency')
     amount = models.FloatField()
+    def get_finance_type(self):
+        return self.id_finance_type.type
 
 
 class Country(models.Model):
@@ -58,8 +62,12 @@ class Application(models.Model):
     def __str__(self):
         return "Application "+str(self.id)
     def get_state(self):
-        return ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
-
+        try:
+            ret = ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
+        except:
+            print("error en linea 68 del archivo models revisar get state")
+            ret = "Estado vacío, revisar"
+        return ret
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)

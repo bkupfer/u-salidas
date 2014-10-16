@@ -54,9 +54,20 @@
                         <tr>
                             <th>Destino(s)</th>
                             <td>
-                                {% for d in destinations %}
-                                    {{ d.city }}, {{ d.country }} <br>
-                                {% endfor %}
+                                <table class="table">
+                                         <tr>
+                                                <th> Ciudad, País </th>
+                                                <th> Fecha Inicio </th>
+                                                <th> Fecha Término </th>
+                                            </tr>
+                                        {% for d in destinations %}
+                                            <tr>
+                                                <td> {{ d.city }}, {{ d.country }}</td>
+                                                <td> {{ d.start_date }}</td>
+                                                <td>{{ d.end_date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
                             </td>
                         </tr>
                     </table>
@@ -68,25 +79,14 @@
                             <th>cantidad</th>
                             <th>moneda</th>
                         </tr>
+                        {% for fin in finances %}
                         <tr>
-                            <td>Pasajes</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ fin.get_finance_type }}</td>
+                            <td>{{ fin.amount }}</td>
+                            <td>{{ fin.id_currency }}</td>
                         </tr>
-                        <tr>
-                            <td>Inscripci&oacute;n</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Vi&aacute;ticos</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {% endfor %}
                     </table>
-
-
-
                 </div>
             </div>
 

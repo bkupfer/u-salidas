@@ -45,5 +45,65 @@
             "start_date": "2014-11-1",
             "end_date": "2014-11-12"
         }
+    },
+    {
+        "model": "salidas.FinanceType",
+        "pk": 1,
+        "fields": {
+            "type": "Viático"
+        }
+    },
+    {
+        "model": "salidas.FinanceType",
+        "pk": 2,
+        "fields": {
+            "type": "Pasajes"
+        }
+    },
+    {
+        "model": "salidas.FinanceType",
+        "pk": 3,
+        "fields": {
+            "type": "Inscripción"
+        }
+    },
+    {
+        "model": "salidas.Finance",
+        "pk": 1,
+        "fields": {
+            "id_application": 1,
+            "id_finance_type": 1,
+            "id_currency":1,
+            "amount":1000
+        }
+    },
+    {
+        "model": "salidas.Finance",
+        "pk": 2,
+        "fields": {
+            "id_application": 1,
+            "id_finance_type": 2,
+            "id_currency":1,
+            "amount":100
+        }
+    },
+    {
+        "model": "salidas.Finance",
+        "pk": 3,
+        "fields": {
+            "id_application": 1,
+            "id_finance_type": 3,
+            "id_currency":2,
+            "amount":10
+        }
+    },
+    {
+        "model": "salidas.ApplicationHasApplicationState",
+        "pk": 3,
+        "fields": {
+            "id_application": 1,
+            "id_application_state": 1,
+            "date":"2014-09-11 20:02"
+        }
     }
 ]

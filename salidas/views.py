@@ -66,7 +66,6 @@ def new_application(request):
                     newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
                     newExecutiveReplacement.save()
                     newAcademicReplacement.save()
-
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):
@@ -77,6 +76,7 @@ def teachers_applications(request):
     rut = "17704795-3"
     apps = Application.objects.filter(rut=rut)
     return render_to_response("teachers_applications.html", locals(), context_instance=RequestContext(request))
+
 
 # Views for administrative people
 def list_of_applications(request):
@@ -108,6 +108,7 @@ def detail_alejandro(request):
     application = Application.objects.get(pk = id_app)
     destinations = Destination.objects.filter(application = id_app)
     teacher = application.rut
+    finances=Finance.objects.filter(id_application=id_app)
     return render_to_response("detail_alejandro.html", locals(), content_type=RequestContext(request))
 
 # Aditional views

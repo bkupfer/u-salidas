@@ -43,8 +43,6 @@
                                 <th>Profesor</th>
                                 <th>Comisión</th>
                                 <th>Fecha de inicio</th>
-                                <th>Fecha de envio<br>a facultad</th>
-                                <th>Estado</th>
                                 <th>Detalle</th>
                             </tr>
                             {% for app in apps %}
@@ -56,8 +54,6 @@
                                     </td>
                                     <td>{{ app.id_commission_type }}</td>
                                     <td>{{ app.creation_date }}</td>
-                                    <td>  (?)   </td>
-                                    <td>  (?)   </td>
                                     <td> <a href="detail_alejandro">Ver detalle</a> <!-- se debe dar el id de la solicitud! --></td>
                                 </tr>
                             {% endfor %}
