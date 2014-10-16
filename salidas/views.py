@@ -76,6 +76,7 @@ def teachers_applications(request):
     rut = "11111111-1"
     rut = "17704795-3"
     apps = Application.objects.filter(rut=rut)
+    #TODO: Estado de la solicitud
     #states = ApplicationHasApplicationState.objects.filter(id_application=)
     return render_to_response("teachers_applications.html", locals(), context_instance=RequestContext(request))
 
@@ -86,10 +87,10 @@ def list_of_applications(request):
 
 
 def application_detail(request):
+    #TODO if id de app no corresponde a una app mia reder "acceso denegado"
     id_app = request.GET['id']  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
     query = Application.objects.get(pk = id_app)  # Application query
     profesor = query.rut
-
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
     return render_to_response("application_detail.html", locals(), context_instance=RequestContext(request))

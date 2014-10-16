@@ -42,14 +42,15 @@
             <th>Estado</th>
             <th>Detalle</th>
         </tr>
+        {% i=0 %}
         {% for app in apps %}
             <tr>
                 <td>{{ app.creation_date }}</td>
                 <td>{{ app.id_commission_type }}</td>
-                <td></td>
-                <td> (?)</td>
+                <td></td><!--TODO Estado de la solicitud -->
                 <td><a href="application_detail?id={{ app.id }}">Ver detalle</a> <!-- se debe dar el id de la solicitud! --></td>
             </tr>
+            {}
         {% endfor %}
     </table>
 

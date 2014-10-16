@@ -59,7 +59,7 @@
                                 <td>{{ app.creation_date }}</td>
                                 <td>  (?)   </td>
                                 <td>  (?)   </td>
-                                <td> <a href="application_detail">Ver detalle</a>  <!-- se debe dar el id de la solicitud! --></td>
+                                <td> <a href="application_detail?id={{ app.id }}">Ver detalle</a>  <!-- se debe dar el id de la solicitud! --></td>
                             </tr>
                         {% endfor %}
                     </table>

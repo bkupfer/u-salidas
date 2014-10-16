@@ -60,27 +60,22 @@
                                 <td>{{ query.financed_by }}</td>
                             </tr>
                             <tr>
-                                <td>Destino</td>
+                                <td>Destino(s)</td>
                                 <td>
-                                    {% for d in dest %}
-                                        {{ d.city }}, {{ d.country }} <br>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Fecha de inicio</td>
-                                <td>
-                                    {% for d in dest %}
-                                        {{ d.start_date }} <br>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Fecha de regreso</td>
-                                <td>
-                                    {% for d in dest %}
-                                        {{ d.end_date }} <br>
-                                    {% endfor %}
+                                    <table class="table">
+                                         <tr>
+                                                <th> Ciudad, País </th>
+                                                <th> Fecha Inicio </th>
+                                                <th> Fecha Término </th>
+                                            </tr>
+                                        {% for d in dest %}
+                                            <tr>
+                                                <td> {{ d.city }}, {{ d.country }}</td>
+                                                <td> {{ d.start_date }}</td>
+                                                <td>{{ d.end_date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
                                 </td>
                             </tr>
                             <tr>
