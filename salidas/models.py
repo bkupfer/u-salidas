@@ -50,7 +50,7 @@ class CommissionType(models.Model):
 
 
 class Application(models.Model):
-    rut = models.ForeignKey('Teacher')
+    id_Teacher = models.ForeignKey('Teacher')
     id_commission_type = models.ForeignKey('CommissionType')
     motive = models.TextField()
     financed_by = models.TextField()
@@ -87,10 +87,12 @@ class Document(models.Model):
 
 
 class Teacher(models.Model):
-    rut = models.CharField(max_length=10, primary_key=True)
+    rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    signature_path = models.CharField(max_length=255, blank=True, null=True)
+    signature = models.ImageField(max_length=255, blank=True, null=True)
+    profile_picture = models.URLField()
+    mail = models.EmailField()
     def __str__(self):
         return self.name + " " + self.last_name
 
@@ -112,3 +114,22 @@ class InactivePeriod(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
+
+class Course(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=8)
+    section = models.IntegerField(max_length=2)
+    def __str__(self):
+        return self.name
+class Module(models.Model):
+    block = models.CharField(max_length=3)
+    def __str__(self):
+        return self.block
+class CourseHasModule(models.Model):
+    id_Course = models.ForeignKey('Course')
+    id_Module = models.ForeignKey('Module')
+
+class TeacherHasCourse(models.Model):
+    id_Teacher = models.ForeignKey('Teacher')
+    id_Course = models.ForeignKey('Course')
+

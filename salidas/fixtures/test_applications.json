@@ -1,19 +1,39 @@
 [
     {
         "model": "salidas.Teacher",
-        "pk": "17704795-3",
+        "pk": 1,
         "fields": {
             "rut": "17704795-3",
             "name": "Bernardo",
             "last_name": "Kupfer",
-            "signature_path": ""
+            "signature": ""
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": 2,
+        "fields": {
+            "rut": "6704795-2",
+            "name": "Sergio",
+            "last_name": "Ochoa",
+            "signature": ""
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": 3,
+        "fields": {
+            "rut": "7704795-3",
+            "name": "Jorge",
+            "last_name": "Perez",
+            "signature": ""
         }
     },
     {
         "model": "salidas.Application",
         "pk": 1,
         "fields": {
-            "rut": "17704795-3",
+            "id_Teacher": 1,
             "id_commission_type": 1,
             "motive": "Just because...",
             "financed_by": "DCC",
@@ -104,6 +124,102 @@
             "id_application": 1,
             "id_application_state": 1,
             "date":"2014-09-11 20:02"
+        }
+    },
+    {
+        "model": "salidas.Module",
+        "pk": 1,
+        "fields": {
+            "block": "1.1"
+        }
+    },
+    {
+        "model": "salidas.Module",
+        "pk": 2,
+        "fields": {
+            "block": "2.1"
+        }
+    },
+    {
+        "model": "salidas.Module",
+        "pk": 3,
+        "fields": {
+            "block": "3.1"
+        }
+    },
+    {
+        "model": "salidas.Course",
+        "pk": 1,
+        "fields": {
+            "name": "Base de Datos",
+            "code": "CC3301",
+            "section": 1
+        }
+    },
+    {
+        "model": "salidas.Course",
+        "pk": 2,
+        "fields": {
+            "name": "Computación Gráfica",
+            "code": "CC3501",
+            "section": 1
+        }
+    },
+    {
+        "model": "salidas.Course",
+        "pk": 3,
+        "fields": {
+            "name": "Algoritmos",
+            "code": "CC3001",
+            "section": 1
+        }
+    },
+    {
+        "model": "salidas.CourseHasModule",
+        "pk": 1,
+        "fields": {
+            "id_Course": 1,
+            "id_Module": 1
+        }
+    },
+    {
+        "model": "salidas.CourseHasModule",
+        "pk": 2,
+        "fields": {
+            "id_Course": 1,
+            "id_Module": 2
+        }
+    },
+    {
+        "model": "salidas.CourseHasModule",
+        "pk": 3,
+        "fields": {
+            "id_Course": 2,
+            "id_Module": 3
+        }
+    },
+    {
+        "model": "salidas.TeacherHasCourse",
+        "pk": 1,
+        "fields": {
+            "id_Course": 2,
+            "id_Teacher": 3
+        }
+    },
+    {
+        "model": "salidas.TeacherHasCourse",
+        "pk": 2,
+        "fields": {
+            "id_Course": 2,
+            "id_Teacher": 1
+        }
+    },
+    {
+        "model": "salidas.TeacherHasCourse",
+        "pk": 3,
+        "fields": {
+            "id_Course": 1,
+            "id_Teacher": 3
         }
     }
 ]
