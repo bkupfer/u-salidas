@@ -85,7 +85,6 @@ class Document(models.Model):
     path = models.CharField(blank=True, null=True, max_length=200)
     id_application = models.ForeignKey('Application')
 
-
 class Teacher(models.Model):
     rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
@@ -96,7 +95,7 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name + " " + self.last_name
 
-
+#rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
