@@ -30,12 +30,29 @@ def login(request):
         return redirect(login)
 
 
+
 #Views for teachers
+#Este es el formulario prototipo de financia
+def financeForm(form, newApp, id_finance_type):
+    if form.is_valid():
+        currency = form.cleaned_data['id_currency']
+        amount = form.cleaned_data['amount']
+        type = FinanceType.objects.get(pk=1)
+        if True:
+            newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
+            newFinance.save()
+
+
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
     destinations = DestinationFormSet(request.POST or None)
     executiveReplacement = ReplacementApplicationForm(request.POST or None)
     academicReplacement = ReplacementApplicationForm(request.POST or None)
+    viatico = FinanceForm(request.POST or None)
+    pasaje = FinanceForm(request.POST or None)
+    inscripcion= FinanceForm(request.POST or None)
+
+
     if application.is_valid():
         if destinations.is_valid():
             if executiveReplacement.is_valid():
@@ -66,7 +83,12 @@ def new_application(request):
                     newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
                     newExecutiveReplacement.save()
                     newAcademicReplacement.save()
-
+                    #campos de dinero
+                    #viatico
+                    #EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
+                    newViatico = financeForm(viatico, newApp, 1)
+                    newPasaje = financeForm(pasaje, newApp, 2)
+                    newInscripcion = financeForm(inscripcion, newApp, 3)
     return render_to_response("new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

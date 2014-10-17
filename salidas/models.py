@@ -15,7 +15,7 @@ class FinanceType(models.Model):
 
 class Finance(models.Model):
     id_application = models.ForeignKey('Application')
-    id_finance_type = models.ForeignKey('Finance')
+    id_finance_type = models.ForeignKey('FinanceType')
     id_currency = models.ForeignKey('Currency')
     amount = models.FloatField()
 
