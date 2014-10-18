@@ -97,43 +97,47 @@
                                             <div class="item">
                                                 <div class="col-sm-12">
                                                     <label class="col-sm-2 control-label">Destino</label>
-                                                    <div class="col-sm-5">
+
                                                          <!--<select class="form-control input-sm" name="SelPais">
                                                         <option value="">Seleccione Pais</option>
                                                     </select>
                                                        -->
                                                          País
-                                                         <select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);updateCountryTxt(this);" id="country" name ="country">
+                                                         <!--<select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);updateCountryTxt(this);" id="country" name ="country">
                                                              <option value="">Seleccione Pais</option>
-                                                         </select>
+                                                         </select>-->
                                                         {{ destination.country }}
-                                                    </div>
-                                                    <div class="col-sm-5">
+
+
+                                                </div>
+                                                <div class="col-sm-12">
+                                                     <label class="col-sm-2 control-label"></label>
                                                          <!--<select class="form-control input-sm" name="SelCiudad">
                                                             <option value="">Seleccione Ciudad</option>
-                                                        </select>-->
+                                                        </select>
                                                          Ciudad
                                                         <select class="form-control input-sm" onchange="updateStateTxt()" name="state" id ="state">
                                                             <option value="">Seleccione Ciudad</option>
-                                                        </select>
+                                                        </select>-->
+                                                        Ciudad
                                                         {{ destination.city }}
 
-                                                        <script language="javascript">print_country("country");</script>
-                                                    </div>
+
+
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <br/>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
-                                                    <div class="col-sm-5">
+
                                                     {{ destination.start_date }}
-                                                    </div>
+
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <br/>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
-                                                    <div class="col-sm-5">
+
                                                     {{ destination.end_date }}
-                                                    </div>
+
                                                 </div>
                                                  <div align="right"><a class="delete" href="#">Delete</a></div>
                                                 <hr>
@@ -290,16 +294,17 @@
 </script>
 <script>
     function updateCountryTxt(select) {
-        var country_name = document.getElementById("country").value;
+        var country_name = document.getElementById("form-0-country").value;
         document.getElementById("id_form-0-country").value = country_name;
     }
     function updateStateTxt() {
-        var state_name = document.getElementById("state").value;
+        var state_name = document.getElementById("form-0-city").value;
         document.getElementById("id_form-0-city").value = state_name;
     }
 </script>
 <script type="text/javascript">
 $(document).ready(function() {
+
   // Code adapted from http://djangosnippets.org/snippets/1389/
 
   function updateElementIndex(el, prefix, ndx) {
@@ -308,7 +313,7 @@ $(document).ready(function() {
     if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
  replacement));
     if (el.id) el.id = el.id.replace(id_regex, replacement);
-    if (el.name) el.name = el.name.replace(id_regex, replacement);
+    //if (el.name) el.name = el.name.replace(id_regex, replacement);
   }
 
   function deleteForm(btn, prefix) {
@@ -387,5 +392,8 @@ $(document).ready(function() {
   });
 });
 </script>
+
+
+<script language="javascript">print_country("id_form-0-country");</script>
 </html>
  
