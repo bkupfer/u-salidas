@@ -41,7 +41,7 @@ def new_application(request):
             if executiveReplacement.is_valid():
                 if academicReplacement.is_valid():
                     #se arma la instancia Application
-                    id_teacher = Teacher.objects.get(pk=1) #EL PROFE ES EL PRIMERO EN MI LISTA
+                    id_teacher = Teacher.objects.get(pk=1) #EL PROFE ES EL PRIMERO EN MI LISTA cambiar por usuario del sistema
                     ct = application.cleaned_data['id_commission_type']
                     fb = application.cleaned_data['financed_by']
                     motive = application.cleaned_data['motive']
@@ -49,7 +49,11 @@ def new_application(request):
                     fundsv = State.objects.get(pk=3)
                     newApp = Application(id_Teacher=id_teacher,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
                     newApp.save()
-                    print("ya hice save")
+                    #agregarle estado a la App
+                    #estado pendiente dcc
+                    state = ApplicationState.objects.get(pk=1)
+                    stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
+                    stateApp.save()
                     #se arma la instancia Destination
                     for destination in destinations:
                         country = destination.cleaned_data['country']
@@ -65,6 +69,8 @@ def new_application(request):
                     newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
                     newExecutiveReplacement.save()
                     newAcademicReplacement.save()
+                    return redirect(list_of_applications)
+
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

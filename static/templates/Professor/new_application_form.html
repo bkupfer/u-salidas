@@ -97,47 +97,23 @@
                                             <div class="item">
                                                 <div class="col-sm-12">
                                                     <label class="col-sm-2 control-label">Destino</label>
-
-                                                         <!--<select class="form-control input-sm" name="SelPais">
-                                                        <option value="">Seleccione Pais</option>
-                                                    </select>
-                                                       -->
-                                                         País
-                                                         <!--<select class="form-control input-sm" onchange="print_state('state',this.selectedIndex);updateCountryTxt(this);" id="country" name ="country">
-                                                             <option value="">Seleccione Pais</option>
-                                                         </select>-->
+                                                        País
                                                         {{ destination.country }}
-
-
                                                 </div>
                                                 <div class="col-sm-12">
                                                      <label class="col-sm-2 control-label"></label>
-                                                         <!--<select class="form-control input-sm" name="SelCiudad">
-                                                            <option value="">Seleccione Ciudad</option>
-                                                        </select>
-                                                         Ciudad
-                                                        <select class="form-control input-sm" onchange="updateStateTxt()" name="state" id ="state">
-                                                            <option value="">Seleccione Ciudad</option>
-                                                        </select>-->
                                                         Ciudad
                                                         {{ destination.city }}
-
-
-
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <br/>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
-
                                                     {{ destination.start_date }}
-
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <br/>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
-
                                                     {{ destination.end_date }}
-
                                                 </div>
                                                  <div align="right"><a class="delete" href="#">Delete</a></div>
                                                 <hr>
@@ -169,7 +145,7 @@
 					  		<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group" id="academicReplacement">
-									<label class="col-sm-4 control-label">Reemplazo Académico</label>
+									<label class="col-sm-4 control-label">Reemplazo Docente</label>
 				    				<div class="col-sm-4">
 									     {{ academicReplacement.teachers }}
 									</div>
@@ -186,7 +162,7 @@
 							<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group" id="executiveReplacement">
-									<label class="col-sm-4 control-label">Reemplazo Administrativo</label>
+									<label class="col-sm-4 control-label">Reemplazo Académico</label>
 				    				<div class="col-sm-4">
 									    {{ executiveReplacement.teachers }}
 									</div>
@@ -268,10 +244,6 @@
 				</div>
 			</div>
             </form>
-			
-
-		
-		
 		<!-- fin contenido -->
     </div><!-- end contenido-->
     </div><!-- end row-->

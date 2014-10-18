@@ -9,15 +9,12 @@ class NewApplicationForm(forms.ModelForm):
     financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
     class Meta:
         model = Application
-        exclude = ('rut','directors_name','directors_rut','id_days_validation_state','id_funds_validation_state')
+        exclude = ('id_Teacher','directors_name','directors_rut','id_days_validation_state','id_funds_validation_state')
         #fields = ('motive','financed_by')
 
 class DestinationForm(forms.ModelForm):
-    country = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
-    city = forms.CharField(widget=forms.HiddenInput(attrs={'class':"hidden"}))
     country = forms.CharField(widget=forms.Select(attrs={'onchange':"print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
     city = forms.CharField(widget=forms.Select(attrs={'onchange':"updateStateTxt(this);"}, choices=([("seleccione ciudad", "seleccione ciudad")])))
-
     start_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
     end_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
     class Meta:

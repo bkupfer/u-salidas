@@ -51,14 +51,14 @@
                         {% for app in apps %}
                             <tr>
                                 <td>
-                                    {{ app.rut }}
+                                    {{ app.id_Teacher }}
                                     <br>
-                                    {{ app.rut.rut }}
+                                    {{ app.id_Teacher.rut }}
                                 </td>
                                 <td>{{ app.id_commission_type }}</td>
                                 <td>{{ app.creation_date }}</td>
                                 <td>  (?)   </td>
-                                <td>  (?)   </td>
+                                <td> {{ app.get_state }}   </td>
                                 <td> <a href="application_detail?id={{ app.id }}">Ver detalle</a>  <!-- se debe dar el id de la solicitud! --></td>
                             </tr>
                         {% endfor %}

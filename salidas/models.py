@@ -78,7 +78,7 @@ class ApplicationState(models.Model):
 class ApplicationHasApplicationState(models.Model):
     id_application = models.ForeignKey('Application')
     id_application_state = models.ForeignKey('ApplicationState')
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True, auto_now=False)
 
 
 class Document(models.Model):
@@ -120,10 +120,12 @@ class Course(models.Model):
     section = models.IntegerField(max_length=2)
     def __str__(self):
         return self.name
+
 class Module(models.Model):
     block = models.CharField(max_length=3)
     def __str__(self):
         return self.block
+
 class CourseHasModule(models.Model):
     id_Course = models.ForeignKey('Course')
     id_Module = models.ForeignKey('Module')
