@@ -279,20 +279,35 @@ s_a[250]="Kosovo|Montenegro|Serbia|Vojvodina";
 s_a[251]="Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western";
 s_a[252]="Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands";
 
-function print_country(country_id){
-	// given the id of the <select> tag as function argument, it inserts <option> tags
-	var option_str = document.getElementById(country_id);
-	var x, i=0;
-	for(x in country_arr){
-		option_str.options[i++] = new Option(country_arr[x],country_arr[x]);
-	}
+function print_country(country) {
+
+    var cont=0;
+    while(cont<20){
+        id="id_form-"+parseInt(cont)+"-country";
+        var c = document.getElementById(id);
+
+        var x, i = 0;
+        try {
+            for (x in country_arr) {
+                c.options[i++] = new Option(country_arr[x], country_arr[x]);
+            }
+        }
+        catch(e){
+            console.log("asdasdas")
+            break;
+        }
+        cont=cont+1;
+    }
 }
 
-function print_state(state_id, state_index){
-	var option_str = document.getElementById(state_id);
+function print_state(state_id, state_index, country_id){
+    var num = parseInt(country_id.substring(8,9));
+
+	var option_str = document.getElementById("id_form-"+num+"-city");
+    console.log(option_str);
 	var x, i=0; state_index++;
 	var state_arr = s_a[state_index].split("|");
 	for(x in state_arr){
-            option_str.options[i++] = new Option(state_arr[x],state_arr[x]);
+            option_str.options[i++]= new Option(state_arr[x],state_arr[x]);
 	}
 }
