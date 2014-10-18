@@ -6,13 +6,13 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../static/public/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/public/css/docs.min.css" rel="stylesheet">
-    <link href="../static/css/estilos.css" rel="stylesheet" type="text/css">
-    <link href="../static/css/jquery-ui.min.css" rel="stylesheet" >
-    <script src="../static/external/jquery/jquery.js"></script>
-    <script src="../static/public/js/jquery-1.11.0.min.js"></script>
-    <script src="../static/js/jquery-ui.min.js"></script>
+    <link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/public/css/docs.min.css" rel="stylesheet">
+    <link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
+    <link href="../../static/css/jquery-ui.min.css" rel="stylesheet" >
+    <script src="../../static/external/jquery/jquery.js"></script>
+    <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
+    <script src="../../static/js/jquery-ui.min.js"></script>
 
     <title>Salidas DCC</title>
 </head>
@@ -54,9 +54,20 @@
                         <tr>
                             <th>Destino(s)</th>
                             <td>
-                                {% for d in destinations %}
-                                    {{ d.city }}, {{ d.country }} <br>
-                                {% endfor %}
+                                <table class="table">
+                                         <tr>
+                                                <th> Ciudad, País </th>
+                                                <th> Fecha Inicio </th>
+                                                <th> Fecha Término </th>
+                                            </tr>
+                                        {% for d in destinations %}
+                                            <tr>
+                                                <td> {{ d.city }}, {{ d.country }}</td>
+                                                <td> {{ d.start_date }}</td>
+                                                <td>{{ d.end_date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
                             </td>
                         </tr>
                     </table>
@@ -68,25 +79,14 @@
                             <th>cantidad</th>
                             <th>moneda</th>
                         </tr>
+                        {% for fin in finances %}
                         <tr>
-                            <td>Pasajes</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ fin.get_finance_type }}</td>
+                            <td>{{ fin.amount }}</td>
+                            <td>{{ fin.id_currency }}</td>
                         </tr>
-                        <tr>
-                            <td>Inscripci&oacute;n</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Vi&aacute;ticos</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {% endfor %}
                     </table>
-
-
-
                 </div>
             </div>
 

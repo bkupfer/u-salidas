@@ -11,6 +11,8 @@ class Currency(models.Model):
 
 class FinanceType(models.Model):
     type = models.CharField(max_length=20)
+    def __str__(self):
+        return self.type
 
 
 class Finance(models.Model):
@@ -18,6 +20,8 @@ class Finance(models.Model):
     id_finance_type = models.ForeignKey('FinanceType')
     id_currency = models.ForeignKey('Currency')
     amount = models.FloatField()
+    def get_finance_type(self):
+        return self.id_finance_type.type
 
 
 class Country(models.Model):
@@ -46,7 +50,7 @@ class CommissionType(models.Model):
 
 
 class Application(models.Model):
-    rut = models.ForeignKey('Teacher')
+    id_Teacher = models.ForeignKey('Teacher')
     id_commission_type = models.ForeignKey('CommissionType')
     motive = models.TextField()
     financed_by = models.TextField()
@@ -57,6 +61,13 @@ class Application(models.Model):
     directors_rut = models.CharField(max_length=10)
     def __str__(self):
         return "Application "+str(self.id)
+    def get_state(self):
+        try:
+            ret = ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
+        except:
+            print("error en linea 68 del archivo models revisar get state")
+            ret = "Estado vacío, revisar"
+        return ret
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
@@ -74,16 +85,17 @@ class Document(models.Model):
     path = models.CharField(blank=True, null=True, max_length=200)
     id_application = models.ForeignKey('Application')
 
-
 class Teacher(models.Model):
-    rut = models.CharField(max_length=10, primary_key=True)
+    rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    signature_path = models.CharField(max_length=255, blank=True, null=True)
+    signature = models.ImageField(max_length=255, blank=True, null=True)
+    profile_picture = models.URLField()
+    mail = models.EmailField()
     def __str__(self):
         return self.name + " " + self.last_name
 
-
+#rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
@@ -101,3 +113,22 @@ class InactivePeriod(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
+
+class Course(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=8)
+    section = models.IntegerField(max_length=2)
+    def __str__(self):
+        return self.name
+class Module(models.Model):
+    block = models.CharField(max_length=3)
+    def __str__(self):
+        return self.block
+class CourseHasModule(models.Model):
+    id_Course = models.ForeignKey('Course')
+    id_Module = models.ForeignKey('Module')
+
+class TeacherHasCourse(models.Model):
+    id_Teacher = models.ForeignKey('Teacher')
+    id_Course = models.ForeignKey('Course')
+
