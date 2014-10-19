@@ -12,6 +12,13 @@ class NewApplicationForm(forms.ModelForm):
         exclude = ('id_Teacher','directors_name','directors_rut','id_days_validation_state','id_funds_validation_state')
         #fields = ('motive','financed_by')
 
+class FinanceForm(forms.ModelForm):
+    id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(),widget=forms.Select(attrs={'placeholder':u'Tipo de moneda'}))
+    checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
+    class Meta:
+        model = Finance
+        exclude = {'id_application' , 'id_finance_type'}
+
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(attrs={'onchange':"print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
     city = forms.CharField(widget=forms.Select(attrs={'onchange':"updateStateTxt(this);"}, choices=([("seleccione ciudad", "seleccione ciudad")])))
@@ -25,6 +32,7 @@ class ReplacementApplicationForm(forms.Form):
     teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
+
 
 
 

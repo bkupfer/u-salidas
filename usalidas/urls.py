@@ -24,6 +24,10 @@ urlpatterns = patterns('',
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
 
+    #URL pagina prueba
+    url(r'^prueba', 'salidas.views.prueba', name='prueba'),
+
+
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
 )
