@@ -44,6 +44,7 @@
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
 
+            <!-- For message to user -->
             {% if messages %}
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
@@ -54,7 +55,9 @@
                 </div>
             {% endif %}
 
+            <!-- THE FORM -->
             <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+            <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
             <div class="row">
                 <div class="col-sm-8">
                     <div class="panel panel-primary">
@@ -67,7 +70,7 @@
                                             <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
                                             <div class="col-sm-5">
                                                {{ application.id_commission_type }}
-                                           </div>
+                                            </div>
                                         </div>
                                         <div  class="col-sm-12">
                                             <br/>
@@ -91,6 +94,8 @@
                 </div>
             </div>
             <br/>
+
+            <!-- Montos -->
             <div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-primary">
@@ -154,10 +159,13 @@
                                 </div>
                             </div>
                         </div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
+					</div>
+				</div>
+			</div>
+
 {# <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
+
+            <!-- Destinos -->
 			<div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-primary">
@@ -206,11 +214,12 @@
                                 </div>
                             </div>
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
+					</div>
+				</div>
+			</div>
+            <br>
 
-                <br>
+            <!-- Profesores reemplazantes -->
             <div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-danger">
@@ -232,7 +241,7 @@
 									</div>
 								</div>
 							</div>
-							<hr />
+							<hr>
 							<!-- fin para cada curso -->
 							<!-- para cada curso -->
 					    	<div class="row">
@@ -243,14 +252,15 @@
 									</div>
 								</div>
 							</div>
-							<hr />
+							<hr>
 							<!-- fin para cada curso -->
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
-			
-			<br />
+					</div>
+				</div>
+			</div>
+			<br>
+
+            <!-- Adjuntar documentos -->
 			<div class="row">
 				<div class="col-sm-7">
 					<div class="panel panel-success">
@@ -268,25 +278,28 @@
 							<!-- fin para cada documento -->
 
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
-			
-			<br />
+					</div>
+				</div>
+			</div>
+			<br>
+
+            <!-- Firma digitalizada -->
 			<div class="row">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Firma digitalizada</label>
     				<div class="col-sm-5">
     					<div class="checkbox">
 	                    <label>
-	                      <input type="checkbox" name="" value="" checked> Usar firma anterior
+	                      <input type="checkbox" name="firma" value="" checked> Usar firma anterior
 	                    </label>
 	                    </div>
                         {{ teacher_signature.signature }}
 					</div>
 				</div>
 			</div>
-			<hr />
+			<hr>
+
+            <!-- Boton enviar solicitud -->
 			<div class="row">
 				<div class="form-group">
     				<div class="col-sm-7">
@@ -295,10 +308,10 @@
 				</div>
 			</div>
             </form>
-		<!-- fin contenido -->
-    </div><!-- end contenido-->
-    </div><!-- end row-->
-</div><!--end container-->
+        
+        </div>
+    </div>
+</div>
 </body>
 
 
