@@ -45,7 +45,7 @@
 
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
-            <form method="POST" action="{% url 'new_application' %}"> {% csrf_token %}
+            <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
             <div class="row">
                 <div class="col-sm-8">
                     <div class="panel panel-primary">
@@ -252,36 +252,13 @@
 					    	<div class="row">
 								<div class="form-group">
 									<div class="col-sm-1">
-										<button type="button" class="close" aria-hidden="true" onClick="">&times;</button>
-									</div>
-				    				<div class="col-sm-11">
-									    <input type="file" class="filestyle" data-buttonName="btn-success" data-buttonText="Buscar archivo">
-									</div>
+									{{ documents.file }}
+                                    </div>
 								</div>
 							</div>
-							<hr />
 							<!-- fin para cada documento -->
-							
-						
-							<!-- para cada documento -->
-					    	<div class="row">
-								<div class="form-group">
-									<div class="col-sm-1">
-										<button type="button" class="close" aria-hidden="true" onClick="">&times;</button>
-									</div>
-				    				<div class="col-sm-11">
-									    <input type="file" class="filestyle" data-buttonName="btn-success" data-buttonText="Buscar archivo">
-									</div>
-								</div>
-							</div>
-							<hr />
-							<!-- fin para cada documento -->
-							
-							<div class="row">
-								<div class="col-sm-4">
-									<button class="btn btn-success"><span class="glyphicon glyphicon-plus"/></button>
-								</div>
-							</div>
+
+
 					  	</div>
 					</div><!-- end panel -->
 				</div><!-- end col -->
@@ -297,7 +274,7 @@
 	                      <input type="checkbox" name="" value="" checked> Usar firma anterior
 	                    </label>
 	                    </div>
-					     <input type="file" class="filestyle" data-input="false" data-iconName="glyphicon-inbox" data-buttonText="Buscar firma" data-buttonName="btn-danger">
+                        {{ teacher_signature.signature }}
 					</div>
 				</div>
 			</div>
