@@ -12,16 +12,12 @@ class NewApplicationForm(forms.ModelForm):
         exclude = ('id_Teacher','directors_name','directors_rut','id_days_validation_state','id_funds_validation_state')
         #fields = ('motive','financed_by')
 
-class FinanceForm(forms.ModelForm):
+class FinanceForm(forms.Form):
+    checkbox = forms.BooleanField(label="Chequéate esta buey")
+    amount = forms.FloatField()
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(),widget=forms.Select(attrs={'placeholder':u'Tipo de moneda'}))
-    class Meta:
-        model = Finance
-        exclude = {'id_application' , 'id_finance_type'}
 
-class FinanceDccForm(FinanceForm):
-     checkbox = forms.BooleanField(required=True,label="Chequéate esta buey")
-
-FinanceFormSet = formset_factory(FinanceDccForm,extra=3)
+FinanceFormSet = formset_factory(FinanceForm,extra=3)
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(attrs={'onchange':"print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
     city = forms.CharField(widget=forms.Select(attrs={'onchange':"updateStateTxt(this);"}, choices=([("seleccione ciudad", "seleccione ciudad")])))
