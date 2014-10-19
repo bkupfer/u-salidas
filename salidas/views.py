@@ -115,12 +115,10 @@ def new_application(request):
         except:
             asignature=None
 
-        messages.success(request, 'Solicitud enviada exitosamente.')
+        messages.success(request, 'Solicitud enviada exitosamente!')
         return redirect(teachers_applications)
-    else:
-        # mensaje de error :D yeeii
-        messages.error(request, 'Error en el formulario')
 
+    # messages.error(request, 'Error en el envío del formulario.')
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

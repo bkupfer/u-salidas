@@ -28,20 +28,18 @@
             <ul class="nav nav-justified">
                 <!-- Aca colocar la barra de nevegacion correspondiente -->
                 <li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
+                <li><a href="teachers_applications">Mis solicitudes</a></li>
                 <li><a href="teacher_calendar" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
-                <!-- fin barra de nevegacion -->
             </ul>
-        </div> <!-- end nav bar-->
-    </div> <!-- end row-->
+        </div>
+    </div>
     
     <div class="row">
     
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
-   		<!-- Aca colocar el contenido correspondiente -->
 
 {#      <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
-            <br/>
 
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
@@ -50,12 +48,11 @@
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
                         {% for message in messages %}
-                            <p {% if message.tags == "danger" %} class="alert alert-danger"{% endif %}> {{ message }} </p>
+                            <p {% if message.tags == "error" %} class="alert alert-danger"{% endif %}> {{ message }} </p>
                         {% endfor %}
                     </div>
                 </div>
             {% endif %}
-
 
             <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
             <div class="row">
@@ -303,6 +300,7 @@
     </div><!-- end row-->
 </div><!--end container-->
 </body>
+
 
 <!-- Javascripts -->
 <script src="../../static/public/js/bootstrap.min.js"></script>
