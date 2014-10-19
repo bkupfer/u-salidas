@@ -36,7 +36,9 @@ def financeForm(form, newApp, id_finance_type):
     if form.is_valid():
         currency = form.cleaned_data['id_currency']
         amount = form.cleaned_data['amount']
-        type = FinanceType.objects.get(pk=1)
+        checkbox = form.cleaned_data['checkbox']
+        type = FinanceType.objects.get(pk=id_finance_type)
+        print("hola")
         if True:
             newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
             newFinance.save()
@@ -50,8 +52,6 @@ def new_application(request):
     viatico = FinanceForm(request.POST or None)
     pasaje = FinanceForm(request.POST or None)
     inscripcion= FinanceForm(request.POST or None)
-
-
     if application.is_valid():
         if destinations.is_valid():
             if executiveReplacement.is_valid():
@@ -91,7 +91,7 @@ def new_application(request):
                     newViatico = financeForm(viatico, newApp, 1)
                     newPasaje = financeForm(pasaje, newApp, 2)
                     newInscripcion = financeForm(inscripcion, newApp, 3)
-                    return redirect(list_of_applications)        
+                    return redirect(list_of_applications)
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

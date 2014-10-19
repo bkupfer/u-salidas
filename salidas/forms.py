@@ -14,7 +14,7 @@ class NewApplicationForm(forms.ModelForm):
 
 class FinanceForm(forms.ModelForm):
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(),widget=forms.Select(attrs={'placeholder':u'Tipo de moneda'}))
-    checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
+    checkbox = forms.BooleanField(label="Chequéate esta buey")
     class Meta:
         model = Finance
         exclude = {'id_application' , 'id_finance_type'}

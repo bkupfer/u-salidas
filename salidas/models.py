@@ -61,6 +61,7 @@ class Application(models.Model):
     directors_rut = models.CharField(max_length=10)
     def __str__(self):
         return "Application "+str(self.id)
+    #Obtiene el ultimo estado asociado a la solicitud
     def get_state(self):
         try:
             ret = ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
@@ -68,7 +69,16 @@ class Application(models.Model):
             print("error en linea 68 del archivo models revisar get state")
             ret = "Estado vacío, revisar"
         return ret
-
+    #Obtiene la fecha del envio a facultad
+    def sent_date(self):
+        state = ApplicationState.objects.get(pk=2)
+        applicationState = ApplicationHasApplicationState.objects.filter(id_application=self.pk,id_application_state=state)
+        try:
+            ret = applicationState[0].date
+          #  ret = applicationState.order_by("date").reverse()[0].date
+        except:
+            ret = "No enviada"
+        return ret
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
     def __str__(self):
