@@ -19,7 +19,7 @@ class Finance(models.Model):
     id_application = models.ForeignKey('Application')
     id_finance_type = models.ForeignKey('FinanceType')
     id_currency = models.ForeignKey('Currency')
-    amount = models.FloatField()
+    amount = models.PositiveIntegerField()
     def get_finance_type(self):
         return self.id_finance_type.type
 
@@ -100,7 +100,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
-    profile_picture = models.URLField()
+    profile_picture = models.URLField(blank=True, null=True)
     mail = models.EmailField()
     def __str__(self):
         return self.name + " " + self.last_name

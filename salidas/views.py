@@ -1,15 +1,21 @@
 from django.shortcuts import render, render_to_response, RequestContext
+from django.contrib import messages
 
-from salidas.models import *    #  for data
-from salidas.forms import *     #  for calendar
-from salidas.calendar import *  #  for calendar
-from django.utils.safestring import mark_safe   #  for calendar
 from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
 from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
+
+from django.utils.safestring import mark_safe   #  for calendar
+
+from salidas.models import *
+
+from salidas.forms import *     #  for calendar
+from salidas.calendar import *  #  for calendar
+
+
 # Views for all users
 def home(request):
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
@@ -57,63 +63,65 @@ def new_application(request):
     documents = DocumentForm(request.POST or None)
     #documents = DocumentFormSet(request.FILES or None)
     teacher_signature = TeacherSignatureForm(request.FILES or None)
-    if application.is_valid():
-        if destinations.is_valid():
-            if executiveReplacement.is_valid():
-                if academicReplacement.is_valid():
-                    #se arma la instancia Application
-                    id_teacher = Teacher.objects.get(pk=1) #EL PROFE ES EL PRIMERO EN MI LISTA cambiar por usuario del sistema
-                    ct = application.cleaned_data['id_commission_type']
-                    fb = application.cleaned_data['financed_by']
-                    motive = application.cleaned_data['motive']
-                    daysv = State.objects.get(pk=3)
-                    fundsv = State.objects.get(pk=3)
-                    newApp = Application(id_Teacher=id_teacher,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
-                    newApp.save()
-                    #agregarle estado a la App
-                    #estado pendiente dcc
-                    state = ApplicationState.objects.get(pk=1)
-                    stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
-                    stateApp.save()
-                    #se arma la instancia Destination
-                    for destination in destinations:
-                        country = destination.cleaned_data['country']
-                        city = destination.cleaned_data['city']
-                        start_date = destination.cleaned_data['start_date']
-                        end_date = destination.cleaned_data['end_date']
-                        newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
-                        newDestination.save()
-                    #se guardan los profes reemplazantes
-                    executiveReplace = executiveReplacement.cleaned_data['teachers']
-                    academicReplace = academicReplacement.cleaned_data['teachers']
-                    newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,id_Application=newApp,id_state=daysv)
-                    newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
-                    newExecutiveReplacement.save()
-                    newAcademicReplacement.save()
-                    #campos de dinero
-                    #viatico
-                    #EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
-                    newViatico = financeForm(viatico, newApp, 1)
-                    newPasaje = financeForm(pasaje, newApp, 2)
-                    newInscripcion = financeForm(inscripcion, newApp, 3)
-                    try:
-                        file = request.FILES['file']
-                        newDocument = Document(id_application=newApp,file=file)
-                        newDocument.save()
-                    except:
-                        file=None
-                    # for document in documents:
-                    #     file = request.FILES['file']
-                    #     newDocument = Document(id_application=newApp,file=file)
-                    #     newDocument.save()
-                    try:
-                        asignature = request.FILES['signature']
-                        id_teacher.signature.delete()
-                        id_teacher.signature=asignature
-                        id_teacher.save()
-                    except:
-                        asignature=None
-                    return redirect(list_of_applications)        
+
+    if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
+        #se arma la instancia Application
+        id_teacher = Teacher.objects.get(pk=1) #EL PROFE ES EL PRIMERO EN MI LISTA cambiar por usuario del sistema
+        ct = application.cleaned_data['id_commission_type']
+        fb = application.cleaned_data['financed_by']
+        motive = application.cleaned_data['motive']
+        daysv = State.objects.get(pk=3)
+        fundsv = State.objects.get(pk=3)
+        newApp = Application(id_Teacher=id_teacher,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
+        newApp.save()
+        #agregarle estado a la App
+        #estado pendiente dcc
+        state = ApplicationState.objects.get(pk=1)
+        stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
+        stateApp.save()
+        #se arma la instancia Destination
+        for destination in destinations:
+            country = destination.cleaned_data['country']
+            city = destination.cleaned_data['city']
+            start_date = destination.cleaned_data['start_date']
+            end_date = destination.cleaned_data['end_date']
+            newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
+            newDestination.save()
+        #se guardan los profes reemplazantes
+        executiveReplace = executiveReplacement.cleaned_data['teachers']
+        academicReplace = academicReplacement.cleaned_data['teachers']
+        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,id_Application=newApp,id_state=daysv)
+        newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
+        newExecutiveReplacement.save()
+        newAcademicReplacement.save()
+        #campos de dinero
+        #viatico
+        #EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
+        newViatico = financeForm(viatico, newApp, 1)
+        newPasaje = financeForm(pasaje, newApp, 2)
+        newInscripcion = financeForm(inscripcion, newApp, 3)
+        try:
+            file = request.FILES['file']
+            newDocument = Document(id_application=newApp,file=file)
+            newDocument.save()
+        except:
+            file=None
+        # for document in documents:
+        #     file = request.FILES['file']
+        #     newDocument = Document(id_application=newApp,file=file)
+        #     newDocument.save()
+        try:
+            asignature = request.FILES['signature']
+            id_teacher.signature.delete()
+            id_teacher.signature=asignature
+            id_teacher.save()
+        except:
+            asignature=None
+
+        messages.success(request, 'Solicitud enviada exitosamente!')
+        return redirect(teachers_applications)
+
+    # messages.error(request, 'Error en el envío del formulario.')
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

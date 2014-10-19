@@ -18,42 +18,62 @@
 </head>
 <body>
 
+
 <div class="container-fluid">
 
     <div class="row hidden-print">
+        <!-- navegation bar -->
         <div class="col-md-12">
             <ul class="nav nav-justified">
-                <!-- Aca colocar la barra de nevegacion correspondiente -->
                 <li><a href="new_application" title="">Formulario de solicitud de salidas</a></li>
-                <li class="active"><a href="" title="">Lista de solicitudes</a></li>
+                <li class="active"><a href="" title="">Mis solicitudes</a></li>
                 <li><a href="teacher_calendar" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
-                <!-- fin barra de nevegacion -->
             </ul>
         </div>
-        <!-- end nav bar-->
     </div>
-    <!-- end row-->
 
-    <table class="table">
-        <tr>
-            <th>Fecha de envío</th>
-            <th>Comisión</th>
-            <th>Estado</th>
-            <th>Detalle</th>
-        </tr>
-        {% for app in apps %}
-            <tr>
-                <td>{{ app.creation_date }}</td>
-                <td>{{ app.id_commission_type }}</td>
-                <td>{{ app.get_state }}</td><!--TODO Estado de la solicitud -->
-                <td><a href="application_detail?id={{ app.id }}">Ver detalle</a> <!-- se debe dar el id de la solicitud! --></td>
-            </tr>
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
-        {% endfor %}
-    </table>
+            <div class="pannel panel-primary">
+                <div class="panel-body">
 
-</div>
+                    {% if messages %}
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            {% for message in messages %}
+                                <p {% if message.tags == "success" %} class="alert alert-success"{% endif %}> {{ message }} </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <h1>Mis solicitudes</h1>
+                    <br>
+
+                    <table class="table">
+                        <tr>
+                            <th>Fecha de envío</th>
+                            <th>Comisión</th>
+                            <th>Estado</th>
+                            <th>Detalle</th>
+                        </tr>
+                        {% for app in apps %}
+                            <tr>
+                                <td>{{ app.creation_date }}</td>
+                                <td>{{ app.id_commission_type }}</td>
+                                <td>{{ app.get_state }}</td>
+                                <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
 </html>

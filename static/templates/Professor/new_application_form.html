@@ -26,26 +26,37 @@
     <div class="row hidden-print">
         <div class="col-md-12">
             <ul class="nav nav-justified">
-                <!-- Aca colocar la barra de nevegacion correspondiente -->
                 <li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
+                <li><a href="teachers_applications">Mis solicitudes</a></li>
                 <li><a href="teacher_calendar" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
-                <!-- fin barra de nevegacion -->
             </ul>
-        </div> <!-- end nav bar-->
-    </div> <!-- end row-->
+        </div>
+    </div>
     
     <div class="row">
     
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
-   		<!-- Aca colocar el contenido correspondiente -->
 
 {#      <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
-            <br/>
 
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
+
+            <!-- For message to user -->
+            {% if messages %}
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        {% for message in messages %}
+                            <p {% if message.tags == "error" %} class="alert alert-danger"{% endif %}> {{ message }} </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- THE FORM -->
             <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+            <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
             <div class="row">
                 <div class="col-sm-8">
                     <div class="panel panel-primary">
@@ -58,7 +69,7 @@
                                             <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
                                             <div class="col-sm-5">
                                                {{ application.id_commission_type }}
-                                           </div>
+                                            </div>
                                         </div>
                                         <div  class="col-sm-12">
                                             <br/>
@@ -82,6 +93,8 @@
                 </div>
             </div>
             <br/>
+
+            <!-- Montos -->
             <div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-primary">
@@ -145,10 +158,13 @@
                                 </div>
                             </div>
                         </div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
+					</div>
+				</div>
+			</div>
+
 {# <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
+
+            <!-- Destinos -->
 			<div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-primary">
@@ -197,11 +213,12 @@
                                 </div>
                             </div>
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
+					</div>
+				</div>
+			</div>
+            <br>
 
-                <br>
+            <!-- Profesores reemplazantes -->
             <div class="row">
 				<div class="col-sm-8">
 					<div class="panel panel-danger">
@@ -223,7 +240,7 @@
 									</div>
 								</div>
 							</div>
-							<hr />
+							<hr>
 							<!-- fin para cada curso -->
 							<!-- para cada curso -->
 					    	<div class="row">
@@ -234,14 +251,15 @@
 									</div>
 								</div>
 							</div>
-							<hr />
+							<hr>
 							<!-- fin para cada curso -->
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
-			
-			<br />
+					</div>
+				</div>
+			</div>
+			<br>
+
+            <!-- Adjuntar documentos -->
 			<div class="row">
 				<div class="col-sm-7">
 					<div class="panel panel-success">
@@ -258,27 +276,29 @@
 							</div>
 							<!-- fin para cada documento -->
 
-
 					  	</div>
-					</div><!-- end panel -->
-				</div><!-- end col -->
-			</div><!-- end row -->
-			
-			<br />
+					</div>
+				</div>
+			</div>
+			<br>
+
+            <!-- Firma digitalizada -->
 			<div class="row">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Firma digitalizada</label>
     				<div class="col-sm-5">
     					<div class="checkbox">
 	                    <label>
-	                      <input type="checkbox" name="" value="" checked> Usar firma anterior
+	                      <input type="checkbox" name="firma" value="" checked> Usar firma anterior
 	                    </label>
 	                    </div>
                         {{ teacher_signature.signature }}
 					</div>
 				</div>
 			</div>
-			<hr />
+			<hr>
+
+            <!-- Boton enviar solicitud -->
 			<div class="row">
 				<div class="form-group">
     				<div class="col-sm-7">
@@ -287,128 +307,130 @@
 				</div>
 			</div>
             </form>
-		<!-- fin contenido -->
-    </div><!-- end contenido-->
-    </div><!-- end row-->
-</div><!--end container-->
-</body>
-<script src="../../static/public/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./js/filestyle.js"> </script>
-<script>
-  $(function() {
 
-    $("#city").filter(":selected").change(function() {
-        var value = $(this).val();
-        $(this).next().val(value);
-  });
-     $("#country").filter(":selected").change(function() {
-         var value = $(this).val();
-        $(this).next().val(value);
-  });
-  });
+        </div>
+    </div>
+</div>
+</body>
+
+
+<!-- Javascripts -->
+<script src="../../static/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/filestyle.js"></script>
+
+<script>
+    $(function () {
+        $("#city").filter(":selected").change(function () {
+            var value = $(this).val();
+            $(this).next().val(value);
+        });
+        $("#country").filter(":selected").change(function () {
+            var value = $(this).val();
+            $(this).next().val(value);
+        });
+    });
 </script>
+
 <script>
     function updateCountryTxt(select) {
         var country_name = document.getElementById("form-0-country").value;
         document.getElementById("id_form-0-country").value = country_name;
     }
+
     function updateStateTxt() {
         var state_name = document.getElementById("form-0-city").value;
         document.getElementById("id_form-0-city").value = state_name;
     }
 </script>
+
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function () {
+        // Code adapted from http://djangosnippets.org/snippets/1389/
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+            var replacement = prefix + '-' + ndx + '-';
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+                    replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            //if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
 
-  // Code adapted from http://djangosnippets.org/snippets/1389/
+        function deleteForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
-  function updateElementIndex(el, prefix, ndx) {
-    var id_regex = new RegExp('(' + prefix + '-\\d+-)');
-    var replacement = prefix + '-' + ndx + '-';
-    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
- replacement));
-    if (el.id) el.id = el.id.replace(id_regex, replacement);
-    //if (el.name) el.name = el.name.replace(id_regex, replacement);
-  }
+            if (formCount > 1) {
+                // Delete the item/form
+                $(btn).parents('.item').remove();
 
-  function deleteForm(btn, prefix) {
-    var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+                var forms = $('.item'); // Get all the forms
 
-    if (formCount > 1) {
-      // Delete the item/form
-      $(btn).parents('.item').remove();
+                // Update the total number of forms (1 less than before)
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
 
-      var forms = $('.item'); // Get all the forms
+                var i = 0;
+                // Go through the forms and set their indices, names and IDs
+                for (formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).children().children().each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            else {
+                alert("Debes agregar al menos un destino!");
+            }
+            return false;
+        }
 
-      // Update the total number of forms (1 less than before)
-      $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        function addForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
-      var i = 0;
-      // Go through the forms and set their indices, names and IDs
-      for (formCount = forms.length; i < formCount; i++) {
-        $(forms.get(i)).children().children().each(function() {
-          updateElementIndex(this, prefix, i);
+            // You can only submit a maximum of 10 todo items
+            if (formCount < 20) {
+                // Clone a form (without event handlers) from the first form
+                var row = $(".item:first").clone(false).get(0);
+                // Insert it after the last form
+                $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+                // Remove the bits we don't want in the new row/form
+                // e.g. error messages
+                $(".errorlist", row).remove();
+                $(row).children().removeClass('error');
+
+                // Relabel/rename all the relevant bits
+                $(row).children().children().each(function () {
+                    updateElementIndex(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
+
+                // Add an event handler for the delete item/form link
+                $(row).find('.delete').click(function () {
+                    return deleteForm(this, prefix);
+                });
+
+                // Update the total form count
+                $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+                $(".datepicker").datepicker();
+
+            } // End if
+            else {
+                alert("Lo siento, no más de 20 destinos.");
+            }
+            return false;
+        }
+
+        // Register the click event handlers
+        $("#add_destination").click(function () {
+            return addForm(this, 'form');
         });
-      }
 
-    } // End if
-    else {
-        alert("Debes agregar al menos un destino!");
-    }
-    return false;
-  }
-
-
-  function addForm(btn, prefix) {
-    var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-
-    // You can only submit a maximum of 10 todo items
-    if (formCount < 20) {
-      // Clone a form (without event handlers) from the first form
-      var row = $(".item:first").clone(false).get(0);
-      // Insert it after the last form
-      $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
-
-      // Remove the bits we don't want in the new row/form
-      // e.g. error messages
-      $(".errorlist", row).remove();
-      $(row).children().removeClass('error');
-
-      // Relabel/rename all the relevant bits
-      $(row).children().children().each(function() {
-        updateElementIndex(this, prefix, formCount);
-        if ( $(this).attr('type') == 'text' )
-          $(this).val('');
-      });
-
-      // Add an event handler for the delete item/form link
-      $(row).find('.delete').click(function() {
-        return deleteForm(this, prefix);
-      });
-
-      // Update the total form count
-      $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
-      $( ".datepicker").datepicker();
-
-    } // End if
-    else {
-      alert("Lo siento, no más de 20 destinos.");
-    }
-    return false;
-  }
-
-  // Register the click event handlers
-  $("#add_destination").click(function() {
-    return addForm(this, 'form');
-  });
-
-  $(".delete").click(function() {
-    return deleteForm(this, 'form');
-  });
-});
+        $(".delete").click(function () {
+            return deleteForm(this, 'form');
+        });
+    });
 </script>
 
-
 <script language="javascript">print_country("id_form-0-country");</script>
+
 </html>
  
