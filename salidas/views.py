@@ -104,7 +104,7 @@ def new_application(request):
                     #     newDocument.save()
                     try:
                         asignature = request.FILES['signature']
-                        id_teacher.signature.clear()
+                        id_teacher.signature.delete()
                         id_teacher.signature=asignature
                         id_teacher.save()
                     except:
