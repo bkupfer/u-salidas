@@ -34,6 +34,16 @@ class ReplacementApplicationForm(forms.Form):
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
+class DocumentForm(forms.ModelForm):
+    file = forms.FileField()
+    class Meta:
+        model = Document
+        exclude = {'id_application', 'path'}
 
+DocumentFormSet = formset_factory(DocumentForm, extra=1)
 
-
+class TeacherSignatureForm(forms.ModelForm):
+    signature = forms.ImageField()
+    class Meta:
+        model = Teacher
+        exclude = {'rut','name','last_name','profile_picture = models.URLField()', 'mail'}

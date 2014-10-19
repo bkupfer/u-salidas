@@ -52,6 +52,9 @@ def new_application(request):
     viatico = FinanceForm(request.POST or None)
     pasaje = FinanceForm(request.POST or None)
     inscripcion= FinanceForm(request.POST or None)
+    documents = DocumentForm(request.POST or None)
+    #documents = DocumentFormSet(request.FILES or None)
+    teacher_signature = TeacherSignatureForm(request.FILES or None)
     if application.is_valid():
         if destinations.is_valid():
             if executiveReplacement.is_valid():
@@ -91,7 +94,24 @@ def new_application(request):
                     newViatico = financeForm(viatico, newApp, 1)
                     newPasaje = financeForm(pasaje, newApp, 2)
                     newInscripcion = financeForm(inscripcion, newApp, 3)
-                    return redirect(list_of_applications)
+                    try:
+                        file = request.FILES['file']
+                        newDocument = Document(id_application=newApp,file=file)
+                        newDocument.save()
+                    except:
+                        file=None
+                    # for document in documents:
+                    #     file = request.FILES['file']
+                    #     newDocument = Document(id_application=newApp,file=file)
+                    #     newDocument.save()
+                    try:
+                        asignature = request.FILES['signature']
+                        id_teacher.signature.delete()
+                        id_teacher.signature=asignature
+                        id_teacher.save()
+                    except:
+                        asignature=None
+                    return redirect(list_of_applications)        
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 def teacher_calendar(request):

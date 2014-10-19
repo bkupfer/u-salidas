@@ -92,14 +92,14 @@ class ApplicationHasApplicationState(models.Model):
 
 
 class Document(models.Model):
-    path = models.CharField(blank=True, null=True, max_length=200)
     id_application = models.ForeignKey('Application')
+    file = models.FileField(blank=True, null=True,upload_to='documents')
 
 class Teacher(models.Model):
     rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    signature = models.ImageField(max_length=255, blank=True, null=True)
+    signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
     profile_picture = models.URLField()
     mail = models.EmailField()
     def __str__(self):
