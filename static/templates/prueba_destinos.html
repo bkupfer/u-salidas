@@ -1,5 +1,13 @@
 
 <html>
+<link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../static/public/css/docs.min.css" rel="stylesheet">
+<link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
+<link href="../../static/css/jquery-ui.min.css" rel="stylesheet" >
+<script src="../../static/external/jquery/jquery.js"></script>
+<script src="../../static/public/js/jquery-1.11.0.min.js"></script>
+<script src="../../static/js/jquery-ui.min.js"></script>
+<script src="../../static/js/countries.js"></script>
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
@@ -8,75 +16,132 @@
     <form method="POST" action="{% url 'prueba' %}"> {% csrf_token %}
     <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
         <div class="panel-body">
-            {{ financeFormSet.management_form }}
-            {% for form in financeFormSet %}
-                {{ form.id }}
-                <ul>
-                    <li>{{ form.checkbox }}</li>
-                    <li>{{ form.id_currency }}</li>
-                    <li>{{ form.amount   }}</li>
-                </ul>
+            {{ destinationFormSet.management_form }}
+            {% for destination in destinationFormSet %}
+                <div class="item">
+                    {{ destination.id }}
+                    <div class="col-sm-12">
+                        <label class="col-sm-2 control-label">Destino</label>
+                            País
+                            {{ destination.country }}
+                    </div>
+                    <div class="col-sm-12">
+                         <label class="col-sm-2 control-label"></label>
+                            Ciudad
+                            {{ destination.city }}
+                    </div>
+                    <div class="col-sm-12">
+                        <br/>
+                        <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
+                        {{ destination.start_date }}
+                    </div>
+                    <div class="col-sm-12">
+                        <br/>
+                        <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
+                        {{ destination.end_date }}
+                    </div>
+                     <div align="right"><a class="delete" href="#">Delete</a></div>
+                    <hr>
+                </div>
+
             {% endfor %}
-{#            <div class="row" id="finance_pasajes">#}
-{#                <div class="form-group">#}
-{#                    <div class="finance_item">#}
-{#                        <div class="col-sm-12">#}
-{#                            <label class="col-sm-2 control-label" align="left">Pasajes</label>#}
-{#                            <label class="col-sm-2 control-label">¿Financia DCC?</label>#}
-{#                            <div class="col-sm-1">#}
-{#                                {{ pasaje.checkbox }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-4">#}
-{#                                {{ pasaje.amount }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-3" align="right">#}
-{#                                {{ pasaje.id_currency }}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="row" id="finance_viaticos">#}
-{#                <div class="form-group">#}
-{#                    <div class="finance_item">#}
-{#                        <div class="col-sm-12">#}
-{#                            <label class="col-sm-2 control-label">Viáticos</label>#}
-{#                            <label class="col-sm-2 control-label">¿Financia DCC?</label>#}
-{#                            <div class="col-sm-1">#}
-{#                                {{ viatico.checkbox }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-4">#}
-{#                                {{ viatico.amount }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-3" align="right">#}
-{#                                {{ viatico.id_currency }}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="row" id="finance_inscripcion">#}
-{#                <div class="form-group">#}
-{#                    <div class="finance_item">#}
-{#                        <div class="col-sm-12">#}
-{#                            <label class="col-sm-2 control-label">Inscripción</label>#}
-{#                            <label class="col-sm-2 control-label">¿Financia DCC?</label>#}
-{#                            <div class="col-sm-1">#}
-{#                                {{ inscripcion.checkbox }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-4">#}
-{#                                {{ inscripcion.amount }}#}
-{#                            </div>#}
-{#                            <div class="col-sm-3" align="right">#}
-{#                                {{ inscripcion.id_currency }}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
         </div><!-- end panel -->
+    </div>
+    <div class="row">
+        <div id="add_destination" class="col-sm-12" align="right">
+            <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+            <label class="control-label">Agregar Destino</label>
+        </div>
     </div>
     <input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud" />
     </form>
 </body>
+<script language="javascript">print_country("id_form-0-country");</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // Code adapted from http://djangosnippets.org/snippets/1389/
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+            var replacement = prefix + '-' + ndx + '-';
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+                    replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            //if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function deleteForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            if (formCount > 1) {
+                // Delete the item/form
+                $(btn).parents('.item').remove();
+
+                var forms = $('.item'); // Get all the forms
+
+                // Update the total number of forms (1 less than before)
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+                var i = 0;
+                // Go through the forms and set their indices, names and IDs
+                for (formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).children().children().each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            else {
+                alert("Debes agregar al menos un destino!");
+            }
+            return false;
+        }
+
+        function addForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            // You can only submit a maximum of 10 todo items
+            if (formCount < 20) {
+                // Clone a form (without event handlers) from the first form
+                var row = $(".item:first").clone(false).get(0);
+                // Insert it after the last form
+                $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+                // Remove the bits we don't want in the new row/form
+                // e.g. error messages
+                $(".errorlist", row).remove();
+                $(row).children().removeClass('error');
+
+                // Relabel/rename all the relevant bits
+                $(row).children().children().each(function () {
+                    updateElementIndex(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
+
+                // Add an event handler for the delete item/form link
+                $(row).find('.delete').click(function () {
+                    return deleteForm(this, prefix);
+                });
+
+                // Update the total form count
+                $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+                $(".datepicker").datepicker();
+
+            } // End if
+            else {
+                alert("Lo siento, no más de 20 destinos.");
+            }
+            return false;
+        }
+
+        // Register the click event handlers
+        $("#add_destination").click(function () {
+            return addForm(this, 'form');
+        });
+
+        $(".delete").click(function () {
+            return deleteForm(this, 'form');
+        });
+    });
+</script>
 </html>

@@ -51,6 +51,17 @@ def financeForm(finance, newApp, id_finance_type):
         except:
             print(finance)
 
+def destinationForm(destination, newApp):
+    if destination.is_valid():
+        try:
+            country = destination.cleaned_data['country']
+            city = destination.cleaned_data['city']
+            start_date = destination.cleaned_data['start_date']
+            end_date = destination.cleaned_data['end_date']
+            newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
+            newDestination.save()
+        except:
+            print("problema con"+destination)
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None)
@@ -80,13 +91,7 @@ def new_application(request):
         stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
         stateApp.save()
         #se arma la instancia Destination
-        for destination in destinations:
-            country = destination.cleaned_data['country']
-            city = destination.cleaned_data['city']
-            start_date = destination.cleaned_data['start_date']
-            end_date = destination.cleaned_data['end_date']
-            newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
-            newDestination.save()
+
         #se guardan los profes reemplazantes
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
@@ -186,12 +191,12 @@ def calendar(request, year, month):
 
 
 def prueba(request):
-    financeFormSet = FinanceFormSet(request.POST or None)
+    destinationFormSet = DestinationFormSet(request.POST or None)
     newApp = Application(id_Teacher=Teacher.objects.get(pk=1),id_commission_type=CommissionType.objects.get(type="Estudio"),financed_by="financed_by",motive="motiveichon",id_days_validation_state=State.objects.get(state="Aceptado"),id_funds_validation_state=State.objects.get(state="Aceptado"))
     newApp.save()
     if request.method == "POST":
         i = 1
-        for finance in financeFormSet:
-            newViatico = financeForm(finance, newApp, i)
+        for destination in destinationFormSet:
+            destinationForm(destination, newApp, i)
             i +=1
     return render_to_response("prueba_destinos.html", locals(), context_instance=RequestContext(request))
