@@ -40,13 +40,16 @@ def login(request):
 #Este es el formulario prototipo de financia
 def financeForm(finance, newApp, id_finance_type):
     if finance.is_valid():
-        checkbox = finance.checkbox
-        if checkbox.exists():
-            currency = finance.cleaned_data['id_currency']
-            amount = finance.cleaned_data['amount']
-            type = FinanceType.objects.get(pk=id_finance_type)
-            newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
-            newFinance.save()
+        try:
+            checkbox = finance.cleaned_data['checkbox']
+            if checkbox:
+                currency = finance.cleaned_data['id_currency']
+                amount = finance.cleaned_data['amount']
+                type = FinanceType.objects.get(pk=id_finance_type)
+                newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
+                newFinance.save()
+        except:
+            print(finance)
 
 
 def new_application(request):
@@ -207,6 +210,8 @@ def prueba(request):
     newApp = Application(id_Teacher=Teacher.objects.get(pk=1),id_commission_type=CommissionType.objects.get(type="Estudio"),financed_by="financed_by",motive="motiveichon",id_days_validation_state=State.objects.get(state="Aceptado"),id_funds_validation_state=State.objects.get(state="Aceptado"))
     newApp.save()
     if request.method == "POST":
+        i = 1
         for finance in financeFormSet:
-            newViatico = financeForm(finance, newApp, 1)
+            newViatico = financeForm(finance, newApp, i)
+            i +=1
     return render_to_response("prueba_destinos.html", locals(), context_instance=RequestContext(request))
