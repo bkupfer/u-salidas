@@ -89,5 +89,26 @@
         "fields": {
             "state": "Rechazado"
         }
+    },
+    {
+        "model": "salidas.FinanceType",
+        "pk": 1,
+        "fields": {
+            "type": "Inscripcion"
+        }
+    },
+        {
+        "model": "salidas.FinanceType",
+        "pk": 2,
+        "fields": {
+            "type": "Pasajes"
+        }
+    },
+        {
+        "model": "salidas.FinanceType",
+        "pk": 3,
+        "fields": {
+            "type": "Viaticos"
+        }
     }
 ]
