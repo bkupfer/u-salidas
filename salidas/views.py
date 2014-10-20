@@ -48,21 +48,20 @@ def financeForm(finance, newApp, id_finance_type):
                 type = FinanceType.objects.get(pk=id_finance_type)
                 newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
                 newFinance.save()
+                print("todo un exito para id_finance_type:", id_finance_type)
         except:
             print(finance)
 
 
 def new_application(request):
-    application = NewApplicationForm(request.POST or None)
-    destinations = DestinationFormSet(request.POST or None)
-    executiveReplacement = ReplacementApplicationForm(request.POST or None)
-    academicReplacement = ReplacementApplicationForm(request.POST or None)
-    viatico = FinanceForm(request.POST or None)
-    pasaje = FinanceForm(request.POST or None)
-    inscripcion= FinanceForm(request.POST or None)
-    documents = DocumentForm(request.POST or None)
+    application = NewApplicationForm(request.POST or None,prefix="application")
+    destinations = DestinationFormSet(request.POST or None,prefix="destinations")
+    executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
+    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
+    documents = DocumentForm(request.POST or None,prefix="documents")
     #documents = DocumentFormSet(request.FILES or None)
-    teacher_signature = TeacherSignatureForm(request.FILES or None)
+    teacher_signature = TeacherSignatureForm(request.FILES or None,prefix="signature")
 
     if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
         # Applications instance
@@ -114,10 +113,11 @@ def new_application(request):
         newAcademicReplacement.save()
 
         # campos de dinero
-        # nota: EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
-        newViatico = financeForm(viatico, newApp, 1)
-        newPasaje  = financeForm(pasaje,  newApp, 2)
-        newInscripcion = financeForm(inscripcion, newApp, 3)
+        if request.method == "POST":
+            i = 1
+            for finance in financeFormSet:
+                financeForm(finance, newApp, i)
+                i += 1
 
         # archivos
         try:

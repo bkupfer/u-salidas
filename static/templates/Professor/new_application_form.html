@@ -38,8 +38,6 @@
     
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
-{#      <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
-
             <h1>Formulario de solicitud de salidas</h1>
             <br/>
 
@@ -56,6 +54,7 @@
 
             <!-- THE FORM -->
             <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+
             <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
             <div class="row">
                 <div class="col-sm-8">
@@ -96,73 +95,38 @@
 
             <!-- Montos -->
             <div class="row">
-				<div class="col-sm-8">
-					<div class="panel panel-primary">
-						<div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
-					  	<div class="panel-body">
-                            <div class="row" id="finance_pasajes">
-                                <div class="form-group">
-                                    <div class="finance_item">
-                                        <div class="col-sm-12">
-                                            <label class="col-sm-2 control-label" align="left">Pasajes</label>
-                                            <label class="col-sm-2 control-label">¿Financia DCC?</label>
-                                            <div class="col-sm-1">
-                                                {{ pasaje.checkbox }}
-                                            </div>
-                                            <div class="col-sm-4">
-                                                {{ pasaje.amount }}
-                                            </div>
-                                            <div class="col-sm-3" align="right">
-                                                {{ pasaje.id_currency }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" id="finance_viaticos">
-                                <div class="form-group">
-                                    <div class="finance_item">
-                                        <div class="col-sm-12">
-                                            <label class="col-sm-2 control-label">Viáticos</label>
-                                            <label class="col-sm-2 control-label">¿Financia DCC?</label>
-                                            <div class="col-sm-1">
-                                                {{ viatico.checkbox }}
-                                            </div>
-                                            <div class="col-sm-4">
-                                                {{ viatico.amount }}
-                                            </div>
-                                            <div class="col-sm-3" align="right">
-                                                {{ viatico.id_currency }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" id="finance_inscripcion">
-                                <div class="form-group">
-                                    <div class="finance_item">
-                                        <div class="col-sm-12">
-                                            <label class="col-sm-2 control-label">Inscripción</label>
-                                            <label class="col-sm-2 control-label">¿Financia DCC?</label>
-                                            <div class="col-sm-1">
-                                                {{ inscripcion.checkbox }}
-                                            </div>
-                                            <div class="col-sm-4">
-                                                {{ inscripcion.amount }}
-                                            </div>
-                                            <div class="col-sm-3" align="right">
-                                                {{ inscripcion.id_currency }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-					</div>
-				</div>
-			</div>
+                <div class="col-sm-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
+                        <div class="panel-body">
+                            {{ financeFormSet.management_form }}
+                            {% for form in financeFormSet %}
+                                {{ form.id }}
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="finance_item">
+                                            <div class="col-sm-12">
+                                                <label class="col-sm-2 control-label" align="left">asd</label>
+                                                <label class="col-sm-2 control-label">¿Financia DCC?</label>
 
-{# <form action="new_application" enctype="multipart/form-data" method="post" accept-charset="utf-8" class="" role="form">#}
+                                                <div class="col-sm-1">
+                                                    {{ form.checkbox }}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ form.amount }}
+                                                </div>
+                                                <div class="col-sm-3" align="right">
+                                                    {{ form.id_currency }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Destinos -->
 			<div class="row">
