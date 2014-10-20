@@ -12,9 +12,16 @@
             {% for form in financeFormSet %}
                 {{ form.id }}
                 <ul>
+                <label class="col-sm-2 control-label">¿Financia DCC?</label>
+                <div class="col-sm-1">
                     <li>{{ form.checkbox }}</li>
+                </div>
+                <div class="col-sm-4">
                     <li>{{ form.id_currency }}</li>
-                    <li>{{ form.amount   }}</li>
+                </div>
+                <div class="col-sm-3" align="right">
+                    <li>{{ form.amount}}</li>
+                </div>
                 </ul>
             {% endfor %}
 {#            <div class="row" id="finance_pasajes">#}

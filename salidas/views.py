@@ -57,9 +57,7 @@ def new_application(request):
     destinations = DestinationFormSet(request.POST or None)
     executiveReplacement = ReplacementApplicationForm(request.POST or None)
     academicReplacement = ReplacementApplicationForm(request.POST or None)
-    viatico = FinanceForm(request.POST or None)
-    pasaje = FinanceForm(request.POST or None)
-    inscripcion= FinanceForm(request.POST or None)
+    financeFormSet = FinanceFormSet(request.POST or None)
     documents = DocumentForm(request.POST or None)
     #documents = DocumentFormSet(request.FILES or None)
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -96,10 +94,14 @@ def new_application(request):
         newAcademicReplacement.save()
         #campos de dinero
         #viatico
-        #EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
-        newViatico = financeForm(viatico, newApp, 1)
-        newPasaje = financeForm(pasaje, newApp, 2)
-        newInscripcion = financeForm(inscripcion, newApp, 3)
+        if request.method == "POST":
+            i = 1
+            print("entre al if")
+            for finance in financeFormSet:
+                print("entre al for")
+                newViatico = financeForm(finance, newApp, i)
+                i +=1
+        
         try:
             file = request.FILES['file']
             newDocument = Document(id_application=newApp,file=file)
