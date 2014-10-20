@@ -346,7 +346,7 @@
                 // e.g. error messages
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
-
+                console.log(row);
                 // Relabel/rename all the relevant bits
                 $(row).children().children().each(function () {
                     updateElementIndex(this, prefix, formCount);
@@ -409,7 +409,7 @@
                 var i = 0;
                 // Go through the forms and set their indices, names and IDs
                 for (formCount = forms.length; i < formCount; i++) {
-                    $(forms.get(i)).children().children().each(function () {
+                    $(forms.get(i)).children().each(function () {
                         updateElementIndex2(this, prefix, i);
                     });
                 }
@@ -434,9 +434,9 @@
                 // e.g. error messages
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
-
+                console.log(row);
                 // Relabel/rename all the relevant bits
-                $(row).children().children().each(function () {
+                $(row).children().each(function () {
                     updateElementIndex2(this, prefix, formCount);
                     if ($(this).attr('type') == 'text')
                         $(this).val('');
