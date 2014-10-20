@@ -54,7 +54,7 @@ def financeForm(finance, newApp, id_finance_type):
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None,prefix="application")
-    destinations = DestinationFormSet(request.POST or None,prefix="destinations")
+    destinations = DestinationFormSet(request.POST or None)
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
     academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
