@@ -12,14 +12,17 @@ class NewApplicationForm(forms.ModelForm):
         exclude = ('id_Teacher','directors_name','directors_rut','id_days_validation_state','id_funds_validation_state')
         #fields = ('motive','financed_by')
 
+
 class FinanceForm(forms.ModelForm):
-    id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(),widget=forms.Select(attrs={'placeholder':u'Tipo de moneda'}))
+    id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), widget=forms.Select(attrs={'placeholder':u'Tipo de moneda'}))
     class Meta:
         model = Finance
         exclude = {'id_application' , 'id_finance_type'}
 
+
 class FinanceDccForm(FinanceForm):
      checkbox = forms.BooleanField(required=True,label="Chequéate esta buey")
+
 
 FinanceFormSet = formset_factory(FinanceDccForm,extra=3)
 class DestinationForm(forms.ModelForm):
@@ -35,7 +38,6 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 class ReplacementApplicationForm(forms.Form):
     teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
-
 
 
 class DocumentForm(forms.ModelForm):

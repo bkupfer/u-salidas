@@ -62,41 +62,61 @@ def new_application(request):
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
     if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
-        #se arma la instancia Application
-        id_teacher = Teacher.objects.get(pk=1) #EL PROFE ES EL PRIMERO EN MI LISTA cambiar por usuario del sistema
+        # Applications instance
+        id_teacher = Teacher.objects.get(pk=1)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
         ct = application.cleaned_data['id_commission_type']
-        fb = application.cleaned_data['financed_by']
         motive = application.cleaned_data['motive']
-        daysv = State.objects.get(pk=3)
-        fundsv = State.objects.get(pk=3)
-        newApp = Application(id_Teacher=id_teacher,id_commission_type=ct,financed_by=fb,motive=motive,id_days_validation_state=daysv,id_funds_validation_state=fundsv)
+        fb = application.cleaned_data['financed_by']
+        daysv = State.objects.get(pk=3)     # pendiente
+        fundsv = State.objects.get(pk=3)    # pendiente
+
+        newApp = Application(id_Teacher = id_teacher,
+                             id_commission_type = ct,
+                             motive = motive,
+                             financed_by = fb,
+                             id_days_validation_state = daysv,
+                             id_funds_validation_state = fundsv)  # fields 'directors_name' & 'directors_rut' are missing
         newApp.save()
+
         #agregarle estado a la App
         #estado pendiente dcc
-        state = ApplicationState.objects.get(pk=1)
+        state = ApplicationState.objects.get(pk=4)  # acta
         stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
         stateApp.save()
+
         #se arma la instancia Destination
         for destination in destinations:
             country = destination.cleaned_data['country']
             city = destination.cleaned_data['city']
             start_date = destination.cleaned_data['start_date']
             end_date = destination.cleaned_data['end_date']
-            newDestination = Destination(application=newApp,country=country,city=city,start_date=start_date,end_date=end_date)
+
+            newDestination = Destination(application=newApp,
+                                         country=country,
+                                         city=city,
+                                         start_date=start_date,
+                                         end_date=end_date)
             newDestination.save()
+
         #se guardan los profes reemplazantes
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
-        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,id_Application=newApp,id_state=daysv)
-        newAcademicReplacement = Replacement(rut_teacher=academicReplace,id_Application=newApp,id_state=daysv)
+        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,
+                                              id_Application=newApp,
+                                              id_state=daysv)
+        newAcademicReplacement = Replacement(rut_teacher=academicReplace,
+                                             id_Application=newApp,
+                                             id_state=daysv)
         newExecutiveReplacement.save()
         newAcademicReplacement.save()
-        #campos de dinero
-        #viatico
-        #EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
+
+        # campos de dinero
+        # nota: EL ORDEN ES INMUTABLE, NO LO CAMBIE POR FAVOR
         newViatico = financeForm(viatico, newApp, 1)
-        newPasaje = financeForm(pasaje, newApp, 2)
+        newPasaje  = financeForm(pasaje,  newApp, 2)
         newInscripcion = financeForm(inscripcion, newApp, 3)
+
+        # archivos
         try:
             file = request.FILES['file']
             newDocument = Document(id_application=newApp,file=file)
