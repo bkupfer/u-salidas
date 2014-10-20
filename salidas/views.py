@@ -89,7 +89,7 @@ def new_application(request):
                              motive = motive,
                              financed_by = fb,
                              id_days_validation_state = daysv,
-                             id_funds_validation_state = fundsv)  # fields 'directors_name' & 'directors_rut' are missing
+                             id_funds_validation_state = fundsv)
         newApp.save()
 
         #agregarle estado a la App

@@ -57,7 +57,7 @@
 
             <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">Información de viaje</div>
                         <div class="panel-body">
@@ -95,7 +95,7 @@
 
             <!-- Montos -->
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
                         <div class="panel-body">
@@ -132,7 +132,7 @@
 
             <!-- Destinos -->
 			<div class="row">
-				<div class="col-sm-8">
+				<div class="col-sm-12">
 					<div class="panel panel-primary">
 						<div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
 					  	<div class="panel-body">
@@ -154,12 +154,12 @@
                                                         {{ destination.city }}
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <br/>
+                                                    <br>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
                                                     {{ destination.start_date }}
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <br/>
+                                                    <br>
                                                     <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
                                                     {{ destination.end_date }}
                                                 </div>
@@ -186,7 +186,7 @@
 
             <!-- Profesores reemplazantes -->
             <div class="row">
-				<div class="col-sm-8">
+				<div class="col-sm-12">
 					<div class="panel panel-danger">
 						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante</div>
 					  	<div class="panel-body">
@@ -227,7 +227,7 @@
 
             <!-- Adjuntar documentos -->
 			<div class="row">
-				<div class="col-sm-7">
+				<div class="col-sm-12">
 					<div class="panel panel-success">
 						<div class="panel-heading"><span class="glyphicon glyphicon-file"></span> Adjuntar documentos</div>
 					  	<div class="panel-body">
@@ -318,7 +318,7 @@
             if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
                     replacement));
             if (el.id) el.id = el.id.replace(id_regex, replacement);
-            //if (el.name) el.name = el.name.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
         }
 
         function deleteForm(btn, prefix) {
@@ -350,7 +350,7 @@
         function addForm(btn, prefix) {
             var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
-            // You can only submit a maximum of 10 todo items
+            // You can only submit a maximum of 20 forms
             if (formCount < 20) {
                 // Clone a form (without event handlers) from the first form
                 var row = $(".item:first").clone(false).get(0);
