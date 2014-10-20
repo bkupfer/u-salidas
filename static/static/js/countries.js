@@ -284,7 +284,7 @@ function print_country(country) {
     var cont=0;
     while(cont<20){
         id="id_destinations-"+parseInt(cont)+"-country";
-        var c = document.getElementById(id);
+        c = document.getElementById(id);
 
         var x, i = 0;
         try {
