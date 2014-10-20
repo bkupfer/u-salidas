@@ -58,7 +58,7 @@
             <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-default">
                         <div class="panel-heading"><span class="glyphicon glyphicon-leaf"></span> Información de viaje</div>
                         <div class="panel-body">
                             <div class="row">
@@ -96,7 +96,7 @@
             <!-- Montos -->
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-success">
                         <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
                         <div class="panel-body">
                             {{ financeFormSet.management_form }}
@@ -133,7 +133,7 @@
             <!-- Destinos -->
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="panel panel-primary">
+					<div class="panel panel-info">
 						<div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
 					  	<div class="panel-body">
 					    	<div id="destination_form" >
@@ -228,19 +228,29 @@
             <!-- Adjuntar documentos -->
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="panel panel-success">
+                        <div class="panel panel-warning">
 						<div class="panel-heading"><span class="glyphicon glyphicon-file"></span> Adjuntar documentos</div>
 					  	<div class="panel-body">
-					  	
+
 					  		<!-- para cada documento -->
 					    	<div class="row">
 								<div class="form-group">
 									<div class="col-sm-1">
-									{{ documents.file }}
-                                    </div>
+										<button type="button" class="close" aria-hidden="true" onClick="">&times;</button>
+									</div>
+				    				<div class="col-sm-11">
+									    <input type="file" class="filestyle" data-buttonName="btn-warning" data-buttonText="Buscar archivo">
+									</div>
 								</div>
 							</div>
+							<hr />
 							<!-- fin para cada documento -->
+
+                            <div class="row">
+								<div class="col-sm-4">
+									<button class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span></button>
+								</div>
+							</div>
 
 					  	</div>
 					</div>
