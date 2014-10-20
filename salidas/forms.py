@@ -27,7 +27,7 @@ class FinanceDccForm(FinanceForm):
 FinanceFormSet = formset_factory(FinanceDccForm,extra=3)
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(attrs={'onchange':"print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'onchange':"updateStateTxt(this);"}, choices=([("seleccione ciudad", "seleccione ciudad")])))
+    city = forms.CharField(widget=forms.Select(attrs={'class': 'city','onchange':"updateStateTxt(this);"}, choices=([("", "Seleccione Ciudad")])))
     start_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
     end_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
     class Meta:

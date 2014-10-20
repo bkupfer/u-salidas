@@ -284,31 +284,6 @@
 <script src="../../static/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/filestyle.js"></script>
 
-<script>
-    $(function () {
-        $("#city").filter(":selected").change(function () {
-            var value = $(this).val();
-            $(this).next().val(value);
-        });
-        $("#country").filter(":selected").change(function () {
-            var value = $(this).val();
-            $(this).next().val(value);
-        });
-    });
-</script>
-
-<script>
-    function updateCountryTxt(select) {
-        var country_name = document.getElementById("id_destinations-0-country").value;
-        document.getElementById("id_form-0-country").value = country_name;
-    }
-
-    function updateStateTxt() {
-        var state_name = document.getElementById("id_destinations-0-country").value;
-        document.getElementById("id_form-0-city").value = state_name;
-    }
-</script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         // Code adapted from http://djangosnippets.org/snippets/1389/
@@ -373,8 +348,10 @@
                 $(row).find('.delete').click(function () {
                     return deleteForm(this, prefix);
                 });
-
-                // Update the total form count
+                citySelector = $(row).find('.city')[0];
+                citySelector.options.length = 0;
+                citySelector.options[0] = new Option ("Seleccione Ciudad","");
+                // Update the total form count;
                 $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
                 $(".datepicker").datepicker();
 

@@ -304,9 +304,9 @@ function print_state(state_id, state_index, country_id){
     var num = parseInt(country_id.substring(16,17));
 
 	var option_str = document.getElementById("id_destinations-"+num+"-city");
-    console.log(option_str);
 	var x, i=0; state_index++;
 	var state_arr = s_a[state_index].split("|");
+    option_str.options.length = 0;
 	for(x in state_arr){
             option_str.options[i++]= new Option(state_arr[x],state_arr[x]);
 	}
