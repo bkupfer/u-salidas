@@ -48,9 +48,21 @@ def financeForm(finance, newApp, id_finance_type):
                 type = FinanceType.objects.get(pk=id_finance_type)
                 newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
                 newFinance.save()
-                print("todo un exito para id_finance_type:", id_finance_type)
         except:
-            print(finance)
+            print("error en financeForm method. view.py")
+
+
+def destinationForm(destination, newApp):
+    if destination.is_valid():
+        try:
+            country = destination.cleaned_data['country']
+            city    = destination.cleaned_data['city']
+            start_date = destination.cleaned_data['start_date']
+            end_date= destination.cleaned_data['end_date']
+            destiny = Destination(application=newApp,country=country, city=city, start_date=start_date, end_date=end_date)
+            destiny.save()
+        except:
+            print("error en destinationForm method. view.py")
 
 
 def new_application(request):
@@ -86,20 +98,6 @@ def new_application(request):
         stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
         stateApp.save()
 
-        #se arma la instancia Destination
-        for destination in destinations:
-            country = destination.cleaned_data['country']
-            city = destination.cleaned_data['city']
-            start_date = destination.cleaned_data['start_date']
-            end_date = destination.cleaned_data['end_date']
-
-            newDestination = Destination(application=newApp,
-                                         country=country,
-                                         city=city,
-                                         start_date=start_date,
-                                         end_date=end_date)
-            newDestination.save()
-
         #se guardan los profes reemplazantes
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
@@ -113,11 +111,16 @@ def new_application(request):
         newAcademicReplacement.save()
 
         # campos de dinero
-        if request.method == "POST":
-            i = 1
-            for finance in financeFormSet:
-                financeForm(finance, newApp, i)
-                i += 1
+        i = 1
+        for finance in financeFormSet:
+            financeForm(finance, newApp, i)
+            i += 1
+
+        #se arma la instancia Destination
+        i = 1
+        for destination in destinations:
+            destinationForm(destination, newApp)
+            i += 1
 
         # archivos
         try:
