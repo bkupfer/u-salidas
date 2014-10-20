@@ -73,7 +73,7 @@ def new_application(request):
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentForm(request.POST or None,prefix="documents")
     #documents = DocumentFormSet(request.FILES or None)
-    teacher_signature = TeacherSignatureForm(request.FILES or None,prefix="signature")
+    teacher_signature = TeacherSignatureForm(request.FILES or None)
 
     if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
         # Applications instance
@@ -129,10 +129,8 @@ def new_application(request):
             newDocument.save()
         except:
             file=None
-        # for document in documents:
-        #     file = request.FILES['file']
-        #     newDocument = Document(id_application=newApp,file=file)
-        #     newDocument.save()
+
+        # signature
         try:
             asignature = request.FILES['signature']
             id_teacher.signature.delete()
