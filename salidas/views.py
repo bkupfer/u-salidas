@@ -64,6 +64,22 @@ def destinationForm(destination, newApp):
         except:
             print("error en destinationForm method. view.py")
 
+        # archivos
+        try:
+            file = request.FILES['file']
+            newDocument = Document(id_application=newApp,file=file)
+            newDocument.save()
+        except:
+            file=None
+
+def documentForm(doc, newApp):
+    if doc.is_valid():
+        try:
+            file = doc.cleaned_data['file']
+            newDocument = Document(id_application = newApp, file = file)
+            newDocument.save()
+        except:
+            file = None
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None,prefix="application")
@@ -71,8 +87,7 @@ def new_application(request):
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
     academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
-    documents = DocumentForm(request.POST or None,prefix="documents")
-    #documents = DocumentFormSet(request.FILES or None)
+    documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
     if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
@@ -110,25 +125,20 @@ def new_application(request):
         newExecutiveReplacement.save()
         newAcademicReplacement.save()
 
-        # campos de dinero
+        # money
         i = 1
         for finance in financeFormSet:
             financeForm(finance, newApp, i)
             i += 1
 
-        #se arma la instancia Destination
-        i = 1
+        # destinations
         for destination in destinations:
             destinationForm(destination, newApp)
-            i += 1
 
-        # archivos
-        try:
-            file = request.FILES['file']
-            newDocument = Document(id_application=newApp,file=file)
-            newDocument.save()
-        except:
-            file=None
+        # documents
+        for document in documents:
+            print(document)
+            documentForm(document, newApp)
 
         # signature
         try:

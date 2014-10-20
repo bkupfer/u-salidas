@@ -188,7 +188,7 @@
             <div class="row">
 				<div class="col-sm-12">
 					<div class="panel panel-danger">
-						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante(s)</div>
 					  	<div class="panel-body">
 
 					  		<!-- para cada curso -->
@@ -207,8 +207,6 @@
 								</div>
 							</div>
 							<hr>
-							<!-- fin para cada curso -->
-							<!-- para cada curso -->
 					    	<div class="row">
 								<div class="form-group" id="executiveReplacement">
 									<label class="col-sm-4 control-label">Reemplazo Académico</label>
@@ -218,7 +216,6 @@
 								</div>
 							</div>
 							<hr>
-							<!-- fin para cada curso -->
 					  	</div>
 					</div>
 				</div>
@@ -228,29 +225,31 @@
             <!-- Adjuntar documentos -->
 			<div class="row">
 				<div class="col-sm-12">
-                        <div class="panel panel-warning">
-						<div class="panel-heading"><span class="glyphicon glyphicon-file"></span> Adjuntar documentos</div>
-					  	<div class="panel-body">
-
-					  		<!-- para cada documento -->
-					    	<div class="row">
-								<div class="form-group">
-									<div class="col-sm-1">
-										<button type="button" class="close" aria-hidden="true" onClick="">&times;</button>
-									</div>
-				    				<div class="col-sm-11">
-									    {{ documents.file }}
-									</div>
-								</div>
-							</div>
-							<hr />
-							<!-- fin para cada documento -->
+                    <div class="panel panel-warning">
+						<div class="panel-heading"><span class="glyphicon glyphicon-file"></span>Adjuntar documentos</div>
+                        <div class="panel-body">
+                            <!-- para cada documento -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <button type="button" class="close" aria-hidden="true" onClick="">&times;</button>
+                                    </div>
+                                    <div class="col-sm-11">
+                                        {{ documents.management_form }}
+                                        {% for document in documents %}
+                                            {{ document.file }}
+                                        {%  endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <!-- fin para cada documento -->
 
                             <div class="row">
-								<div class="col-sm-4">
-									<button class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span></button>
-								</div>
-							</div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span></button>
+                                </div>
+                            </div>
 
 					  	</div>
 					</div>
