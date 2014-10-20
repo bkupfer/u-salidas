@@ -283,7 +283,7 @@ function print_country(country) {
 
     var cont=0;
     while(cont<20){
-        id="id_form-"+parseInt(cont)+"-country";
+        id="id_destinations-"+parseInt(cont)+"-country";
         var c = document.getElementById(id);
 
         var x, i = 0;
@@ -303,7 +303,7 @@ function print_country(country) {
 function print_state(state_id, state_index, country_id){
     var num = parseInt(country_id.substring(8,9));
 
-	var option_str = document.getElementById("id_form-"+num+"-city");
+	var option_str = document.getElementById("id_destinations-"+num+"-city");
     console.log(option_str);
 	var x, i=0; state_index++;
 	var state_arr = s_a[state_index].split("|");

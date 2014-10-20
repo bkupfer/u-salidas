@@ -53,14 +53,14 @@ def financeForm(finance, newApp, id_finance_type):
 
 
 def new_application(request):
-    application = NewApplicationForm(request.POST or None)
-    destinations = DestinationFormSet(request.POST or None)
-    executiveReplacement = ReplacementApplicationForm(request.POST or None)
-    academicReplacement = ReplacementApplicationForm(request.POST or None)
-    financeFormSet = FinanceFormSet(request.POST or None)
-    documents = DocumentForm(request.POST or None)
+    application = NewApplicationForm(request.POST or None,prefix="application")
+    destinations = DestinationFormSet(request.POST or None,prefix="destinations")
+    executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
+    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
+    documents = DocumentForm(request.POST or None,prefix="documents")
     #documents = DocumentFormSet(request.FILES or None)
-    teacher_signature = TeacherSignatureForm(request.FILES or None)
+    teacher_signature = TeacherSignatureForm(request.FILES or None,prefix="signature")
 
     if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
         #se arma la instancia Application
@@ -94,11 +94,13 @@ def new_application(request):
         newAcademicReplacement.save()
         #campos de dinero
         #viatico
+        print(len(financeFormSet))
         if request.method == "POST":
             i = 1
             print("entre al if")
+            print(len(financeFormSet))
             for finance in financeFormSet:
-                print("entre al for")
+                print(financeFormSet)
                 newViatico = financeForm(finance, newApp, i)
                 i +=1
         
@@ -189,11 +191,12 @@ def calendar(request, year, month):
 
 def prueba(request):
     financeFormSet = FinanceFormSet(request.POST or None)
+    print(len(financeFormSet))
     newApp = Application(id_Teacher=Teacher.objects.get(pk=1),id_commission_type=CommissionType.objects.get(type="Estudio"),financed_by="financed_by",motive="motiveichon",id_days_validation_state=State.objects.get(state="Aceptado"),id_funds_validation_state=State.objects.get(state="Aceptado"))
     newApp.save()
     if request.method == "POST":
         i = 1
         for finance in financeFormSet:
-            newViatico = financeForm(finance, newApp, i)
+            financeForm(finance, newApp, i)
             i +=1
     return render_to_response("prueba_destinos.html", locals(), context_instance=RequestContext(request))
