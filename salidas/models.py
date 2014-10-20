@@ -29,11 +29,13 @@ class Country(models.Model):
     def __str__(self):
        return self.country
 
+
 class City(models.Model):
     country = models.ForeignKey('Country')
     city = models.CharField(max_length=100)
     def __str__(self):
        return self.city
+
 
 class Destination(models.Model):
     application = models.ForeignKey('Application')
@@ -95,6 +97,7 @@ class Document(models.Model):
     id_application = models.ForeignKey('Application')
     file = models.FileField(blank=True, null=True,upload_to='documents')
 
+
 class Teacher(models.Model):
     rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
@@ -124,6 +127,7 @@ class InactivePeriod(models.Model):
     end_date = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
 
+
 class Course(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=8)
@@ -131,14 +135,17 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+
 class Module(models.Model):
     block = models.CharField(max_length=3)
     def __str__(self):
         return self.block
 
+
 class CourseHasModule(models.Model):
     id_Course = models.ForeignKey('Course')
     id_Module = models.ForeignKey('Module')
+
 
 class TeacherHasCourse(models.Model):
     id_Teacher = models.ForeignKey('Teacher')

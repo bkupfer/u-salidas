@@ -1,21 +1,21 @@
 [
     {
         "model": "salidas.Currency",
-        "pk": 2,
+        "pk": 1,
         "fields": {
             "currency": "CLP"
         }
     },
     {
         "model": "salidas.Currency",
-        "pk": 3,
+        "pk": 2,
         "fields": {
             "currency": "EUR"
         }
     },
     {
         "model": "salidas.Currency",
-        "pk": 1,
+        "pk": 3,
         "fields": {
             "currency": "USD"
         }

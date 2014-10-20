@@ -9,13 +9,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Pages:
     # General views
-    url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'General/login.html'}),
 
     # Teacher view pages
-    url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'General/login.html'}),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
     url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
+    url(r'^replacement_requests', 'salidas.views.replacement_requests', name='replacement_requests'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),

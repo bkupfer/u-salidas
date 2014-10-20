@@ -34,7 +34,9 @@ class DestinationForm(forms.ModelForm):
         model = Destination
         exclude = {'application'}
 
+
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
+
 
 class ReplacementApplicationForm(forms.Form):
     teachers = forms.ModelChoiceField(queryset=Teacher.objects.all(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
@@ -46,7 +48,9 @@ class DocumentForm(forms.ModelForm):
         model = Document
         exclude = {'id_application', 'path'}
 
+
 DocumentFormSet = formset_factory(DocumentForm, extra=1)
+
 
 class TeacherSignatureForm(forms.ModelForm):
     signature = forms.ImageField()

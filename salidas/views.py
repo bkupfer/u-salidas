@@ -18,9 +18,10 @@ from salidas.calendar import *  #  for calendar
 
 # Views for all users
 def home(request):
-    return render_to_response("login.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
 
 
+# General views
 def login(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -28,9 +29,8 @@ def login(request):
     if user is not None and user.is_active:
         # Clave correcta, y el usuario está marcado "activo"
         auth.login(request, user)
-        # Redirigir a una página de éxito.
-
-        return redirect(list_of_applications)
+        # Redirigir a la pagina que corresponda
+        return redirect(list_of_applications) # todo: enviar a la pagina que corresponda según el tipo de usuario!
     else:
         # Mostrar una página de error
         return redirect(login)
@@ -64,13 +64,6 @@ def destinationForm(destination, newApp):
         except:
             print("error en destinationForm method. view.py")
 
-        # archivos
-        try:
-            file = request.FILES['file']
-            newDocument = Document(id_application=newApp,file=file)
-            newDocument.save()
-        except:
-            file=None
 
 def documentForm(doc, newApp):
     if doc.is_valid():
@@ -80,6 +73,7 @@ def documentForm(doc, newApp):
             newDocument.save()
         except:
             file = None
+
 
 def new_application(request):
     application = NewApplicationForm(request.POST or None,prefix="application")
@@ -113,7 +107,7 @@ def new_application(request):
         stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
         stateApp.save()
 
-        #se guardan los profes reemplazantes
+        # replacement teacher information
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
         newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,
@@ -155,14 +149,20 @@ def new_application(request):
     # messages.error(request, 'Error en el envío del formulario.')
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
+
 def teacher_calendar(request):
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
+
 
 def teachers_applications(request):
     rut = "17704795-3"
     id_Teacher = Teacher.objects.get(rut=rut)
     apps = Application.objects.filter(id_Teacher=id_Teacher)
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
+
+
+def replacement_requests(request):
+    return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 
 # Views for administrative people
@@ -182,7 +182,7 @@ def application_detail(request):
 
 
 def historic_calendar(request):
-    return render_to_response("historic_calendar.html", locals(), content_type=RequestContext(request))
+    return render_to_response("Magna/historic_calendar.html", locals(), content_type=RequestContext(request))
 
 
 def list_alejandro(request):
@@ -197,6 +197,7 @@ def detail_alejandro(request):
     teacher = application.id_Teacher
     finances=Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
+
 
 # Aditional views
 def calendar(request, year, month):
@@ -216,6 +217,7 @@ def calendar(request, year, month):
     '''
 
 
+# debuging views
 def prueba(request):
     financeFormSet = FinanceFormSet(request.POST or None)
     newApp = Application(id_Teacher=Teacher.objects.get(pk=1),id_commission_type=CommissionType.objects.get(type="Estudio"),financed_by="financed_by",motive="motiveichon",id_days_validation_state=State.objects.get(state="Aceptado"),id_funds_validation_state=State.objects.get(state="Aceptado"))

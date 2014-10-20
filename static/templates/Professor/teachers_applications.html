@@ -24,9 +24,10 @@
     <div class="row hidden-print">
         <!-- navegation bar -->
         <div class="col-md-12">
-            <ul class="nav nav-justified">
+            <ul class="nav nav-tabs">
                 <li><a href="new_application" title="">Formulario de solicitud de salidas</a></li>
                 <li class="active"><a href="" title="">Mis solicitudes</a></li>
+                <li><a href="replacement_requests">Solicitudes de remplazo</a></li>
                 <li><a href="teacher_calendar" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
             </ul>
@@ -39,6 +40,7 @@
             <div class="pannel panel-primary">
                 <div class="panel-body">
 
+                    <!-- Message telling user that a application was sent successfully -->
                     {% if messages %}
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
@@ -49,7 +51,7 @@
                     </div>
                     {% endif %}
 
-                    <h1>Mis solicitudes</h1>
+                    <h2>Mis solicitudes</h2>
                     <br>
 
                     <table class="table">

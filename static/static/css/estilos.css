@@ -115,17 +115,17 @@ border-color: #F70000;
   }
 }
 
-@media (min-width: 768px){
-.bs-docs-sidebar {
-	padding-left: 20px;
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+
+    #checkbox.btn-success.active {
+        color: #fff;
+        background-color: #B90000;
+        border-top-color: #800000;
+        border-right-color: #800000;
+        border-bottom-color: #800000;
+        border-left-color: #800000;
+    }
 }
-
-#checkbox.btn-success.active {
-	color: #fff;
-	background-color: #B90000;
-	border-top-color: #800000;
-	border-right-color: #800000;
-	border-bottom-color: #800000;
-	border-left-color: #800000;
-}}
-
