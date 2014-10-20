@@ -284,7 +284,7 @@ function print_country(country) {
     var cont=0;
     while(cont<20){
         id="id_destinations-"+parseInt(cont)+"-country";
-        var c = document.getElementById(id);
+        c = document.getElementById(id);
 
         var x, i = 0;
         try {
@@ -307,6 +307,7 @@ function print_state(state_id, state_index, country_id){
     console.log(option_str);
 	var x, i=0; state_index++;
 	var state_arr = s_a[state_index].split("|");
+    option_str.options.length = 0;
 	for(x in state_arr){
             option_str.options[i++]= new Option(state_arr[x],state_arr[x]);
 	}
