@@ -346,7 +346,6 @@
                 // e.g. error messages
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
-                console.log(row);
                 // Relabel/rename all the relevant bits
                 $(row).children().children().each(function () {
                     updateElementIndex(this, prefix, formCount);
@@ -434,7 +433,6 @@
                 // e.g. error messages
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
-                console.log(row);
                 // Relabel/rename all the relevant bits
                 $(row).children().each(function () {
                     updateElementIndex2(this, prefix, formCount);
