@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
 
     #URL pagina prueba
-    url(r'^pruebas_destino', 'salidas.views.prueba', name='prueba'),
+    url(r'^list', 'salidas.views.list', name='list'),
 
 
     # Django's admin site
