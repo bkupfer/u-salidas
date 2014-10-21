@@ -154,6 +154,8 @@ class Replacement(models.Model):
     id_Application = models.ForeignKey('Application')
     answer_date = models.DateTimeField(blank=True, null=True)
     id_state = models.ForeignKey('State')
+    def get_appliant_teacher(self):
+        return self.id_Application.id_Teacher
 
 
 class State(models.Model):
