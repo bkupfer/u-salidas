@@ -45,28 +45,21 @@
         "model": "salidas.ApplicationState",
         "pk": 1,
         "fields": {
-            "state": "Pre acta"
+            "state": "Pendiente DCC"
         }
     },
     {
         "model": "salidas.ApplicationState",
         "pk": 2,
         "fields": {
-            "state": "Acta"
+            "state": "Pendiente Facultad"
         }
     },
     {
         "model": "salidas.ApplicationState",
         "pk": 3,
         "fields": {
-            "state": "Resolucion"
-        }
-    },
-    {
-        "model": "salidas.ApplicationState",
-        "pk": 4,
-        "fields": {
-            "state": "Decreto"
+            "state": "Terminada"
         }
     },
     {
