@@ -145,6 +145,8 @@ def new_application(request):
 
 
 def teacher_calendar(request):
+    rut = "17704795-3"  # todo: obtener el rut del profesor!
+    teacher = Teacher.objects.get(rut=rut)
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
 

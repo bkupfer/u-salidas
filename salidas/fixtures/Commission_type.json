@@ -24,7 +24,7 @@
         "model": "salidas.CommissionType",
         "pk": 1,
         "fields": {
-            "type": "Academica"
+            "type": "Académica"
         }
     },
     {

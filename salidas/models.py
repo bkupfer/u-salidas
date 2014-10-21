@@ -139,7 +139,7 @@ class Teacher(models.Model):
             modules.append(course.get_modules())
         return modules
     def get_applications(self):
-        his_applications = Application.objects.filter(id_teacher=self)
+        his_applications = Application.objects.filter(id_Teacher=self)
         return his_applications
     def get_used_days(self):
         his_apps = self.get_applications()

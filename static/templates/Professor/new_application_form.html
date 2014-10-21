@@ -240,15 +240,21 @@
                                         <div class="col-sm-11">
                                             {{ documents.management_form }}
                                             {% for document in documents %}
-                                                <div class="itemDoc">
-                                                    <button type="button" class="deleteDoc" aria-hidden="true" onClick="">&times;</button>
-                                                    {{ document.file }}
-                                                </div>
+                                                <div class="form-group itemDoc col-sm-12">
+                                                    <div class="col-sm-5">
+                                                        {{ document.file }}
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                            <button type="button" class="deleteDoc close" aria-hidden="true" onclick="">×</button>
+                                                    </div>
+								                </div>
+                                                <br/>
+                                                <hr>
                                             {% endfor %}
-                                            <hr>
-                                            <div class="row">
+                                            <div class="row" >
                                                 <div class="col-sm-4">
                                                     <button class="btn btn-warning" id="add_documents"><span class="glyphicon glyphicon-plus"></span></button>
+                                                    <label class="control-label">Agregar Documento</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -413,7 +419,7 @@
                 var i = 0;
                 // Go through the forms and set their indices, names and IDs
                 for (formCount = forms.length; i < formCount; i++) {
-                    $(forms.get(i)).children().each(function () {
+                    $(forms.get(i)).children().children().each(function () {
                         updateElementIndex2(this, prefix, i);
                     });
                 }
@@ -439,7 +445,7 @@
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
                 // Relabel/rename all the relevant bits
-                $(row).children().each(function () {
+                $(row).children().children().each(function () {
                     updateElementIndex2(this, prefix, formCount);
                     if ($(this).attr('type') == 'text')
                         $(this).val('');
