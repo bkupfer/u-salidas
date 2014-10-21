@@ -69,21 +69,19 @@
                                             <th>Fecha de inicio</th>
                                             <th>Fecha de Envío a Facultad</th>
                                             <th>Estado</th>
-                                            <th>Detalle</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for app in apps %}
                                             {% if app.get_state.state == "Pendiente DCC" %}
                                                 <tr>
-                                                    <td>{{ app.id }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
                                                     <td>{{ app.id_Teacher.rut }}</td>
                                                     <td>{{ app.id_commission_type }}</td>
                                                     <td>{{ app.creation_date }}</td>
                                                     <td>{{ app.sent_date }}</td>
                                                     <td>{{ app.get_state }}</td>
-                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
@@ -105,21 +103,19 @@
                                             <th>Fecha de inicio</th>
                                             <th>Fecha de Envío a Facultad</th>
                                             <th>Estado</th>
-                                            <th>Detalle</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for app in apps %}
                                             {% if app.get_state.state == "Pendiente Facultad" %}
                                                 <tr>
-                                                    <td>{{ app.id }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
                                                     <td>{{ app.id_Teacher.rut }}</td>
                                                     <td>{{ app.id_commission_type }}</td>
                                                     <td>{{ app.creation_date }}</td>
                                                     <td>  {{ app.sent_date }}</td>
                                                     <td> {{ app.get_state }}</td>
-                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
@@ -141,21 +137,19 @@
                                             <th>Fecha de inicio</th>
                                             <th>Fecha de Envío a Facultad</th>
                                             <th>Estado</th>
-                                            <th>Detalle</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for app in apps %}
                                             {% if app.get_state.state == "Terminada" %}
                                                 <tr>
-                                                    <td>{{ app.id }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
                                                     <td>{{ app.id_Teacher.rut }}</td>
                                                     <td>{{ app.id_commission_type }}</td>
                                                     <td>{{ app.creation_date }}</td>
                                                     <td>{{ app.sent_date }}</td>
                                                     <td>{{ app.get_state }}</td>
-                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
@@ -177,20 +171,18 @@
                                             <th>Fecha de inicio</th>
                                             <th>Fecha de Envío a Facultad</th>
                                             <th>Estado</th>
-                                            <th>Detalle</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for app in apps %}
                                             <tr>
-                                                <td>{{ app.id }}</td>
+                                                <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
                                                 <td>{{ app.id_Teacher }}</td>
                                                 <td>{{ app.id_Teacher.rut }}</td>
                                                 <td>{{ app.id_commission_type }}</td>
                                                 <td>{{ app.creation_date }}</td>
                                                 <td>{{ app.sent_date }}</td>
                                                 <td>{{ app.get_state }}</td>
-                                                <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
