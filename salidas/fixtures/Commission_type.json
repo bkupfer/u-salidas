@@ -103,5 +103,19 @@
         "fields": {
             "type": "Viaticos"
         }
+    },
+        {
+        "model": "salidas.ReplacementType",
+        "pk": 1,
+        "fields": {
+            "type": "Docente"
+        }
+    },
+        {
+        "model": "salidas.ReplacementType",
+        "pk": 2,
+        "fields": {
+            "type": "Académico"
+        }
     }
 ]

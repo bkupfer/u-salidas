@@ -153,7 +153,7 @@ class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
     answer_date = models.DateTimeField(blank=True, null=True)
-    type = models.CharField(max_length=15)
+    type = models.ForeignKey('ReplacementType')
     id_state = models.ForeignKey('State')
     def get_appliant_teacher(self):
         return self.id_Application.id_Teacher
@@ -200,3 +200,7 @@ class TeacherHasCourse(models.Model):
     id_Teacher = models.ForeignKey('Teacher')
     id_Course = models.ForeignKey('Course')
 
+class ReplacementType(models.Model):
+    type = models.CharField(max_length=20)
+    def __str__(self):
+        return self.type
