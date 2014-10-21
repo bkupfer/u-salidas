@@ -27,8 +27,8 @@
     <div class="row hidden-print">
         <div class="col-md-12">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
                 <li><a href="teachers_applications">Mis solicitudes</a></li>
+                <li class="active"><a href="" title="">Formulario de solicitud de salidas</a></li>
                 <li><a href="replacement_requests">Solicitudes de remplazo</a></li>
                 <li><a href="teacher_calendar" title="">Calendario</a></li>
                 <li><a href="" title="">Logout</a></li>
@@ -239,11 +239,10 @@
                                         {% for document in documents %}
                                             <div class="itemDoc">
                                                 <button type="button" class="deleteDoc" aria-hidden="true" onClick="">&times;</button>
-
                                             {{ document.file }}
                                             </div>
                                         {%  endfor %}
-                                        <hr />
+                                        <hr>
                                         <div class="row">
                                              <div class="col-sm-4">
                                                 <button class="btn btn-warning" id="add_documents"><span class="glyphicon glyphicon-plus"></span></button>
@@ -253,7 +252,6 @@
                                 </div>
                             </div>
                             <!-- fin para cada documento -->
-
 
 					  	</div>
 					</div>
@@ -267,9 +265,7 @@
 					<label class="col-sm-2 control-label"> Firma digitalizada</label>
     				<div class="col-sm-5">
     					<div class="checkbox">
-	                    <label>
-	                      <input type="checkbox" name="firma" value="" checked> Usar firma anterior
-	                    </label>
+	                        <label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
 	                    </div>
                         {{ teacher_signature.signature }}
 					</div>
@@ -297,14 +293,14 @@
 <script src="../../static/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../static/js/filestyle.js"></script>
 
+<!-- script para multi-form de montos -->
 <script type="text/javascript">
     $(document).ready(function () {
         // Code adapted from http://djangosnippets.org/snippets/1389/
         function updateElementIndex(el, prefix, ndx) {
             var id_regex = new RegExp('(' + prefix + '-\\d+-)');
             var replacement = prefix + '-' + ndx + '-';
-            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
-                    replacement));
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
             if (el.id) el.id = el.id.replace(id_regex, replacement);
             if (el.name) el.name = el.name.replace(id_regex, replacement);
         }
@@ -384,14 +380,14 @@
         });
     });
 </script>
+
+<!-- script para multi-form de archivos -->
 <script type="text/javascript">
     $(document).ready(function () {
-        // Code adapted from http://djangosnippets.org/snippets/1389/
         function updateElementIndex2(el, prefix, ndx) {
             var id_regex = new RegExp('(' + prefix + '-\\d+-)');
             var replacement = prefix + '-' + ndx + '-';
-            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
-                    replacement));
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
             if (el.id) el.id = el.id.replace(id_regex, replacement);
             if (el.name) el.name = el.name.replace(id_regex, replacement);
         }
@@ -426,7 +422,7 @@
             var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
             // You can only submit a maximum of 20 forms
-            if (formCount < 20) {
+            if (formCount < 30) {
                 // Clone a form (without event handlers) from the first form
                 var row = $(".itemDoc:first").clone(false).get(0);
                 // Insert it after the last form
@@ -452,7 +448,7 @@
 
             } // End if
             else {
-                alert("Lo siento, no más de 20 archivos.");
+                alert("Lo siento, no más de 30 archivos.");
             }
             return false;
         }
@@ -467,6 +463,7 @@
         });
     });
 </script>
+
 <script language="javascript">print_country("id_destinations-0-country");</script>
 
 </html>
