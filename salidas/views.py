@@ -91,8 +91,8 @@ def new_application(request):
         ct = application.cleaned_data['id_commission_type']
         motive = application.cleaned_data['motive']
         fb = application.cleaned_data['financed_by']
-        daysv = State.objects.get(pk=3)     # pendiente
-        fundsv = State.objects.get(pk=3)    # pendiente
+        daysv = State.objects.get(pk=1)     # pendiente
+        fundsv = State.objects.get(pk=1)    # pendiente
 
         newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,
                              motive = motive, financed_by = fb,
@@ -102,14 +102,14 @@ def new_application(request):
         #agregarle estado a la App
         #estado pendiente dcc
         state = ApplicationState.objects.get(pk=1)  # pendiente dcc
-        stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
+        stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
         stateApp.save()
 
         # replacement teacher information
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
-        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv)
-        newAcademicReplacement = Replacement(rut_teacher=academicReplace, id_Application=newApp, id_state=daysv)
+        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type="Docente")
+        newAcademicReplacement = Replacement(rut_teacher=academicReplace, id_Application=newApp, id_state=daysv, type="Acadéico")
         newExecutiveReplacement.save()
         newAcademicReplacement.save()
 
@@ -149,17 +149,18 @@ def teacher_calendar(request):
 
 
 def teachers_applications(request):
-    rut = "17704795-3"  # <<-- hardcoded -->> todo: obtener el rut del profesor!
+    rut = "17704795-3"  # todo: obtener el rut del profesor!
     id_Teacher = Teacher.objects.get(rut=rut)
     apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
 def replacement_list(request):
-    rut = "17704795-3"
-    id=1 
+    rut = "17704795-3"  # todo: obtener el rut del profesor! (o el id)
+    id=1
     replacements = Replacement.objects.filter(rut_teacher=1)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
+
 
 def replacement_requests(request):
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))

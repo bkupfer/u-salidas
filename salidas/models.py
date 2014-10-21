@@ -153,6 +153,7 @@ class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
     answer_date = models.DateTimeField(blank=True, null=True)
+    type = models.CharField(max_length=15)
     id_state = models.ForeignKey('State')
     def get_appliant_teacher(self):
         return self.id_Application.id_Teacher
@@ -182,7 +183,6 @@ class Course(models.Model):
         for module in its_modules:
             modules.append(module.id_Module)
         return modules
-
 
 
 class Module(models.Model):
