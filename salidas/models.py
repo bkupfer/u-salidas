@@ -43,6 +43,9 @@ class Destination(models.Model):
     city    = models.CharField(max_length=55)
     start_date = models.DateField()
     end_date   = models.DateField()
+    def get_used_days(self):
+        dt=self.end_date - self.start_date
+        return dt.days
 
 
 class CommissionType(models.Model):
@@ -81,6 +84,22 @@ class Application(models.Model):
         except:
             ret = "No enviada"
         return ret
+    def get_destinations(self):
+        dests = Destination.objects.filter(application=self)
+        return dests
+    def get_used_days(self):
+        dests=self.get_destinations()
+        used_days=0
+        for dest in dests:
+            used_days+=dest.get_used_days()
+        return used_days
+    def get_documents(self):
+        docs = Document.objects.filter(id_application=self)
+        files = ()
+        for doc in docs:
+            files.append(doc.file)
+        return files
+
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
     def __str__(self):
@@ -107,6 +126,27 @@ class Teacher(models.Model):
     mail = models.EmailField()
     def __str__(self):
         return self.name + " " + self.last_name
+    def get_courses(self):
+        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)
+        courses = ()
+        for course in his_courses:
+            courses.append(course.id_Course)
+        return courses
+    def get_modules(self):
+        courses = self.get_courses()
+        modules = ()
+        for course in courses:
+            modules.append(course.get_modules())
+        return modules
+    def get_applications(self):
+        his_applications = Application.objects.filter(id_teacher=self)
+        return his_applications
+    def get_used_days(self):
+        his_apps = self.get_applications()
+        used_days=0
+        for app in his_apps:
+            used_days+=app.get_used_days()
+        return used_days
 
 #rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
@@ -134,6 +174,13 @@ class Course(models.Model):
     section = models.IntegerField(max_length=2)
     def __str__(self):
         return self.name
+    def get_modules(self):
+        its_modules = CourseHasModule.objects.filter(id_Course=self)
+        modules=()
+        for module in its_modules:
+            modules.append(module.id_Module)
+        return modules
+
 
 
 class Module(models.Model):
