@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
     url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
     url(r'^replacement_requests', 'salidas.views.replacement_requests', name='replacement_requests'),
+    url(r'^replacement_list', 'salidas.views.replacement_list', name='replacement_list'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),

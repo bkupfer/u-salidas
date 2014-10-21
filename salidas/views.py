@@ -155,6 +155,12 @@ def teachers_applications(request):
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
+def replacement_list(request):
+    rut = "17704795-3"
+    id=1 
+    replacements = Replacement.objects.filter(rut_teacher=1)
+    return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
+
 def replacement_requests(request):
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
