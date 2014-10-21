@@ -76,6 +76,7 @@ def documentForm(doc, newApp):
 
 
 def new_application(request):
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
@@ -93,12 +94,9 @@ def new_application(request):
         daysv = State.objects.get(pk=3)     # pendiente
         fundsv = State.objects.get(pk=3)    # pendiente
 
-        newApp = Application(id_Teacher = id_teacher,
-                             id_commission_type = ct,
-                             motive = motive,
-                             financed_by = fb,
-                             id_days_validation_state = daysv,
-                             id_funds_validation_state = fundsv)
+        newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,
+                             motive = motive, financed_by = fb,
+                             id_days_validation_state = daysv, id_funds_validation_state = fundsv)
         newApp.save()
 
         #agregarle estado a la App
@@ -110,12 +108,8 @@ def new_application(request):
         # replacement teacher information
         executiveReplace = executiveReplacement.cleaned_data['teachers']
         academicReplace = academicReplacement.cleaned_data['teachers']
-        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace,
-                                              id_Application=newApp,
-                                              id_state=daysv)
-        newAcademicReplacement = Replacement(rut_teacher=academicReplace,
-                                             id_Application=newApp,
-                                             id_state=daysv)
+        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv)
+        newAcademicReplacement = Replacement(rut_teacher=academicReplace, id_Application=newApp, id_state=daysv)
         newExecutiveReplacement.save()
         newAcademicReplacement.save()
 
@@ -172,7 +166,7 @@ def list_of_applications(request):
 
 
 def application_detail(request):
-    #TODO if id de app no corresponde a una app mia reder "acceso denegado"
+    # todo: if id de app no corresponde a una app mia reder "acceso denegado"
     id_app = request.GET['id']  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
     query = Application.objects.get(pk = id_app)  # Application query
     profesor = query.id_Teacher
