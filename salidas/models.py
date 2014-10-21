@@ -71,7 +71,7 @@ class Application(models.Model):
         try:
             ret = ApplicationHasApplicationState.objects.filter(id_application=self.pk).order_by("date").reverse()[0].id_application_state
         except:
-            print("error en linea 68 del archivo models revisar get state")
+            print("Error in method get_state(). (models.py, Application)")
             ret = "Estado vacío, revisar"
         return ret
     #Obtiene la fecha del envio a facultad
@@ -122,7 +122,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
-    profile_picture = models.URLField(blank=True, null=True)
+    profile_picture = models.URLField(blank=True, null=True) # (?) todo: borrar esto.
     mail = models.EmailField()
     def __str__(self):
         return self.name + " " + self.last_name

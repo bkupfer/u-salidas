@@ -220,4 +220,6 @@ def calendar(request, year, month):
 # debuging views
 def list(request):
     apps = Application.objects.all()
+    for app in apps:
+        print(app.get_state())
     return render_to_response("Magna/list.html", locals(), context_instance=RequestContext(request))
