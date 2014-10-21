@@ -101,7 +101,7 @@ def new_application(request):
 
         #agregarle estado a la App
         #estado pendiente dcc
-        state = ApplicationState.objects.get(pk=4)  # acta
+        state = ApplicationState.objects.get(pk=1)  # pendiente dcc
         stateApp = ApplicationHasApplicationState(id_application=newApp,id_application_state=state)
         stateApp.save()
 
@@ -191,7 +191,7 @@ def list_alejandro(request):
 
 
 def detail_alejandro(request):
-    id_app = 1  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
+    id_app = request.GET['id']
     application = Application.objects.get(pk = id_app)
     destinations = Destination.objects.filter(application = id_app)
     teacher = application.id_Teacher
