@@ -163,6 +163,19 @@ def replacement_list(request):
 
 
 def replacement_requests(request):
+
+    replacement = Replacement.objects.get( pk = request.GET['id'] )
+
+    if 'accept_button' in request.POST:
+        replacement.id_state = State.objects.get(pk=2)
+        replacement.save()
+        return redirect('replacement_list')
+
+    if 'reject_button' in request.POST:
+        replacement.id_state = State.objects.get(pk=3)
+        replacement.save()
+        return redirect('replacement_list')
+
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 

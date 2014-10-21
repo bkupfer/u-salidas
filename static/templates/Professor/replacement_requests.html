@@ -37,32 +37,32 @@
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
             <!-- Aca colocar el contenido correspondiente -->
-            <h2>Compromiso de reemplazo</h2>
+            <h2>Compromiso de Reemplazo</h2>
             <br/>
 
             <div class="row">
 
                 <div class="col-md-6">
-                    <form>
+                    <form method="POST">  {% csrf_token %}
                         <div class="row form-group">
                             <label class="col-sm-4 control-label">Profesor a reemplazar</label>
 
                             <div class="col-sm-8">
-                                XXXXX
+                                {{ replacement.get_appliant_teacher }}
                             </div>
                         </div>
                         <div class="row form-group">
                             <label class="col-sm-4 control-label">Fecha de inicio</label>
 
                             <div class="col-sm-8">
-                                XXXXX
+                                **/**/**
                             </div>
                         </div>
                         <div class="row form-group">
                             <label class="col-sm-4 control-label">Fecha de término</label>
 
                             <div class="col-sm-8">
-                                XXXXX
+                                **/**/**
                             </div>
                         </div>
                         <div class="row form-group">
@@ -99,8 +99,8 @@
                         <hr/>
                         <div class="row form-group">
                             <div class="col-sm-12">
-                                <input type="submit" class="btn btn-lg btn-primary" value="Aceptar"/>
-                                <input type="submit" class="btn btn-lg btn-danger" value="Rechazar"/>
+	  						    <input type="submit" class="btn btn-lg btn-primary" name="accept_button" value="Aceptar"/>
+                                <input type="submit" class="btn btn-lg btn-danger"  name="reject_button" value="Rechazar"/>
                             </div>
                         </div>
                     </form>
