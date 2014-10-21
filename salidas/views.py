@@ -218,13 +218,6 @@ def calendar(request, year, month):
 
 
 # debuging views
-def prueba(request):
-    financeFormSet = FinanceFormSet(request.POST or None)
-    newApp = Application(id_Teacher=Teacher.objects.get(pk=1),id_commission_type=CommissionType.objects.get(type="Estudio"),financed_by="financed_by",motive="motiveichon",id_days_validation_state=State.objects.get(state="Aceptado"),id_funds_validation_state=State.objects.get(state="Aceptado"))
-    newApp.save()
-    if request.method == "POST":
-        i = 1
-        for finance in financeFormSet:
-            newViatico = financeForm(finance, newApp, i)
-            i +=1
-    return render_to_response("prueba_destinos.html", locals(), context_instance=RequestContext(request))
+def list(request):
+    apps = Application.objects.all()
+    return render_to_response("Magna/list.html", locals(), context_instance=RequestContext(request))
