@@ -2,6 +2,7 @@ from django import forms
 from salidas.models import *
 import datetime
 from django.forms.models import inlineformset_factory,formset_factory
+from django.forms.extras.widgets import SelectDateWidget
 
 class NewApplicationForm(forms.ModelForm):
     id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),widget=forms.Select(attrs={'placeholder':u'Seleccione el tipo de comisión'}))
@@ -28,8 +29,8 @@ FinanceFormSet = formset_factory(FinanceDccForm,extra=3)
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(attrs={'onchange':"print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
     city = forms.CharField(widget=forms.Select(attrs={'class': 'city','onchange':"updateStateTxt(this);"}, choices=([("", "Seleccione Ciudad")])))
-    start_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
+    start_date = forms.DateField(widget=SelectDateWidget())#forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
+    end_date = forms.DateField(widget=SelectDateWidget())#forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker'}))
     class Meta:
         model = Destination
         exclude = {'application'}
