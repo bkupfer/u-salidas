@@ -157,7 +157,7 @@ def teachers_applications(request):
 
 def replacement_list(request):
     rut = "17704795-3"
-    id=1
+    id=1 
     replacements = Replacement.objects.filter(rut_teacher=1)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
