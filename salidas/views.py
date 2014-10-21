@@ -149,9 +149,9 @@ def teacher_calendar(request):
 
 
 def teachers_applications(request):
-    rut = "17704795-3"
+    rut = "17704795-3"  # <<-- hardcoded -->> todo: obtener el rut del profesor!
     id_Teacher = Teacher.objects.get(rut=rut)
-    apps = Application.objects.filter(id_Teacher=id_Teacher)
+    apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
@@ -172,9 +172,9 @@ def list_of_applications(request):
 
 
 def application_detail(request):
-    # todo: if id de app no corresponde a una app mia reder "acceso denegado"
-    id_app = request.GET['id']  #  IMPORTANTE! : este valor debe ser el id de la solicitud seleccionada!
-    query = Application.objects.get(pk = id_app)  # Application query
+    # todo: if id de app no corresponde a una app mia reder "acceso denegado".
+    id_app = request.GET['id']
+    query = Application.objects.get(pk = id_app)
     profesor = query.id_Teacher
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)

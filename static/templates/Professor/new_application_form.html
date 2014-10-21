@@ -6,11 +6,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../static/public/css/docs.min.css" rel="stylesheet">
     <link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
-    <link href="../../static/css/jquery-ui.min.css" rel="stylesheet" >
+    <link href="../../static/css/jquery-ui.min.css" rel="stylesheet">
     <script src="../../static/external/jquery/jquery.js"></script>
     <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
     <script src="../../static/js/jquery-ui.min.js"></script>
@@ -18,9 +17,7 @@
 
     <title>Salidas DCC</title>
 </head>
-
 <body>
-
 <div class="container-fluid">
 
     <!-- navegation bar -->
@@ -35,254 +32,262 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="row">
-    
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+            <div class="pannel panel-primary panel-body">
 
-            <h2>Nueva Solicitud de Salida</h2>
-            <br/>
+                <h2>Nueva Solicitud de Salida</h2>
+                <br>
 
-            <!-- For message to user -->
-            {% if messages %}
-                <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3">
-                        {% for message in messages %}
-                            <p {% if message.tags == "error" %} class="alert alert-danger"{% endif %}> {{ message }} </p>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-
-            <!-- THE FORM -->
-            <form method="POST"  enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
-
-            <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><span class="glyphicon glyphicon-leaf"></span> Información de viaje</div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-sm-8">
-                                        <div  class="col-sm-12">
-                                            <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
-                                            <div class="col-sm-5">
-                                               {{ application.id_commission_type }}
-                                            </div>
-                                        </div>
-                                        <div  class="col-sm-12">
-                                            <br/>
-                                            <label class="control-label col-sm-7" for="nombre">Motivo</label>
-                                            <div class="col-sm-5">
-                                               {{ application.motive }}
-                                           </div>
-                                        </div>
-                                        <div  class="col-sm-12">
-                                            <br/>
-                                            <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
-                                            <div class="col-sm-5">
-                                               {{ application.financed_by }}
-                                           </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br/>
-
-            <!-- Montos -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-success">
-                        <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
-                        <div class="panel-body">
-                            {{ financeFormSet.management_form }}
-                            {% for form in financeFormSet %}
-                                {{ form.id }}
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="finance_item">
-                                            <div class="col-sm-12">
-                                                <label class="col-sm-2 control-label" align="left">
-                                                    {% cycle "Inscripción" "Pasaje" "Viático"%}
-                                                </label>
-                                                <label class="col-sm-2 control-label">¿Financia DCC?</label>
-
-                                                <div class="col-sm-1">
-                                                    {{ form.checkbox }}
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    {{ form.amount }}
-                                                </div>
-                                                <div class="col-sm-3" align="right">
-                                                    {{ form.id_currency }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <!-- For message to user -->
+                {% if messages %}
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            {% for message in messages %}
+                                <p {% if message.tags == "error" %} class="alert alert-danger"{% endif %}> {{ message }} </p>
                             {% endfor %}
                         </div>
                     </div>
-                </div>
-            </div>
-            <br>
+                {% endif %}
 
-            <!-- Destinos -->
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-info">
-						<div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
-					  	<div class="panel-body">
-					    	<div id="destination_form" >
+                <!-- THE FORM -->
+                <form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+
+                <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-leaf"></span> Información de viaje</div>
+                            <div class="panel-body">
                                 <div class="row">
                                     <div class="form-group">
-                                        <div class="col-sm-12">
-                                            {{ destinations.management_form }}
-                                            {% for destination in destinations %}
-                                            <div class="item">
-                                                <div class="col-sm-12">
-                                                    <label class="col-sm-2 control-label">Destino</label>
-                                                        País
-                                                        {{ destination.country }}
+                                        <div class="col-sm-8">
+                                            <div class="col-sm-12">
+                                                <label class="control-label col-sm-7" for="nombre">Tipo de comisión</label>
+
+                                                <div class="col-sm-5">
+                                                    {{ application.id_commission_type }}
                                                 </div>
-                                                <div class="col-sm-12">
-                                                     <label class="col-sm-2 control-label"></label>
-                                                        Ciudad
-                                                        {{ destination.city }}
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <br>
-                                                    <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
-                                                    {{ destination.start_date }}
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <br>
-                                                    <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
-                                                    {{ destination.end_date }}
-                                                </div>
-                                                 <div align="right"><a class="delete" href="#">Delete</a></div>
-                                                <hr>
                                             </div>
-                                            {% endfor %}
+                                            <div class="col-sm-12">
+                                                <br/>
+                                                <label class="control-label col-sm-7" for="nombre">Motivo</label>
+
+                                                <div class="col-sm-5">
+                                                    {{ application.motive }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <br/>
+                                                <label class="control-label col-sm-7" for="nombre">Financiamiento</label>
+
+                                                <div class="col-sm-5">
+                                                    {{ application.financed_by }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br />
-                                <div class="row">
-                                    <div id="add_destination" class="col-sm-12" align="right">
-                                        <button class="btn btn-info"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <label class="control-label">Agregar Destino</label>
-                                    </div>
-                                </div>
                             </div>
-					  	</div>
-					</div>
-				</div>
-			</div>
-            <br>
-
-            <!-- Profesores reemplazantes -->
-            <div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-danger">
-						<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>  Profesor(es) Reemplazante(s)</div>
-					  	<div class="panel-body">
-
-					  		<!-- para cada curso -->
-					    	<div class="row">
-								<div class="form-group" id="academicReplacement">
-									<label class="col-sm-4 control-label">Reemplazo Docente</label>
-				    				<div class="col-sm-4">
-									     {{ academicReplacement.teachers }}
-									</div>
-									<div class="col-sm-5" style="display: none" id="topeHorario">
-										<p class="text-danger">*Este profesor tiene tope de horario</p>
-									</div>
-									<div class="col-sm-5" style="display: none" id="docenciaCompartida">
-										<p class="text-info">*Existe docencia compartida</p>
-									</div>
-								</div>
-							</div>
-							<hr>
-					    	<div class="row">
-								<div class="form-group" id="executiveReplacement">
-									<label class="col-sm-4 control-label">Reemplazo Académico</label>
-				    				<div class="col-sm-4">
-									    {{ executiveReplacement.teachers }}
-									</div>
-								</div>
-							</div>
-							<hr>
-					  	</div>
-					</div>
-				</div>
-			</div>
-			<br>
-
-            <!-- Adjuntar documentos -->
-			<div class="row">
-				<div class="col-sm-12">
-                    <div class="panel panel-warning">
-						<div class="panel-heading"><span class="glyphicon glyphicon-file"></span>Adjuntar documentos</div>
-                        <div class="panel-body">
-                            <!-- para cada documento -->
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-sm-11">
-                                        {{ documents.management_form }}
-                                        {% for document in documents %}
-                                            <div class="itemDoc">
-                                                <button type="button" class="deleteDoc" aria-hidden="true" onClick="">&times;</button>
-                                            {{ document.file }}
-                                            </div>
-                                        {%  endfor %}
-                                        <hr>
-                                        <div class="row">
-                                             <div class="col-sm-4">
-                                                <button class="btn btn-warning" id="add_documents"><span class="glyphicon glyphicon-plus"></span></button>
-                                            </div>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- fin para cada documento -->
-
-					  	</div>
-					</div>
-				</div>
-			</div>
-			<br>
-
-            <!-- Firma digitalizada -->
-			<div class="row">
-				<div class="form-group">
-					<label class="col-sm-2 control-label"> Firma digitalizada</label>
-    				<div class="col-sm-5">
-    					<div class="checkbox">
-	                        <label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
-	                    </div>
-                        {{ teacher_signature.signature }}
-					</div>
-				</div>
-			</div>
-			<hr>
-
-            <!-- Boton enviar solicitud -->
-			<div class="row">
-				<div class="form-group">
-    				<div class="col-sm-7">
-    					<input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud" />
+                        </div>
                     </div>
-				</div>
-			</div>
-            </form>
+                </div>
+                <br/>
 
+                <!-- Montos -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-success">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
+                            <div class="panel-body">
+                                {{ financeFormSet.management_form }}
+                                {% for form in financeFormSet %}
+                                    {{ form.id }}
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="finance_item">
+                                                <div class="col-sm-12">
+                                                    <label class="col-sm-2 control-label" align="left">
+                                                        {% cycle "Inscripción" "Pasaje" "Viático" %}
+                                                    </label>
+                                                    <label class="col-sm-2 control-label">¿Financia DCC?</label>
+
+                                                    <div class="col-sm-1">
+                                                        {{ form.checkbox }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        {{ form.amount }}
+                                                    </div>
+                                                    <div class="col-sm-3" align="right">
+                                                        {{ form.id_currency }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- Destinos -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
+                            <div class="panel-body">
+                                <div id="destination_form">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                {{ destinations.management_form }}
+                                                {% for destination in destinations %}
+                                                    <div class="item">
+                                                        <div class="col-sm-12">
+                                                            <label class="col-sm-2 control-label">Destino</label>
+                                                            País
+                                                            {{ destination.country }}
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <label class="col-sm-2 control-label"></label>
+                                                            Ciudad
+                                                            {{ destination.city }}
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <br>
+                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Inicio</label>
+                                                            {{ destination.start_date }}
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <br>
+                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Término</label>
+                                                            {{ destination.end_date }}
+                                                        </div>
+                                                        <div align="right"><a class="delete" href="#">Delete</a></div>
+                                                        <hr>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                        <div id="add_destination" class="col-sm-12" align="right">
+                                            <button class="btn btn-info"><span class="glyphicon glyphicon-plus"></span></button>
+                                            <label class="control-label">Agregar Destino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- Profesores reemplazantes -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Profesor(es) Reemplazante(s)</div>
+                            <div class="panel-body">
+
+                                <!-- para cada curso -->
+                                <div class="row">
+                                    <div class="form-group" id="academicReplacement">
+                                        <label class="col-sm-4 control-label">Reemplazo Docente</label>
+
+                                        <div class="col-sm-4">
+                                            {{ academicReplacement.teachers }}
+                                        </div>
+                                        <div class="col-sm-5" style="display: none" id="topeHorario">
+                                            <p class="text-danger">*Este profesor tiene tope de horario</p>
+                                        </div>
+                                        <div class="col-sm-5" style="display: none" id="docenciaCompartida">
+                                            <p class="text-info">*Existe docencia compartida</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="form-group" id="executiveReplacement">
+                                        <label class="col-sm-4 control-label">Reemplazo Académico</label>
+
+                                        <div class="col-sm-4">
+                                            {{ executiveReplacement.teachers }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- Adjuntar documentos -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-file"></span>Adjuntar documentos</div>
+                            <div class="panel-body">
+                                <!-- para cada documento -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-sm-11">
+                                            {{ documents.management_form }}
+                                            {% for document in documents %}
+                                                <div class="itemDoc">
+                                                    <button type="button" class="deleteDoc" aria-hidden="true" onClick="">&times;</button>
+                                                    {{ document.file }}
+                                                </div>
+                                            {% endfor %}
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <button class="btn btn-warning" id="add_documents"><span class="glyphicon glyphicon-plus"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- fin para cada documento -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- Firma digitalizada -->
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> Firma digitalizada</label>
+
+                        <div class="col-sm-5">
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
+                            </div>
+                            {{ teacher_signature.signature }}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Boton enviar solicitud -->
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-7">
+                            <input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud"/>
+                        </div>
+                    </div>
+                </div>
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
@@ -358,7 +363,7 @@
                 });
                 citySelector = $(row).find('.city')[0];
                 citySelector.options.length = 0;
-                citySelector.options[0] = new Option ("Seleccione Ciudad","");
+                citySelector.options[0] = new Option("Seleccione Ciudad", "");
                 // Update the total form count;
                 $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
                 $(".datepicker").datepicker();

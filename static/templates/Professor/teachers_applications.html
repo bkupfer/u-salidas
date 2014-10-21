@@ -17,12 +17,10 @@
     <title>Salidas DCC</title>
 </head>
 <body>
-
-
 <div class="container-fluid">
 
+    <!-- navegation bar -->
     <div class="row hidden-print">
-        <!-- navegation bar -->
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="" title="">Mis solicitudes</a></li>
@@ -37,11 +35,10 @@
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
-            <div class="pannel panel-primary">
-                <div class="panel-body">
+            <div class="pannel panel-primary panel-body">
 
-                    <!-- Message telling user that a application was sent successfully -->
-                    {% if messages %}
+                <!-- Message telling user that a application was sent successfully -->
+                {% if messages %}
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
                             {% for message in messages %}
@@ -49,31 +46,29 @@
                             {% endfor %}
                         </div>
                     </div>
-                    {% endif %}
+                {% endif %}
 
-                    <h2>Mis solicitudes</h2>
-                    <br>
+                <h2>Mis solicitudes</h2>
+                <br>
 
-                    <table class="table">
+                <table class="table">
+                    <tr>
+                        <th>Fecha de envío</th>
+                        <th>Comisión</th>
+                        <th>Estado</th>
+                        <th>Detalle</th>
+                    </tr>
+                    {% for app in apps %}
                         <tr>
-                            <th>Fecha de envío</th>
-                            <th>Comisión</th>
-                            <th>Estado</th>
-                            <th>Detalle</th>
+                            <td>{{ app.creation_date }}</td>
+                            <td>{{ app.id_commission_type }}</td>
+                            <td>{{ app.get_state }}</td>
+                            <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
                         </tr>
-                        {% for app in apps %}
-                            <tr>
-                                <td>{{ app.creation_date }}</td>
-                                <td>{{ app.id_commission_type }}</td>
-                                <td>{{ app.get_state }}</td>
-                                <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                    {% endfor %}
+                </table>
 
-                </div>
             </div>
-
         </div>
     </div>
 </div>

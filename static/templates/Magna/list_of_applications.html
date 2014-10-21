@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="utf-8">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../static/public/css/docs.min.css" rel="stylesheet">
-    <link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
-    <link href="../../static/css/jquery-ui.min.css" rel="stylesheet" >
-    <script src="../../static/external/jquery/jquery.js"></script>
-    <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
-    <script src="../../static/js/jquery-ui.min.js"></script>
 
-    <title>Salidas DCC</title>
+<link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../static/public/css/docs.min.css" rel="stylesheet">
+<link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
+
+<script src="../../static/public/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../static/js/tablesort.js"> </script>
+<script type="text/javascript" src="../../static/js/dataTables.bootstrap.js"> </script>
+<script src="../../static/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../static/js/filestyle.js"> </script>
+<link href="../../static/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../static/js/dataTable.js"></script>
+
+<title>Salidas DCC</title>
+
 </head>
-<body>
 
+<body>
 <div class="container-fluid">
     <!-- navegation bar -->
     <div class="row hidden-print">
@@ -40,37 +47,166 @@
                     <h2>Listado de solicitudes</h2>
                     <br>
 
-                    <table class="table">
-                        <tr>
-                            <th>Profesor</th>
-                            <th>Comisión</th>
-                            <th>Fecha de inicio</th>
-                            <th>Fecha de envio<br>a facultad</th>
-                            <th>Estado</th>
-                            <th>Detalle</th>
-                        </tr>
-                        {% for app in apps %}
-                            <tr>
-                                <td>
-                                    {{ app.id_Teacher }}
-                                    <br>
-                                    {{ app.id_Teacher.rut }}
-                                </td>
-                                <td>{{ app.id_commission_type }}</td>
-                                <td>{{ app.creation_date }}</td>
-                                <td>  {{ app.sent_date }}   </td>
-                                <td> {{ app.get_state }}   </td>
-                                <td> <a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active"><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+                        <li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
+                        <li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
+                        <li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
+                    </ul>
+                    <br>
+
+                    <div class="tab-content">
+                        <div class="row tab-pane active" id="PDCC">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PDCCTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Profesor</th>
+                                            <th>RUT</th>
+                                            <th>Tipo de comisión</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de Envío a Facultad</th>
+                                            <th>Estado</th>
+                                            <th>Detalle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for app in apps %}
+                                            {% if app.get_state.state == "Pendiente DCC" %}
+                                                <tr>
+                                                    <td>{{ app.id }}</td>
+                                                    <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
+                                                    <td>{{ app.id_commission_type }}</td>
+                                                    <td>{{ app.creation_date }}</td>
+                                                    <td>{{ app.sent_date }}</td>
+                                                    <td>{{ app.get_state }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row tab-pane" id="PF">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PFTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Profesor</th>
+                                            <th>RUT</th>
+                                            <th>Tipo de comisión</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de Envío a Facultad</th>
+                                            <th>Estado</th>
+                                            <th>Detalle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for app in apps %}
+                                            {% if app.get_state.state == "Pendiente Facultad" %}
+                                                <tr>
+                                                    <td>{{ app.id }}</td>
+                                                    <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
+                                                    <td>{{ app.id_commission_type }}</td>
+                                                    <td>{{ app.creation_date }}</td>
+                                                    <td>  {{ app.sent_date }}</td>
+                                                    <td> {{ app.get_state }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row tab-pane" id="Tda">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdaTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Profesor</th>
+                                            <th>RUT</th>
+                                            <th>Tipo de comisión</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de Envío a Facultad</th>
+                                            <th>Estado</th>
+                                            <th>Detalle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for app in apps %}
+                                            {% if app.get_state.state == "Terminada" %}
+                                                <tr>
+                                                    <td>{{ app.id }}</td>
+                                                    <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
+                                                    <td>{{ app.id_commission_type }}</td>
+                                                    <td>{{ app.creation_date }}</td>
+                                                    <td>{{ app.sent_date }}</td>
+                                                    <td>{{ app.get_state }}</td>
+                                                    <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row tab-pane" id="Tdo">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdoTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Profesor</th>
+                                            <th>RUT</th>
+                                            <th>Tipo de comisión</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de Envío a Facultad</th>
+                                            <th>Estado</th>
+                                            <th>Detalle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for app in apps %}
+                                            <tr>
+                                                <td>{{ app.id }}</td>
+                                                <td>{{ app.id_Teacher }}</td>
+                                                <td>{{ app.id_Teacher.rut }}</td>
+                                                <td>{{ app.id_commission_type }}</td>
+                                                <td>{{ app.creation_date }}</td>
+                                                <td>{{ app.sent_date }}</td>
+                                                <td>{{ app.get_state }}</td>
+                                                <td><a href="application_detail?id={{ app.id }}">Ver detalle</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
-
         </div>
-    </div>
 
+    </div>
 </div>
 </body>
+
 </html>
+ 
