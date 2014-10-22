@@ -131,7 +131,7 @@ class Teacher(models.Model):
     profile_picture = models.URLField(blank=True, null=True) # (?) todo: borrar esto.
     mail = models.EmailField()
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
-    full_teaching_time = models.BooleanField()      # jornada docente: True -> completa, False -> Media
+    full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
     def __str__(self):
         return self.name + " " + self.last_name
     def get_courses(self):

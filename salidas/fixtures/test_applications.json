@@ -6,7 +6,9 @@
             "rut": "17704795-3",
             "name": "Bernardo",
             "last_name": "Kupfer",
-            "signature": ""
+            "signature": "",
+            "full_teaching_time":"True",
+            "hierarchy":3
         }
     },
     {
@@ -16,7 +18,9 @@
             "rut": "6704795-2",
             "name": "Sergio",
             "last_name": "Ochoa",
-            "signature": ""
+            "signature": "",
+            "full_teaching_time":"False",
+            "hierarchy":2
         }
     },
     {
@@ -26,7 +30,9 @@
             "rut": "7704795-3",
             "name": "Jorge",
             "last_name": "Perez",
-            "signature": ""
+            "signature": "",
+            "full_teaching_time":"True",
+            "hierarchy":1
         }
     },
     {
