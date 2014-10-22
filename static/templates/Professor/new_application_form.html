@@ -9,11 +9,13 @@
     <link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../static/public/css/docs.min.css" rel="stylesheet">
     <link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
-    <link href="../../static/css/jquery-ui.min.css" rel="stylesheet">
-    <script src="../../static/external/jquery/jquery.js"></script>
-    <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
-    <script src="../../static/js/jquery-ui.min.js"></script>
+    <link href="../../static/public/css/datepicker.css" rel="stylesheet">
     <script src="../../static/js/countries.js"></script>
+    <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
+    <script src="../../static/external/jquery/jquery.js"></script>
+    <script src="../../static/public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../static/js/filestyle.js"></script>
+    <script src="../../static/public/js/bootstrap-datepicker.js"></script>
 
     <title>Salidas DCC</title>
 </head>
@@ -109,19 +111,22 @@
                                             <div class="finance_item">
                                                 <div class="col-sm-12">
                                                     <label class="col-sm-2 control-label" align="left">
-                                                        {% cycle "Inscripción" "Pasaje" "Viático" %}
+                                                        {% cycle "Inscripción" "Pasaje" "Viático" as row_cycle%}
                                                     </label>
-                                                    <label class="col-sm-2 control-label">¿Financia DCC?</label>
+                                                    <label class="col-sm-2 control-label" align="right">¿Financia DCC?</label>
 
-                                                    <div class="col-sm-1">
+                                                    <div class="col-sm-1" align="left">
                                                         {{ form.checkbox }}
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-3">
                                                         {{ form.amount }}
                                                     </div>
-                                                    <div class="col-sm-3" align="right">
+                                                    <div class="col-sm-2">
                                                         {{ form.id_currency }}
                                                     </div>
+                                                    {% if row_cycle != 'Viático' %}
+                                                       <br/><hr>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -148,12 +153,12 @@
                                                     <div class="item">
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label">Destino</label>
-                                                            País
+                                                            <p class="col-sm-1">País</p>
                                                             {{ destination.country }}
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label"></label>
-                                                            Ciudad
+                                                            <p class="col-sm-1">Ciudad</p>
                                                             {{ destination.city }}
                                                         </div>
                                                         <div class="col-sm-12">
@@ -302,12 +307,11 @@
 
 
 <!-- Javascripts -->
-<script src="../../static/public/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../static/js/filestyle.js"></script>
 
 <!-- script para multi-form de montos -->
 <script type="text/javascript">
     $(document).ready(function () {
+        $( ".datepicker" ).datepicker();
         // Code adapted from http://djangosnippets.org/snippets/1389/
         function updateElementIndex(el, prefix, ndx) {
             var id_regex = new RegExp('(' + prefix + '-\\d+-)');

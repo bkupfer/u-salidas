@@ -286,10 +286,13 @@ function print_country(country) {
         id="id_destinations-"+parseInt(cont)+"-country";
         c = document.getElementById(id);
 
-        var x, i = 0;
+        var x = 0;
+        var i = 0;
         try {
+            c.options[0] = new Option("Seleccione País","");
             for (x in country_arr) {
-                c.options[i++] = new Option(country_arr[x], country_arr[x]);
+                c.options[i+1] = new Option(country_arr[x], country_arr[x]);
+                i++;
             }
         }
         catch(e){
@@ -304,7 +307,7 @@ function print_state(state_id, state_index, country_id){
     var num = parseInt(country_id.substring(16,17));
 
 	var option_str = document.getElementById("id_destinations-"+num+"-city");
-	var x, i=0; state_index++;
+	var x, i=0; state_index;
 	var state_arr = s_a[state_index].split("|");
     option_str.options.length = 0;
 	for(x in state_arr){
