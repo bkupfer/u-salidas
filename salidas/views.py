@@ -146,13 +146,13 @@ def new_application(request):
 
 def teacher_calendar(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    teacher = Teacher.objects.get(rut=rut)
+    teacher = Teacher.objects.filter(rut=rut)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
 
 def teachers_applications(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    id_Teacher = Teacher.objects.get(rut=rut)
+    id_Teacher = Teacher.objects.filter(rut=rut)
     apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
