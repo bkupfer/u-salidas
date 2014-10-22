@@ -194,6 +194,7 @@ def application_detail(request):
     profesor = query.id_Teacher
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
+    replacements =query.get_replacements
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 

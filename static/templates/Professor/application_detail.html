@@ -80,7 +80,22 @@
                             </tr>
                             <tr>
                                 <td>Profesor reemplazante</td>
-                                <td></td>
+                                <td>
+                                    <table class="table">
+                                         <tr>
+                                             <th> Tipo de Reemplazo </th>
+                                             <th> Profesor </th>
+                                             <th> Estado </th>
+                                         </tr>
+                                        {% for replacement in replacements %}
+                                         <tr>
+                                            <td> {{ replacement.type }}</td>
+                                            <td> {{ replacement.rut_teacher}}</td>
+                                            <td>{{ replacement.id_state }}</td>
+                                         </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Director a cargo</td>
