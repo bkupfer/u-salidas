@@ -24,7 +24,7 @@
         "model": "salidas.CommissionType",
         "pk": 1,
         "fields": {
-            "type": "Académica"
+            "type": "Academica"
         }
     },
     {
@@ -97,14 +97,14 @@
             "type": "Pasajes"
         }
     },
-        {
+    {
         "model": "salidas.FinanceType",
         "pk": 3,
         "fields": {
             "type": "Viaticos"
         }
     },
-        {
+    {
         "model": "salidas.ReplacementType",
         "pk": 1,
         "fields": {
@@ -116,6 +116,27 @@
         "pk": 2,
         "fields": {
             "type": "Académico"
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 1,
+        "fields": {
+            "hierarchy": "Asistente"
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 2,
+        "fields": {
+            "hierarchy": "Asociado"
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 3,
+        "fields": {
+            "hierarchy": "Instructor"
         }
     }
 ]
