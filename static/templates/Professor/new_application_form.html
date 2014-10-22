@@ -66,15 +66,16 @@
                                     <div class="form-group">
                                         <div class="col-sm-8">
                                             <div class="col-sm-12">
-                                                <label class="control-label col-sm-7" for="nombre">Tipo de comisión *</label>
-
+                                                <label class="control-label col-sm-5" for="nombre">Tipo de comisión *</label>
+                                                <a title="Ingrese tipo comisión" class="masterTooltip col-sm-2"><b>(?)</b></a>
                                                 <div class="col-sm-5">
                                                     {{ application.id_commission_type }}
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <br/>
-                                                <label class="control-label col-sm-7" for="nombre">Motivo *</label>
+                                                <label class="control-label col-sm-5" for="nombre">Motivo *</label>
+                                                <a title="Ingrese un motivo. Ejemplo: TBD" class="masterTooltip col-sm-2"><b>(?)</b></a>
 
                                                 <div class="col-sm-5">
                                                     {{ application.motive }}
@@ -82,8 +83,8 @@
                                             </div>
                                             <div class="col-sm-12">
                                                 <br/>
-                                                <label class="control-label col-sm-7" for="nombre">Financiamiento *</label>
-
+                                                <label class="control-label col-sm-5" for="nombre">Financiamiento *</label>
+                                                <a title="Ingrese el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO" class="masterTooltip col-sm-2"><b>(?)</b></a>
                                                 <div class="col-sm-5">
                                                     {{ application.financed_by }}
                                                 </div>
@@ -101,7 +102,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-success">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-usd"></span> Montos</div>
+                            <div class="panel-heading"><span class="glyphicon glyphicon-usd col-sm-12"></span> Montos</div>
+                            <a title="Indique si el DCC financia los siguientes tipos de gastos. Marque el casillero(checkbox) en caso positivo, en caso contrario deje sin marcar" class="masterTooltip col-sm-13"><b>(?)</b></a>
                             <div class="panel-body">
                                 {{ financeFormSet.management_form }}
                                 {% for form in financeFormSet %}
@@ -143,6 +145,7 @@
                     <div class="col-sm-12">
                         <div class="panel panel-info">
                             <div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
+                             <a title="Seleccione el o los destinos de su viaje, indicando fechas de comienzo y termino para cada destino, contadas desde mismo día en que viaja y el día que viaja al siguiente destino" class="masterTooltip col-sm-2"><b>(?)</b></a>
                             <div class="panel-body">
                                 <div id="destination_form">
                                     <div class="row">
@@ -203,7 +206,8 @@
                                 <!-- para cada curso -->
                                 <div class="row">
                                     <div class="form-group" id="academicReplacement">
-                                        <label class="col-sm-4 control-label">Reemplazo Docente *</label>
+                                        <label class="col-sm-3 control-label">Reemplazo Docente *</label>
+                                        <a title="Seleccione al profesor que será su reemplazante para sus clases" class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
                                             {{ academicReplacement.teachers }}
@@ -219,7 +223,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="form-group" id="executiveReplacement">
-                                        <label class="col-sm-4 control-label">Reemplazo Académico *</label>
+                                        <label class="col-sm-3 control-label">Reemplazo Académico *</label>
+                                        <a title="Seleccione al profesor que será su reemplazante para sus labores administrativas" class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
                                             {{ executiveReplacement.teachers }}
@@ -237,6 +242,7 @@
                     <div class="col-sm-12">
                         <div class="panel panel-warning">
                             <div class="panel-heading"><span class="glyphicon glyphicon-file"></span>Adjuntar documentos</div>
+                        <a title="Adjuntar documentos relacionados con su viaje. Ejemplos: paper, carta de invitación o carta de aceptación en caso de ser un tipo de comisión académica. Y en caso de ser un tipo de comisión de servicio o de estudio adjuntar documentos de respaldo" class="masterTooltip"><b>(?)</b></a>
                             <div class="panel-body">
                                 <!-- para cada documento -->
                                 <div class="row">
