@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # Pages:
     # General views
     url(r'^login', 'django.contrib.auth.views.login', {'template_name': 'General/login.html'}),
+    url(r'^access_denied', 'salidas.views.access_denied', name='access_denied'),
 
     # Teacher view pages
     url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'General/login.html'}),
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
+
 
     #URL pagina prueba
     url(r'^list', 'salidas.views.list', name='list'),

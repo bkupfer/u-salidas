@@ -35,6 +35,8 @@ def login(request):
         # Mostrar una página de error
         return redirect(login)
 
+def access_denied(request):
+    return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request));
 
 #Views for teachers
 #Este es el formulario prototipo de financia
@@ -190,13 +192,17 @@ def list_of_applications(request):
 
 
 def application_detail(request):
-    # todo: if id de app no corresponde a una app mia reder "acceso denegado".
     id_app = request.GET['id']
     query = Application.objects.get(pk = id_app)
     profesor = query.id_Teacher
+    sessions_rut = profesor.rut     # todo: cambiar esta variable para que calse con el rut del usuario de session!!
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
     replacements =query.get_replacements
+
+    if (profesor.rut != sessions_rut):
+        return redirect(access_denied)
+
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
@@ -234,6 +240,7 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
+
 
 
 # debuging views
