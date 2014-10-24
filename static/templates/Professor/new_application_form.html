@@ -67,7 +67,7 @@
                                         <div class="col-sm-8">
                                             <div class="col-sm-12">
                                                 <label class="control-label col-sm-5" for="nombre">Tipo de comisión *</label>
-                                                <a title="Ingrese tipo comisión" class="masterTooltip col-sm-2"><b>(?)</b></a>
+                                                <a title="Ingrese tipo comisión." class="masterTooltip col-sm-2"><b>(?)</b></a>
                                                 <div class="col-sm-5">
                                                     {{ application.id_commission_type }}
                                                 </div>
@@ -75,7 +75,7 @@
                                             <div class="col-sm-12">
                                                 <br/>
                                                 <label class="control-label col-sm-5" for="nombre">Motivo *</label>
-                                                <a title="Ingrese un motivo. Ejemplo: TBD" class="masterTooltip col-sm-2"><b>(?)</b></a>
+                                                <a title="Ingrese un motivo del viaje. Ejemplo: TBD." class="masterTooltip col-sm-2"><b>(?)</b></a>
 
                                                 <div class="col-sm-5">
                                                     {{ application.motive }}
@@ -84,7 +84,7 @@
                                             <div class="col-sm-12">
                                                 <br/>
                                                 <label class="control-label col-sm-5" for="nombre">Financiamiento *</label>
-                                                <a title="Ingrese el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO" class="masterTooltip col-sm-2"><b>(?)</b></a>
+                                                <a title="Ingrese el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO." class="masterTooltip col-sm-2"><b>(?)</b></a>
                                                 <div class="col-sm-5">
                                                     {{ application.financed_by }}
                                                 </div>
@@ -104,7 +104,7 @@
                         <div class="panel panel-success">
                             <div class="panel-heading">
 								<span class="glyphicon glyphicon-usd"></span> Montos
-								<p style="float: right"><a title="Indique si el DCC financia los siguientes tipos de gastos, marcando el casillero (checkbox) en caso positivo, en caso contrario deje sin marcar." class="masterTooltip col-sm-2"><b>(?)</b></a></p>
+								<p style="float: right"><a title="Indique si el DCC financia los siguientes tipos de gastos, marcando el casillero (checkbox) en caso positivo, en caso contrario deje sin marcar. No es necesario ingresar información sobre montos no financiados por el DCC." class="masterTooltip col-sm-2"><b>(?)</b></a></p>
 							</div>
 
                             <div class="panel-body">
@@ -149,7 +149,7 @@
                         <div class="panel panel-info">
                             <div class="panel-heading">
 								<span class="glyphicon glyphicon-plane"></span> Destinos
-								<p style="float: right"><a title="Seleccione el o los destinos de su viaje, indicando fechas de comienzo y termino para cada destino, contadas desde mismo día en que viaja y el día que viaja al siguiente destino" class="masterTooltip col-sm-2"><b>(?)</b></a></p>
+								<p style="float: right"><a title="Seleccione el o los destinos de su viaje, indicando fechas de comienzo y termino para cada destino, contadas desde mismo día en que viaja y el día que viaja al siguiente destino." class="masterTooltip col-sm-2"><b>(?)</b></a></p>
 							</div>
 
                             <div class="panel-body">
@@ -213,7 +213,7 @@
                                 <div class="row">
                                     <div class="form-group" id="academicReplacement">
                                         <label class="col-sm-3 control-label">Reemplazo Docente *</label>
-                                        <a title="Seleccione al profesor que será su reemplazante para sus clases" class="masterTooltip col-sm-1"><b>(?)</b></a>
+                                        <a title="Seleccione al profesor que será su reemplazante para sus clases." class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
                                             {{ academicReplacement.teachers }}
@@ -230,7 +230,7 @@
                                 <div class="row">
                                     <div class="form-group" id="executiveReplacement">
                                         <label class="col-sm-3 control-label">Reemplazo Académico *</label>
-                                        <a title="Seleccione al profesor que será su reemplazante para sus labores administrativas" class="masterTooltip col-sm-1"><b>(?)</b></a>
+                                        <a title="Seleccione al profesor que será su reemplazante para sus labores administrativas." class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
                                             {{ executiveReplacement.teachers }}
@@ -249,7 +249,7 @@
                         <div class="panel panel-warning">
                             <div class="panel-heading">
 								<span class="glyphicon glyphicon-file"></span> Adjuntar documentos
-								<p style="float: right"><a title="Adjuntar documentos relacionados con su viaje. Ejemplos: paper, carta de invitación o carta de aceptación en caso de ser un tipo de comisión académica. Y en caso de ser un tipo de comisión de servicio o de estudio adjuntar documentos de respaldo" class="masterTooltip"><b>(?)</b></a></p>
+								<p style="float: right"><a title="Adjuntar documentos relacionados con su viaje. Para tipo de comisión académica; paper, carta de invitación o carta de aceptación. En caso de ser un tipo de comisión de servicio o de estudio adjuntar documentos de respaldo." class="masterTooltip"><b>(?)</b></a></p>
 							</div>
 
                             <div class="panel-body">
@@ -302,6 +302,9 @@
                 </div>
                 <hr>
 
+				<p class="text-right">Los campos marcados como (*) son obligatorios</p>
+
+
                 <!-- Boton enviar solicitud -->
                 <div class="row">
                     <div class="form-group">
@@ -313,9 +316,7 @@
 
                 </form>
 
-				<p class="text-right">Los campos marcados como (*) son obligatorios</p>
-
-            </div>
+           </div>
         </div>
     </div>
 </div>
