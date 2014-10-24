@@ -19,10 +19,11 @@ urlpatterns = patterns('',
     url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
     url(r'^replacement_requests', 'salidas.views.replacement_requests', name='replacement_requests'),
     url(r'^replacement_list', 'salidas.views.replacement_list', name='replacement_list'),
+    url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
-    url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
+    url(r'^application_review', 'salidas.views.application_review', name='application_review'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),

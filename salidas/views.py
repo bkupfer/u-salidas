@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
-
+from django.http import HttpResponse
 from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
 from django.contrib.auth import  authenticate
@@ -19,7 +19,6 @@ from salidas.calendar import *  #  for calendar
 # Views for all users
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
-
 
 # General views
 def login(request):
@@ -127,7 +126,6 @@ def new_application(request):
 
             # documents
             for document in documents:
-                print(document)
                 documentForm(document, newApp)
 
             # signature
@@ -169,7 +167,6 @@ def replacement_list(request):
 
 
 def replacement_requests(request):
-
     replacement = Replacement.objects.get( pk = request.GET['id'] )
 
     if 'accept_button' in request.POST:
@@ -185,12 +182,6 @@ def replacement_requests(request):
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 
-# Views for administrative people
-def list_of_applications(request):
-    apps = Application.objects.all()
-    return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
-
-
 def application_detail(request):
     id_app = request.GET['id']
     query = Application.objects.get(pk = id_app)
@@ -198,7 +189,7 @@ def application_detail(request):
     sessions_rut = profesor.rut     # todo: cambiar esta variable para que calse con el rut del usuario de session!!
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
-    replacements =query.get_replacements
+    replacements = query.get_replacements
 
     if (profesor.rut != sessions_rut):
         return redirect(access_denied)
@@ -206,10 +197,28 @@ def application_detail(request):
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
+# Views for administrative people
+def list_of_applications(request):
+    apps = Application.objects.all()
+    return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
+
+
+def application_review(request):
+    id_app = request.GET['id']
+    query = Application.objects.get(pk = id_app)
+    profesor = query.id_Teacher
+    comm_type = query.id_commission_type
+    dest = Destination.objects.filter(application = query.id)
+    replacements = query.get_replacements
+
+    return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
+
+
 def historic_calendar(request):
     return render_to_response("Magna/historic_calendar.html", locals(), content_type=RequestContext(request))
 
 
+# Views Alejandro
 def list_alejandro(request):
     apps = Application.objects.all()
     return render_to_response("Alejandro/list_alejandro.html", locals(), context_instance=RequestContext(request))
@@ -240,7 +249,6 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
-
 
 
 # debuging views

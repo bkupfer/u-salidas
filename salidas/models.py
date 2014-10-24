@@ -128,7 +128,6 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
-    profile_picture = models.URLField(blank=True, null=True) # (?) todo: borrar esto.
     mail = models.EmailField()
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
     full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
