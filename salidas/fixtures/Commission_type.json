@@ -115,7 +115,7 @@
         "model": "salidas.ReplacementType",
         "pk": 2,
         "fields": {
-            "type": "Académico"
+            "type": "Academico"
         }
     },
     {

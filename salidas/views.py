@@ -85,62 +85,64 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
-    if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
-        # Applications instance
-        id_teacher = Teacher.objects.get(pk=1)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
-        ct = application.cleaned_data['id_commission_type']
-        motive = application.cleaned_data['motive']
-        fb = application.cleaned_data['financed_by']
-        daysv = State.objects.get(pk=1)     # pendiente
-        fundsv = State.objects.get(pk=1)    # pendiente
+    if len(request.POST) != 0:
+        if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
+            # Applications instance
+            id_teacher = Teacher.objects.get(pk=1)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
+            ct = application.cleaned_data['id_commission_type']
+            motive = application.cleaned_data['motive']
+            fb = application.cleaned_data['financed_by']
+            daysv = State.objects.get(pk=1)     # pendiente
+            fundsv = State.objects.get(pk=1)    # pendiente
 
-        newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,
-                             motive = motive, financed_by = fb,
-                             id_days_validation_state = daysv, id_funds_validation_state = fundsv)
-        newApp.save()
+            newApp = Application(id_Teacher = id_teacher, id_commission_type = ct, motive = motive, financed_by = fb,
+                                 id_days_validation_state = daysv, id_funds_validation_state = fundsv)
+            newApp.save()
 
-        #agregarle estado a la App
-        #estado pendiente dcc
-        state = ApplicationState.objects.get(pk=1)  # pendiente dcc
-        stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
-        stateApp.save()
+            #agregarle estado a la App
+            #estado pendiente dcc
+            state = ApplicationState.objects.get(pk=1)  # pendiente dcc
+            stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
+            stateApp.save()
 
-        # replacement teacher information
-        executiveReplace = executiveReplacement.cleaned_data['teachers']
-        academicReplace = academicReplacement.cleaned_data['teachers']
-        newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
-        newAcademicReplacement = Replacement(rut_teacher=academicReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Académico"))
-        newExecutiveReplacement.save()
-        newAcademicReplacement.save()
+            # replacement teacher information
+            executiveReplace = executiveReplacement.cleaned_data['teachers']
+            academicReplace = academicReplacement.cleaned_data['teachers']
+            newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newAcademicReplacement  = Replacement(rut_teacher=academicReplace,  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
+            newExecutiveReplacement.save()
+            newAcademicReplacement.save()
 
-        # money
-        i = 1
-        for finance in financeFormSet:
-            financeForm(finance, newApp, i)
-            i += 1
+            # money
+            i = 1
+            for finance in financeFormSet:
+                financeForm(finance, newApp, i)
+                i += 1
 
-        # destinations
-        for destination in destinations:
-            destinationForm(destination, newApp)
+            # destinations
+            for destination in destinations:
+                destinationForm(destination, newApp)
 
-        # documents
-        for document in documents:
-            print(document)
-            documentForm(document, newApp)
+            # documents
+            for document in documents:
+                print(document)
+                documentForm(document, newApp)
 
-        # signature
-        try:
-            asignature = request.FILES['signature']
-            id_teacher.signature.delete()
-            id_teacher.signature=asignature
-            id_teacher.save()
-        except:
-            asignature=None
+            # signature
+            try:
+                asignature = request.FILES['signature']
+                id_teacher.signature.delete()
+                id_teacher.signature=asignature
+                id_teacher.save()
+            except:
+                asignature=None
 
-        messages.success(request, 'Solicitud enviada exitosamente!')
-        return redirect(teachers_applications)
+            messages.success(request, 'Solicitud enviada exitosamente!')
+            return redirect(teachers_applications)
 
-    # messages.error(request, 'Error en el envío del formulario.')
+        else:
+            messages.error(request, 'Error en el envío del formulario.')
+
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
 

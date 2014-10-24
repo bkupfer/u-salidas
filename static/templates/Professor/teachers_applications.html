@@ -37,146 +37,156 @@
         </div>
     </div>
 
-<!-- page content -->
+	<!-- page content -->
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+          	<div class="pannel panel-primary panel-body">
 
-            <div class="pannel panel-primary">
-                <div class="panel-body">
+				<h2>Listado de solicitudes</h2>
+				<br>
 
-                    <h2>Listado de solicitudes</h2>
-                    <br>
+				<!-- For message to user -->
+				{% if messages %}
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							{% for message in messages %}
+								<p {% if message.tags == "success" %} class="alert alert-success text-center"{% endif %}> {{ message }} </p>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
 
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="active"><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
-                        <li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
-                        <li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
-                        <li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
-                    </ul>
-                    <br>
 
-                    <div class="tab-content">
-                        <div class="row tab-pane active" id="PDCC">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PDCCTable">
-                                        <thead>
-                                        <tr>
-                                            <th>Nº</th>
-                                            <th>Tipo de Comisión</th>
-                                            <th>Fecha de Creación</th>
-                                            <th>Fecha de Envío a Facultad</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for app in apps %}
-                                            {% if app.get_state.state == "Pendiente DCC" %}
-                                                <tr>
-                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
-                                                    <td>{{ app.id_commission_type }}</td>
-                                                    <td>{{ app.creation_date }}</td>
-                                                    <td>{{ app.sent_date }}</td>
-                                                    <td>{{ app.get_state }}</td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row tab-pane" id="PF">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PFTable">
-                                        <thead>
-                                        <tr>
-                                            <th>Nº</th>
-                                            <th>Tipo de Comisión</th>
-                                            <th>Fecha de Creación</th>
-                                            <th>Fecha de Envío a Facultad</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for app in apps %}
-                                            {% if app.get_state.state == "Pendiente Facultad" %}
-                                                <tr>
-                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
-                                                    <td>{{ app.id_commission_type }}</td>
-                                                    <td>{{ app.creation_date }}</td>
-                                                    <td>  {{ app.sent_date }}</td>
-                                                    <td> {{ app.get_state }}</td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row tab-pane" id="Tda">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdaTable">
-                                        <thead>
-                                        <tr>
-                                            <th>Nº</th>
-                                            <th>Tipo de Comisión</th>
-                                            <th>Fecha de Creación</th>
-                                            <th>Fecha de Envío a Facultad</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for app in apps %}
-                                            {% if app.get_state.state == "Terminada" %}
-                                                <tr>
-                                                    <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
-                                                    <td>{{ app.id_commission_type }}</td>
-                                                    <td>{{ app.creation_date }}</td>
-                                                    <td>{{ app.sent_date }}</td>
-                                                    <td>{{ app.get_state }}</td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row tab-pane" id="Tdo">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdoTable">
-                                        <thead>
-                                        <tr>
-                                            <th>Nº</th>
-                                            <th>Tipo de Comisión</th>
-                                            <th>Fecha de Creación</th>
-                                            <th>Fecha de Envío a Facultad</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for app in apps %}
-                                            <tr>
-                                                <td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
-                                                <td>{{ app.id_commission_type }}</td>
-                                                <td>{{ app.creation_date }}</td>
-                                                <td>{{ app.sent_date }}</td>
-                                                <td>{{ app.get_state }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+					<li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
+					<li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
+					<li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
+				</ul>
+				<br>
 
-                </div>
+				<div class="tab-content">
+					<div class="row tab-pane active" id="PDCC">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover table-condensed table-striped" id="PDCCTable">
+									<thead>
+									<tr>
+										<th>Nº</th>
+										<th>Tipo de Comisión</th>
+										<th>Fecha de Creación</th>
+										<th>Fecha de Envío a Facultad</th>
+										<th>Estado</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for app in apps %}
+										{% if app.get_state.state == "Pendiente DCC" %}
+											<tr>
+												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
+												<td>{{ app.id_commission_type }}</td>
+												<td>{{ app.creation_date }}</td>
+												<td>{{ app.sent_date }}</td>
+												<td>{{ app.get_state }}</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row tab-pane" id="PF">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover table-condensed table-striped" id="PFTable">
+									<thead>
+									<tr>
+										<th>Nº</th>
+										<th>Tipo de Comisión</th>
+										<th>Fecha de Creación</th>
+										<th>Fecha de Envío a Facultad</th>
+										<th>Estado</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for app in apps %}
+										{% if app.get_state.state == "Pendiente Facultad" %}
+											<tr>
+												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
+												<td>{{ app.id_commission_type }}</td>
+												<td>{{ app.creation_date }}</td>
+												<td>  {{ app.sent_date }}</td>
+												<td> {{ app.get_state }}</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row tab-pane" id="Tda">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover table-condensed table-striped" id="TdaTable">
+									<thead>
+									<tr>
+										<th>Nº</th>
+										<th>Tipo de Comisión</th>
+										<th>Fecha de Creación</th>
+										<th>Fecha de Envío a Facultad</th>
+										<th>Estado</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for app in apps %}
+										{% if app.get_state.state == "Terminada" %}
+											<tr>
+												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
+												<td>{{ app.id_commission_type }}</td>
+												<td>{{ app.creation_date }}</td>
+												<td>{{ app.sent_date }}</td>
+												<td>{{ app.get_state }}</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row tab-pane" id="Tdo">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover table-condensed table-striped" id="TdoTable">
+									<thead>
+									<tr>
+										<th>Nº</th>
+										<th>Tipo de Comisión</th>
+										<th>Fecha de Creación</th>
+										<th>Fecha de Envío a Facultad</th>
+										<th>Estado</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for app in apps %}
+										<tr>
+											<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
+											<td>{{ app.id_commission_type }}</td>
+											<td>{{ app.creation_date }}</td>
+											<td>{{ app.sent_date }}</td>
+											<td>{{ app.get_state }}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
             </div>
         </div>
 
