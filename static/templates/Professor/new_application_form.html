@@ -102,8 +102,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-success">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-usd col-sm-12"></span> Montos</div>
-                            <a title="Indique si el DCC financia los siguientes tipos de gastos. Marque el casillero(checkbox) en caso positivo, en caso contrario deje sin marcar" class="masterTooltip col-sm-13"><b>(?)</b></a>
+                            <div class="panel-heading">
+								<span class="glyphicon glyphicon-usd"></span> Montos
+								<p style="float: right"><a title="Indique si el DCC financia los siguientes tipos de gastos, marcando el casillero (checkbox) en caso positivo, en caso contrario deje sin marcar." class="masterTooltip col-sm-2"><b>(?)</b></a></p>
+							</div>
+
                             <div class="panel-body">
                                 {{ financeFormSet.management_form }}
                                 {% for form in financeFormSet %}
@@ -144,8 +147,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-info">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-plane"></span> Destinos</div>
-                             <a title="Seleccione el o los destinos de su viaje, indicando fechas de comienzo y termino para cada destino, contadas desde mismo día en que viaja y el día que viaja al siguiente destino" class="masterTooltip col-sm-2"><b>(?)</b></a>
+                            <div class="panel-heading">
+								<span class="glyphicon glyphicon-plane"></span> Destinos
+								<p style="float: right"><a title="Seleccione el o los destinos de su viaje, indicando fechas de comienzo y termino para cada destino, contadas desde mismo día en que viaja y el día que viaja al siguiente destino" class="masterTooltip col-sm-2"><b>(?)</b></a></p>
+							</div>
+
                             <div class="panel-body">
                                 <div id="destination_form">
                                     <div class="row">
@@ -241,8 +247,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-warning">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-file"></span>Adjuntar documentos</div>
-                            <a title="Adjuntar documentos relacionados con su viaje. Ejemplos: paper, carta de invitación o carta de aceptación en caso de ser un tipo de comisión académica. Y en caso de ser un tipo de comisión de servicio o de estudio adjuntar documentos de respaldo" class="masterTooltip"><b>(?)</b></a>
+                            <div class="panel-heading">
+								<span class="glyphicon glyphicon-file"></span> Adjuntar documentos
+								<p style="float: right"><a title="Adjuntar documentos relacionados con su viaje. Ejemplos: paper, carta de invitación o carta de aceptación en caso de ser un tipo de comisión académica. Y en caso de ser un tipo de comisión de servicio o de estudio adjuntar documentos de respaldo" class="masterTooltip"><b>(?)</b></a></p>
+							</div>
+
                             <div class="panel-body">
                                 <!-- para cada documento -->
                                 <div class="row">
