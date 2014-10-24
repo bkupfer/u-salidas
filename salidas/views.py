@@ -102,7 +102,7 @@ def new_application(request):
 
             #agregarle estado a la App
             #estado pendiente dcc
-            state = ApplicationState.objects.get(pk=1)  # pendiente dcc
+            state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
             stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
             stateApp.save()
 
@@ -205,17 +205,21 @@ def list_of_applications(request):
 
 def application_review(request):
     id_app = request.GET['id']
-    query = Application.objects.get(pk = id_app)
-    profesor = query.id_Teacher
-    comm_type = query.id_commission_type
-    dest = Destination.objects.filter(application = query.id)
-    replacements = query.get_replacements
+    app = Application.objects.get(pk = id_app)
+    profesor = app.id_Teacher
+    comm_type = app.id_commission_type
+    dest = Destination.objects.filter(application = app.id)
+    replacements = app.get_replacements
 
-    if 'accept_button' in request.POST:
-        # cambiar state de la app a 'pendiente facultad'
-        return redirect("list_of_applications")
-    if 'reject_button' in request.POST:
-        # cambiar state de la app a 'rechazado'
+    if len(request.POST) != 0:
+        if 'accept_button' in request.POST:
+            id_state = 2    # pendiente dcc
+        if 'reject_button' in request.POST:
+            id_state = 4    # rechazado
+
+        state = ApplicationState.objects.get(pk = id_state)
+        stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
+        stateApp.save()
         return redirect("list_of_applications")
 
     return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
