@@ -45,21 +45,35 @@
         "model": "salidas.ApplicationState",
         "pk": 1,
         "fields": {
-            "state": "Pendiente DCC"
+            "state": "Pendiente aprobacion"
         }
     },
     {
         "model": "salidas.ApplicationState",
         "pk": 2,
         "fields": {
-            "state": "Pendiente Facultad"
+            "state": "Pendiente DCC"
         }
     },
     {
         "model": "salidas.ApplicationState",
         "pk": 3,
         "fields": {
+            "state": "Pendiente Facultad"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 4,
+        "fields": {
             "state": "Terminada"
+        }
+    },
+    {
+        "model": "salidas.ApplicationState",
+        "pk": 4,
+        "fields": {
+            "state": "Rechazada"
         }
     },
     {

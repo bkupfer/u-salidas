@@ -56,9 +56,7 @@
 						</tr>
 						<tr>
 							<td>Motivo</td>
-							<td>
-							{{ query.motive }}
-							<td>
+							<td>{{ query.motive }}<td>
 						</tr>
 						<tr>
 							<td>Financiamiento</td>
@@ -75,8 +73,8 @@
 									</tr>
 									{% for d in dest %}
 										<tr>
-											<td> {{ d.city }}, {{ d.country }}</td>
-											<td> {{ d.start_date }}</td>
+											<td>{{ d.city }}, {{ d.country }}</td>
+											<td>{{ d.start_date }}</td>
 											<td>{{ d.end_date }}</td>
 										</tr>
 									{% endfor %}
@@ -94,8 +92,8 @@
 									</tr>
 									{% for replacement in replacements %}
 										<tr>
-											<td> {{ replacement.type }}</td>
-											<td> {{ replacement.rut_teacher }}</td>
+											<td>{{ replacement.type }}</td>
+											<td>{{ replacement.rut_teacher }}</td>
 											<td>{{ replacement.id_state }}</td>
 										</tr>
 									{% endfor %}

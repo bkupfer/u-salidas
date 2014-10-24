@@ -211,6 +211,13 @@ def application_review(request):
     dest = Destination.objects.filter(application = query.id)
     replacements = query.get_replacements
 
+    if 'accept_button' in request.POST:
+        # cambiar state de la app a 'pendiente facultad'
+        return redirect("list_of_applications")
+    if 'reject_button' in request.POST:
+        # cambiar state de la app a 'rechazado'
+        return redirect("list_of_applications")
+
     return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
 
 
