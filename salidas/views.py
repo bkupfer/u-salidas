@@ -77,11 +77,12 @@ def documentForm(doc, newApp):
 
 
 def new_application(request):
-
+    teacher_id=1
+    teacher=Teacher.objects.get(pk=teacher_id)
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
-    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    academicReplacement = AcademicReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)

@@ -95,9 +95,9 @@ class Application(models.Model):
         return used_days
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
-        files = ()
+        files =[]
         for doc in docs:
-            files.append(doc.file)
+            files+=doc.file
         return files
     def get_replacements(self):
         replacements = Replacement.objects.filter(id_Application=self)
@@ -135,15 +135,18 @@ class Teacher(models.Model):
         return self.name + " " + self.last_name
     def get_courses(self):
         his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)
-        courses = ()
+        #if len(his_courses)==1:
+        #    his_courses=[his_courses]
+        courses = []
         for course in his_courses:
-            courses.append(course.id_Course)
+            print(course)
+            courses=courses+[course.id_Course]
         return courses
     def get_modules(self):
         courses = self.get_courses()
-        modules = ()
+        modules = []
         for course in courses:
-            modules.append(course.get_modules())
+            modules+=(course.get_modules())
         return modules
     def get_applications(self):
         his_applications = Application.objects.filter(id_Teacher=self)
@@ -154,6 +157,28 @@ class Teacher(models.Model):
         for app in his_apps:
             used_days+=app.get_used_days()
         return used_days
+    def get_possible_replacement_teachers(self):
+        print("hola" )
+        print(self)
+        y_modules=self.get_modules()
+        #print(y_modules[0])
+        print("a")
+        my_modules=set(y_modules)
+        print(my_modules)
+        replacement=[('','--------')]
+        teachers = Teacher.objects.all()
+        i=1
+        for teacher in teachers:
+            their_modules=set(teacher.get_modules())
+            if my_modules.isdisjoint(their_modules):
+                print("their_modules")
+                print(teacher)
+                print(their_modules)
+
+                replacement.append((i,str(teacher)))
+                i+=1
+        print(replacement)
+        return replacement
 
 #rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
@@ -186,9 +211,9 @@ class Course(models.Model):
         return self.name
     def get_modules(self):
         its_modules = CourseHasModule.objects.filter(id_Course=self)
-        modules=()
+        modules=[]
         for module in its_modules:
-            modules.append(module.id_Module)
+            modules=modules+[module.id_Module]
         return modules
 
 
@@ -206,6 +231,8 @@ class CourseHasModule(models.Model):
 class TeacherHasCourse(models.Model):
     id_Teacher = models.ForeignKey('Teacher')
     id_Course = models.ForeignKey('Course')
+    def __str__(self):
+        return str(self.id_Teacher) + str("/")+ str(self.id_Course)
 
 class ReplacementType(models.Model):
     type = models.CharField(max_length=20)
