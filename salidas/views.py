@@ -1,5 +1,7 @@
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponse
 from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
@@ -9,8 +11,6 @@ from django.contrib.auth.decorators import login_required,user_passes_test,permi
 from django.core.urlresolvers import reverse
 
 from django.utils.safestring import mark_safe   #  for calendar
-
-from salidas.models import *
 
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
@@ -137,6 +137,7 @@ def new_application(request):
             except:
                 asignature=None
 
+            # send_mail(subject, message, from_email, to_list, fail_silently = True)
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
 
