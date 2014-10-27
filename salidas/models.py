@@ -139,7 +139,6 @@ class Teacher(models.Model):
         #    his_courses=[his_courses]
         courses = []
         for course in his_courses:
-            print(course)
             courses=courses+[course.id_Course]
         return courses
     def get_modules(self):
@@ -158,26 +157,16 @@ class Teacher(models.Model):
             used_days+=app.get_used_days()
         return used_days
     def get_possible_replacement_teachers(self):
-        print("hola" )
-        print(self)
         y_modules=self.get_modules()
-        #print(y_modules[0])
-        print("a")
         my_modules=set(y_modules)
-        print(my_modules)
         replacement=[('','--------')]
         teachers = Teacher.objects.all()
         i=1
         for teacher in teachers:
             their_modules=set(teacher.get_modules())
             if my_modules.isdisjoint(their_modules):
-                print("their_modules")
-                print(teacher)
-                print(their_modules)
-
                 replacement.append((i,str(teacher)))
                 i+=1
-        print(replacement)
         return replacement
 
 #rut_teacher es un Teacher no un rut!!!

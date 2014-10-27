@@ -54,7 +54,6 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 class ReplacementApplicationForm(forms.Form):
     teacher = Teacher.objects.get(pk=1)
-    # print(teacher)
     achoices = teacher.get_possible_replacement_teachers()
     teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
 
