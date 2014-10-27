@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
+
 from django.utils.encoding import smart_text
 
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
@@ -124,6 +127,7 @@ class Hierarchy(models.Model):
         return self.hierarchy
 
 class Teacher(models.Model):
+    user = models.OneToOneField(User)
     rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

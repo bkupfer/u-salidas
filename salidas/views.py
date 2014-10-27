@@ -7,10 +7,12 @@ from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
 from django.utils.safestring import mark_safe   #  for calendar
 
 from salidas.models import *
+from django.contrib.auth.models import User,Group
 
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
@@ -20,22 +22,43 @@ from salidas.calendar import *  #  for calendar
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
 
+def isProfessor(user):
+	users_in_group = Group.objects.get(name='profesores').user_set.all()
+	if user in users_in_group or user.is_superuser:
+		return True
+	else:
+		return False
 # General views
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = auth.authenticate(username=username,password=password)
-    if user is not None and user.is_active:
-        # Clave correcta, y el usuario está marcado "activo"
-        auth.login(request, user)
-        # Redirigir a la pagina que corresponda
-        return redirect(list_of_applications) # todo: enviar a la pagina que corresponda según el tipo de usuario!
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = auth.authenticate(username=username,password=password)
+            if user is not None and user.is_active:
+                auth.login(request, user)
+                # Redirigir a la pagina que corresponda # todo: enviar a la pagina que corresponda según el tipo de usuario!
+                if(isProfessor(user)):
+                    return redirect(teachers_applications)
+                else:
+                    return redirect(list_of_applications)
+            else:
+                print("userno existe")
+                return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+        else:
+            print("error")
     else:
-        # Mostrar una página de error
-        return redirect(login)
+        form = AuthenticationForm()
+    # Mostrar una página de error
+    return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+
+def logout(request):
+    auth.logout(request)
+    return redirect(login)
 
 def access_denied(request):
-    return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request));
+    return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request))
 
 #Views for teachers
 #Este es el formulario prototipo de financia
@@ -89,7 +112,7 @@ def new_application(request):
     if len(request.POST) != 0:
         if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
             # Applications instance
-            id_teacher = Teacher.objects.get(pk=1)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
+            id_teacher = Teacher.objects.get(user=request.user.id)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
             fb = application.cleaned_data['financed_by']
@@ -148,24 +171,27 @@ def new_application(request):
 
 def teacher_calendar(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    teacher = Teacher.objects.filter(rut=rut)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
+    teacher = Teacher.objects.filter(user=request.user.id)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
-
+@login_required
 def teachers_applications(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    id_Teacher = Teacher.objects.filter(rut=rut)
+    id_Teacher = Teacher.objects.filter(user=request.user.id)
     apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
 def replacement_list(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor! (o el id)
-    id=1
-    replacements = Replacement.objects.filter(rut_teacher=1)
+   # rut = "17704795-3"  # todo: obtener el rut del profesor! (o el id)
+   # id=1
+    teacher= Teacher.objects.get(user=request.user.id)
+    replacements = Replacement.objects.filter(rut_teacher=teacher)
+    print(teacher)
+    print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
-
+#todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
 def replacement_requests(request):
     replacement = Replacement.objects.get( pk = request.GET['id'] )
 
