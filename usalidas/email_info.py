@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # for gmail.
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

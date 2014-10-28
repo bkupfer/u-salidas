@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -13,7 +14,7 @@ from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe   #  for calendar
 
 from salidas.forms import *     #  for calendar
-from salidas.calendar import *  #  for calendar
+#from salidas.calendar import *  #  for calendar # comentado por asuntos de compatibilidad
 
 
 # Views for all users
