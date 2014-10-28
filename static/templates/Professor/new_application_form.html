@@ -318,6 +318,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $( ".datepicker" ).datepicker();
+        $(".active").removeClass("active");
+        $("#2").addClass("active");
         // Code adapted from http://djangosnippets.org/snippets/1389/
         function updateElementIndex(el, prefix, ndx) {
             var id_regex = new RegExp('(' + prefix + '-\\d+-)');
