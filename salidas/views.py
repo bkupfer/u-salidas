@@ -240,6 +240,7 @@ def application_detail(request):
 
 
 # Views for administrative people
+# Magna
 @login_required
 def list_of_applications(request):
     apps = Application.objects.all()
@@ -289,6 +290,16 @@ def detail_alejandro(request):
     teacher = application.id_Teacher
     finances=Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
+
+
+def finance_validation(request):
+    return render_to_response("Alejandro/finance_validation.html", locals(), content_type=RequestContext(request))
+
+
+# Angelica
+def days_validation(request):
+    return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
+
 
 
 # Aditional views

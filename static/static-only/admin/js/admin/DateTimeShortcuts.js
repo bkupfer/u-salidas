@@ -17,7 +17,7 @@ var DateTimeShortcuts = {
     admin_media_prefix: '',
     init: function() {
         // Get admin_media_prefix by grabbing it off the window object. It's
-        // set in the admin/base.html template, so if it's not there, someone's
+        // set in the admin/navbar_teacher.html template, so if it's not there, someone's
         // overridden the template. In that case, we'll set a clearly-invalid
         // value in the hopes that someone will examine HTTP requests and see it.
         if (window.__admin_media_prefix__ != undefined) {

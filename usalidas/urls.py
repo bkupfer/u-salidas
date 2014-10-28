@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
+    url(r'^finance_validation', 'salidas.views.finance_validation', name='finance_validation'),
+    url(r'^days_validation', 'salidas.views.days_validation', name='days_validation'),
 
 
     # Debuging pages
