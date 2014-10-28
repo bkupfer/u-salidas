@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^login', 'salidas.views.login', name='login'),
     url(r'^logout', 'salidas.views.logout', name='logout'),
     url(r'^access_denied', 'salidas.views.access_denied', name='access_denied'),
+    url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
+
 
     # Teacher view pages
     url(r'^$', 'salidas.views.login', name='login'),

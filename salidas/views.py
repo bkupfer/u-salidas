@@ -19,16 +19,18 @@ from salidas.calendar import *  #  for calendar
 
 
 # Views for all users
+# Login
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
 
-def isProfessor(user):
-	users_in_group = Group.objects.get(name='profesores').user_set.all()
+def is_in_group(user, group):
+	users_in_group = Group.objects.get(name=group).user_set.all()
 	if user in users_in_group or user.is_superuser:
 		return True
 	else:
 		return False
-# General views
+
+
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -38,27 +40,40 @@ def login(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
-                # Redirigir a la pagina que corresponda # todo: enviar a la pagina que corresponda según el tipo de usuario!
-                if(isProfessor(user)):
-                    return redirect(teachers_applications)
+                if is_in_group(user, 'profesores'):
+                    return redirect('teachers_applications')
+                elif is_in_group(user, 'angelica'):
+                    return redirect('days_validation')
+                elif is_in_group(user, 'magna'):
+                    return redirect('list_of_applications')
+                elif is_in_group(user, 'alejandro'):
+                    return redirect('list_alejandro')
                 else:
-                    return redirect(list_of_applications)
+                    return redirect('nothing_to_do_here')
             else:
-                print("userno existe")
+                print("user no existe")
                 return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
         else:
-            print("error")
+            print("error filling up the login form")
     else:
         form = AuthenticationForm()
-    # Mostrar una página de error
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+
 
 def logout(request):
     auth.logout(request)
     return redirect(login)
 
+
+# Not registered user (student of something..)
+def nothing_to_do_here(request):
+    return render_to_response("General/nothing_to_do_here.html", locals(), context_instance=RequestContext(request))
+
+
+# Access denied
 def access_denied(request):
     return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request))
+
 
 #Views for teachers
 #Este es el formulario prototipo de financia
@@ -168,30 +183,29 @@ def new_application(request):
 
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
-
+@login_required
 def teacher_calendar(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor!
     teacher = Teacher.objects.filter(user=request.user.id)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
+
 @login_required
 def teachers_applications(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor!
     id_Teacher = Teacher.objects.filter(user=request.user.id)
     apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def replacement_list(request):
-   # rut = "17704795-3"  # todo: obtener el rut del profesor! (o el id)
-   # id=1
-    teacher= Teacher.objects.get(user=request.user.id)
+    teacher= Teacher.objects.filter(user=request.user.id)
     replacements = Replacement.objects.filter(rut_teacher=teacher)
     print(teacher)
     print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 #todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
+@login_required
 def replacement_requests(request):
     replacement = Replacement.objects.get( pk = request.GET['id'] )
 
