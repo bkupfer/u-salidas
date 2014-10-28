@@ -114,6 +114,7 @@ def documentForm(doc, newApp):
             file = None
 
 
+@login_required
 def new_application(request):
 
     application = NewApplicationForm(request.POST or None,prefix="application")
@@ -222,6 +223,7 @@ def replacement_requests(request):
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def application_detail(request):
     id_app = request.GET['id']
     query = Application.objects.get(pk = id_app)
@@ -238,11 +240,13 @@ def application_detail(request):
 
 
 # Views for administrative people
+@login_required
 def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def application_review(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
@@ -265,16 +269,19 @@ def application_review(request):
     return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def historic_calendar(request):
     return render_to_response("Magna/historic_calendar.html", locals(), content_type=RequestContext(request))
 
 
 # Views Alejandro
+@login_required
 def list_alejandro(request):
     apps = Application.objects.all()
     return render_to_response("Alejandro/list_alejandro.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def detail_alejandro(request):
     id_app = request.GET['id']
     application = Application.objects.get(pk = id_app)
@@ -301,10 +308,3 @@ def calendar(request, year, month):
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
 
-
-# debuging views
-def list(request):
-    apps = Application.objects.all()
-    for app in apps:
-        print(app.get_state())
-    return render_to_response("Magna/list.html", locals(), context_instance=RequestContext(request))
