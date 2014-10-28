@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^logout', 'salidas.views.logout', name='logout'),
     url(r'^access_denied', 'salidas.views.access_denied', name='access_denied'),
     url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
-
+    url(r'^externo.php','salidas.views.externo',name='externo'),
 
     # Teacher view pages
     url(r'^$', 'salidas.views.login', name='login'),

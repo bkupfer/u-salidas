@@ -17,6 +17,11 @@ from django.contrib.auth.models import User,Group
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
 
+from OpenSSL.crypto import verify,load_certificate,FILETYPE_PEM #for externo
+
+
+import base64 #for externo
+import urllib.request #for externo
 
 # Views for all users
 # Login
@@ -30,7 +35,18 @@ def is_in_group(user, group):
 	else:
 		return False
 
+def externo(request):
+    if request.method == "POST":
+        try:
+            #recibir firma todo:notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
+            firma = base64.urlsafe_base64_decode(request.POST['firma'])
+            #recibir llave publica
+            certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
+            #verificar
+            result = verify(certificado,firma, string, 'sha1')
 
+        except:
+            print("ERROR EXTERNO")
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -128,7 +144,7 @@ def new_application(request):
     if len(request.POST) != 0:
         if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
             # Applications instance
-            id_teacher = Teacher.objects.get(user=request.user.id)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
+            id_teacher = Teacher.objects.get(user=request.user.id)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
             fb = application.cleaned_data['financed_by']
@@ -226,14 +242,15 @@ def replacement_requests(request):
 @login_required
 def application_detail(request):
     id_app = request.GET['id']
-    query = Application.objects.get(pk = id_app)
-    profesor = query.id_Teacher
-    sessions_rut = profesor.rut     # todo: cambiar esta variable para que calse con el rut del usuario de session!!
-    comm_type = query.id_commission_type
-    dest = Destination.objects.filter(application = query.id)
-    replacements = query.get_replacements
+    app = Application.objects.get(pk = id_app)
+    profesor = app.id_Teacher
+    profesor_user = app.id_Teacher.user
+    user_id = request.user.id
+    comm_type = app.id_commission_type
+    dest = Destination.objects.filter(application = app.id)
+    replacements = app.get_replacements
 
-    if (profesor.rut != sessions_rut):
+    if (profesor_user.id != user_id):
         return redirect(access_denied)
 
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
