@@ -90,7 +90,7 @@
         "model": "salidas.FinanceType",
         "pk": 3,
         "fields": {
-            "type": "Inscripción"
+            "type": "Inscripcion"
         }
     },
     {
