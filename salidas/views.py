@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -11,11 +12,12 @@ from django.contrib.auth.decorators import login_required,user_passes_test,permi
 from django.core.urlresolvers import reverse
 
 from django.utils.safestring import mark_safe   #  for calendar
-
 from salidas.forms import *     #  for calendar
-from salidas.calendar import *  #  for calendar
+#from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
 
-
+from io import StringIO
+from docx import * #to generate Docs
+import os,os.path
 # Views for all users
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
@@ -150,7 +152,7 @@ def new_application(request):
 
 def teacher_calendar(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    teacher = Teacher.objects.filter(rut=rut)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
+    teacher = Teacher.objects.get(pk=1)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
 
@@ -270,3 +272,5 @@ def list(request):
     for app in apps:
         print(app.get_state())
     return render_to_response("Magna/list.html", locals(), context_instance=RequestContext(request))
+
+

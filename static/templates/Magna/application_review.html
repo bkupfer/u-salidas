@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -6,13 +7,13 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../../static/public/css/docs.min.css" rel="stylesheet">
-	<link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
-	<link href="../../static/css/jquery-ui.min.css" rel="stylesheet">
-	<script src="../../static/external/jquery/jquery.js"></script>
-	<script src="../../static/public/js/jquery-1.11.0.min.js"></script>
-	<script src="../../static/js/jquery-ui.min.js"></script>
+	<link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
+	<link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
+	<link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
+	<link href="{% static "css/jquery-ui.min.css" %}" rel="stylesheet">
+	<script src="{% static "external/jquery/jquery.js" %}"></script>
+	<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+	<script src="{% static "js/jquery-ui.min.js" %}"></script>
 
 	<title>Salidas DCC</title>
 </head>
@@ -33,12 +34,17 @@
 	<!-- page content -->
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
-			<div class="row">
+            <div class="row">
 				<div class="pannel panel-primary panel-body">
 
 					<h2>Detalle de solicitud</h2>
 					<br>
-
+                     <div class="form-group">
+                        <div class="col-sm-7">
+                            <a href="" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-pencil"></span> Ir a modo edición</a>
+                        </div>
+				    </div>
+                    <br/><br/>
 					<table class="table">
 						<tr>
 							<td>Profesor</td>
@@ -104,12 +110,17 @@
 						</tr>
 					</table>
 
-					<hr>
+					<hr><br/><br/>
 					<form method="POST"> {% csrf_token %}
                         <div class="row form-group">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
 	  						    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
-                                <button type="submit" class="btn btn-lg btn-danger" name="reject_button"> Rechazar</button>
+                                <button type="submit" class="btn btn-lg btn-danger"  name="reject_button"> Rechazar</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" align="right">
+                            <div id="generateDoc" class="btn btn-success ">
+                                <i class="glyphicon glyphicon-file"></i>&nbsp;Exportar Documentos
                             </div>
                         </div>
 					</form>
@@ -121,4 +132,13 @@
 </div>
 
 </body>
+<script>
+    $(function(){
+        $('#generateDoc').click(function(){
+            var base = '{{ host }}';
+            var url=base+'getfiles/?id={{ app.id }}';
+            window.location.href = url;
+        });
+	});
+</script>
 </html>

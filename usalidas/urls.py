@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 
 from django.conf import settings
@@ -28,6 +29,8 @@ urlpatterns = patterns('',
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
 
+    #documents
+    url(r'^getfiles', 'salidas.documentViews.getfiles',name='exportar_doc'),
 
     #URL pagina prueba
     url(r'^list', 'salidas.views.list', name='list'),

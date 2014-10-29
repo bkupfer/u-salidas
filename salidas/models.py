@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.encoding import smart_text
 
@@ -102,6 +103,11 @@ class Application(models.Model):
     def get_replacements(self):
         replacements = Replacement.objects.filter(id_Application=self)
         return replacements
+    def discount_days(self):
+        if self.id_commission_type == CommissionType.objects.get(type="Academica"):
+            return True
+        return False
+
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
     def __str__(self):
@@ -154,8 +160,18 @@ class Teacher(models.Model):
         his_apps = self.get_applications()
         used_days=0
         for app in his_apps:
-            used_days+=app.get_used_days()
+            if app.discount_days():
+                used_days+=app.get_used_days()
         return used_days
+    def get_avaliable_days(self):
+        used_days=self.get_used_days()
+        if self.full_teaching_time and used_days<14:
+            return 60-used_days
+        elif not(self.full_teaching_time) and used_days<14:
+            return 30-used_days
+        else:
+            return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
+
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()
         my_modules=set(y_modules)
