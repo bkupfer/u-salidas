@@ -193,8 +193,8 @@ def application_detail(request):
     sessions_rut = profesor.rut     # todo: cambiar esta variable para que calse con el rut del usuario de session!!
     comm_type = query.id_commission_type
     dest = Destination.objects.filter(application = query.id)
-    replacements = query.get_replacements
-
+    replacements = query.get_replacements()
+    finances = query.get_finances()
     if (profesor.rut != sessions_rut):
         return redirect(access_denied)
 
@@ -214,7 +214,7 @@ def application_review(request):
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements
-
+    finances = app.get_finances()
     if len(request.POST) != 0:
         if 'accept_button' in request.POST:
             id_state = 2    # pendiente dcc

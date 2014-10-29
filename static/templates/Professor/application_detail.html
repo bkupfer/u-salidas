@@ -63,6 +63,16 @@
 							<td>Financiamiento</td>
 							<td>{{ query.financed_by }}</td>
 						</tr>
+
+
+                        {% for fin in finances %}
+                            <tr>
+                                <td>{{ fin.get_finance_type }}</td>
+                                <td>{{ fin.amount }} {{ fin.id_currency}}</td>
+
+                            </tr>
+                        {% endfor %}
+
 						<tr>
 							<td>Destino(s)</td>
 							<td>

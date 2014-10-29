@@ -107,6 +107,9 @@ class Application(models.Model):
         if self.id_commission_type == CommissionType.objects.get(type="Academica"):
             return True
         return False
+    def get_finances(self):
+        finances=Finance.objects.filter(id_application=self)
+        return finances
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
