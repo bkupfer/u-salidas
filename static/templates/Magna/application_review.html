@@ -108,9 +108,14 @@
 					<hr>
 					<form method="POST"> {% csrf_token %}
                         <div class="row form-group">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
 	  						    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
                                 <button type="submit" class="btn btn-lg btn-danger" name="reject_button"> Rechazar</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" align="right">
+                            <div id="generateDoc" class="btn btn-success ">
+                                <i class="glyphicon glyphicon-file"></i>&nbsp;Exportar Documentos
                             </div>
                         </div>
 					</form>
@@ -122,4 +127,13 @@
 </div>
 
 </body>
+<script>
+    $(function(){
+        $('#generateDoc').click(function(){
+            var base = '{{ host }}';
+            var url=base+'getfiles/?id={{ app.id }}';
+            window.location.href = url;
+        });
+	});
+</script>
 </html>
