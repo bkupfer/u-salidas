@@ -136,21 +136,39 @@
         "model": "salidas.Hierarchy",
         "pk": 1,
         "fields": {
-            "hierarchy": "Asistente"
+            "hierarchy": "Asistente",
+            "avaliable_days": 60
         }
     },
     {
         "model": "salidas.Hierarchy",
         "pk": 2,
         "fields": {
-            "hierarchy": "Asociado"
+            "hierarchy": "Asociado",
+            "avaliable_days": 60
         }
     },
     {
         "model": "salidas.Hierarchy",
         "pk": 3,
         "fields": {
-            "hierarchy": "Instructor"
+            "hierarchy": "Instructor",
+            "avaliable_days": 30
+
+        }
+    },
+    {
+        "model": "salidas.WorkingDay",
+        "pk": 1,
+        "fields": {
+            "working_day": "Completa"
+        }
+    },
+    {
+        "model": "salidas.WorkingDay",
+        "pk": 2,
+        "fields": {
+            "working_day": "Media"
         }
     }
 ]

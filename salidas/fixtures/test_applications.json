@@ -7,7 +7,7 @@
             "name": "Bernardo",
             "last_name": "Kupfer",
             "signature": "",
-            "full_teaching_time":"True",
+            "working_day":1,
             "hierarchy":3
         }
     },
@@ -19,7 +19,7 @@
             "name": "Sergio",
             "last_name": "Ochoa",
             "signature": "",
-            "full_teaching_time":"False",
+            "working_day":2,
             "hierarchy":2
         }
     },
@@ -31,7 +31,7 @@
             "name": "Jorge",
             "last_name": "Perez",
             "signature": "",
-            "full_teaching_time":"True",
+            "working_day":1,
             "hierarchy":1
         }
     },
@@ -228,4 +228,5 @@
             "id_Teacher": 3
         }
     }
+
 ]

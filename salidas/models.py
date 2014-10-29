@@ -129,8 +129,14 @@ class Document(models.Model):
 
 class Hierarchy(models.Model):
     hierarchy = models.CharField(max_length=20)
+    avaliable_days = models.IntegerField()
     def __str__(self):
         return self.hierarchy
+
+class WorkingDay(models.Model):
+    working_day=models.CharField(max_length=30)
+    def __str__(self):
+        return self.working_day
 
 class Teacher(models.Model):
     rut = models.CharField(max_length=10,unique=True)
@@ -139,7 +145,8 @@ class Teacher(models.Model):
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
     mail = models.EmailField()
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
-    full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
+    #full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
+    working_day=models.ForeignKey('WorkingDay') #Jornada docente: Completa(1) Media (2)
     def __str__(self):
         return self.name + " " + self.last_name
     def get_courses(self):
@@ -168,10 +175,8 @@ class Teacher(models.Model):
         return used_days
     def get_avaliable_days(self):
         used_days=self.get_used_days()
-        if self.full_teaching_time and used_days<14:
-            return 60-used_days
-        elif not(self.full_teaching_time) and used_days<14:
-            return 30-used_days
+        if used_days<14:
+            return self.hierarchy.avaliable_days-used_days
         else:
             return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
 
