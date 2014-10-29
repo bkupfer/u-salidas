@@ -76,7 +76,7 @@
         "model": "salidas.FinanceType",
         "pk": 1,
         "fields": {
-            "type": "Viático"
+            "type": "Viatico"
         }
     },
     {
@@ -166,7 +166,7 @@
         "model": "salidas.Course",
         "pk": 2,
         "fields": {
-            "name": "Computación Gráfica",
+            "name": "Computación Grafica",
             "code": "CC3501",
             "section": 1
         }
