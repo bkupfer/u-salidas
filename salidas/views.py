@@ -17,7 +17,7 @@ from django.contrib.auth.models import User,Group
 from salidas.forms import *     #  for calendar
 from salidas.calendar import *  #  for calendar
 
-from OpenSSL.crypto import verify,load_certificate,FILETYPE_PEM #for externo
+from OpenSSL.crypto import verify,load_certificate,load_privatekey,Error,FILETYPE_PEM #for externo
 
 
 import base64 #for externo
@@ -39,14 +39,15 @@ def externo(request):
     if request.method == "POST":
         try:
             #recibir firma todo:notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
-            firma = base64.urlsafe_base64_decode(request.POST['firma'])
+            firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_base64_decode(request.POST['firma']))
             #recibir llave publica
             certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
             #verificar
-            result = verify(certificado,firma, string, 'sha1')
-
-        except:
-            print("ERROR EXTERNO")
+            verify(certificado,firma,request.POST.urlencode(), 'sha1')
+            return  redirect('login')
+        except Error:
+            print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
+            return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
