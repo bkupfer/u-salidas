@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,6 +32,8 @@ urlpatterns = patterns('',
     url(r'^finance_validation', 'salidas.views.finance_validation', name='finance_validation'),
     url(r'^days_validation', 'salidas.views.days_validation', name='days_validation'),
 
+    #documents
+    url(r'^getfiles', 'salidas.documentViews.getfiles',name='exportar_doc'),
 
     # Debuging pages
 

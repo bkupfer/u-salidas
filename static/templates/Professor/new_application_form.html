@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,16 +7,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../static/public/css/docs.min.css" rel="stylesheet">
-    <link href="../../static/css/estilos.css" rel="stylesheet" type="text/css">
-    <link href="../../static/public/css/datepicker.css" rel="stylesheet">
-    <script src="../../static/js/countries.js"></script>
-    <script src="../../static/public/js/jquery-1.11.0.min.js"></script>
-    <script src="../../static/external/jquery/jquery.js"></script>
-    <script src="../../static/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../static/js/filestyle.js"></script>
-    <script src="../../static/public/js/bootstrap-datepicker.js"></script>
+    <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
+    <script src="{% static "js/countries.js" %}"></script>
+    <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "external/jquery/jquery.js" %}"></script>
+    <script src="{% static "public/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+    <script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
 
     <title>Salidas DCC</title>
 </head>
@@ -205,7 +206,7 @@
                                         <a title="Seleccione al profesor que será su reemplazante para sus clases." class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
-                                            {{ academicReplacement.teachers }}
+                                            {{ executiveReplacement.teachers }}
                                         </div>
                                         <div class="col-sm-5" style="display: none" id="topeHorario">
                                             <p class="text-danger">*Este profesor tiene tope de horario</p>
@@ -222,7 +223,7 @@
                                         <a title="Seleccione al profesor que será su reemplazante para sus labores administrativas." class="masterTooltip col-sm-1"><b>(?)</b></a>
 
                                         <div class="col-sm-4">
-                                            {{ executiveReplacement.teachers }}
+                                            {{ academicReplacement.teachers }}
                                         </div>
                                     </div>
                                 </div>

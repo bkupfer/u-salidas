@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
@@ -98,13 +99,21 @@ class Application(models.Model):
         return used_days
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
-        files = ()
+        files =[]
         for doc in docs:
-            files.append(doc.file)
+            files+=doc.file
         return files
     def get_replacements(self):
         replacements = Replacement.objects.filter(id_Application=self)
         return replacements
+    def discount_days(self):
+        if self.id_commission_type == CommissionType.objects.get(type="Academica"):
+            return True
+        return False
+    def get_finances(self):
+        finances=Finance.objects.filter(id_application=self)
+        return finances
+
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
     def __str__(self):
@@ -123,8 +132,14 @@ class Document(models.Model):
 
 class Hierarchy(models.Model):
     hierarchy = models.CharField(max_length=20)
+    avaliable_days = models.IntegerField()
     def __str__(self):
         return self.hierarchy
+
+class WorkingDay(models.Model):
+    working_day=models.CharField(max_length=30)
+    def __str__(self):
+        return self.working_day
 
 class Teacher(models.Model):
     user = models.OneToOneField(User)
@@ -134,20 +149,23 @@ class Teacher(models.Model):
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
     mail = models.EmailField()
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
-    full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
+    #full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
+    working_day=models.ForeignKey('WorkingDay') #Jornada docente: Completa(1) Media (2)
     def __str__(self):
         return self.name + " " + self.last_name
     def get_courses(self):
         his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)
-        courses = ()
+        #if len(his_courses)==1:
+        #    his_courses=[his_courses]
+        courses = []
         for course in his_courses:
-            courses.append(course.id_Course)
+            courses=courses+[course.id_Course]
         return courses
     def get_modules(self):
         courses = self.get_courses()
-        modules = ()
+        modules = []
         for course in courses:
-            modules.append(course.get_modules())
+            modules+=(course.get_modules())
         return modules
     def get_applications(self):
         his_applications = Application.objects.filter(id_Teacher=self)
@@ -156,8 +174,28 @@ class Teacher(models.Model):
         his_apps = self.get_applications()
         used_days=0
         for app in his_apps:
-            used_days+=app.get_used_days()
+            if app.discount_days():
+                used_days+=app.get_used_days()
         return used_days
+    def get_avaliable_days(self):
+        used_days=self.get_used_days()
+        if used_days<14:
+            return self.hierarchy.avaliable_days-used_days
+        else:
+            return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
+
+    def get_possible_replacement_teachers(self):
+        y_modules=self.get_modules()
+        my_modules=set(y_modules)
+        replacement=[('','--------')]
+        teachers = Teacher.objects.all()
+        i=1
+        for teacher in teachers:
+            their_modules=set(teacher.get_modules())
+            if my_modules.isdisjoint(their_modules):
+                replacement.append((teacher.pk,teacher))
+                i+=1
+        return replacement
 
 #rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
@@ -190,9 +228,9 @@ class Course(models.Model):
         return self.name
     def get_modules(self):
         its_modules = CourseHasModule.objects.filter(id_Course=self)
-        modules=()
+        modules=[]
         for module in its_modules:
-            modules.append(module.id_Module)
+            modules=modules+[module.id_Module]
         return modules
 
 
@@ -210,6 +248,8 @@ class CourseHasModule(models.Model):
 class TeacherHasCourse(models.Model):
     id_Teacher = models.ForeignKey('Teacher')
     id_Course = models.ForeignKey('Course')
+    def __str__(self):
+        return str(self.id_Teacher) + str("/")+ str(self.id_Course)
 
 class ReplacementType(models.Model):
     type = models.CharField(max_length=20)

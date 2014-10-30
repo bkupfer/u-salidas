@@ -1,4 +1,7 @@
-from calendar import HTMLCalendar
+# -*- coding: utf-8 -*-
+
+#import comentado por asuntos de compatibilidad
+#from calendar import HTMLCalendar
 from datetime import date
 from itertools import groupby
 from django.utils.html import conditional_escape as esc

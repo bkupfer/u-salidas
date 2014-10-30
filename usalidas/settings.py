@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for usalidas project.
 
@@ -7,6 +8,14 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+
+# for gmail.
+from .email_info import *
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -36,7 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
+#    'south',
     'salidas',
 )
 
@@ -94,6 +103,8 @@ if DEBUG:
     MEDIA_ROOT =os.path.join(BASE_DIR, 'static',  'media')
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static',  'static'),
+        "/static/static-only/",
+        "/static/static/"
     )
    # LOGIN_REDIRECT_URL = 'list_of_applications'
     LOGIN_URL = 'login'

@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponse
 from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
@@ -15,7 +18,7 @@ from salidas.models import *
 from django.contrib.auth.models import User,Group
 
 from salidas.forms import *     #  for calendar
-from salidas.calendar import *  #  for calendar
+#from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
 
 from OpenSSL.crypto import verify,load_certificate,load_privatekey,Error,FILETYPE_PEM #for externo
 
@@ -91,7 +94,6 @@ def nothing_to_do_here(request):
 def access_denied(request):
     return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request))
 
-
 #Views for teachers
 #Este es el formulario prototipo de financia
 def financeForm(finance, newApp, id_finance_type):
@@ -137,7 +139,7 @@ def new_application(request):
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
-    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    academicReplacement = AcademicReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -165,7 +167,7 @@ def new_application(request):
             # replacement teacher information
             executiveReplace = executiveReplacement.cleaned_data['teachers']
             academicReplace = academicReplacement.cleaned_data['teachers']
-            newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=int(executiveReplace)), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=academicReplace,  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
             newAcademicReplacement.save()
@@ -193,6 +195,7 @@ def new_application(request):
             except:
                 asignature=None
 
+            # send_mail(subject, message, from_email, to_list, fail_silently = True)
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
 
@@ -218,8 +221,6 @@ def teachers_applications(request):
 def replacement_list(request):
     teacher= Teacher.objects.filter(user=request.user.id)
     replacements = Replacement.objects.filter(rut_teacher=teacher)
-    print(teacher)
-    print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 #todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
@@ -273,7 +274,7 @@ def application_review(request):
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements
-
+    finances = app.get_finances()
     if len(request.POST) != 0:
         if 'accept_button' in request.POST:
             id_state = 2    # pendiente dcc
