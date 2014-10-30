@@ -112,7 +112,7 @@ def new_application(request):
             # replacement teacher information
             executiveReplace = executiveReplacement.cleaned_data['teachers']
             academicReplace = academicReplacement.cleaned_data['teachers']
-            newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=int(executiveReplace)), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=academicReplace,  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
             newAcademicReplacement.save()
