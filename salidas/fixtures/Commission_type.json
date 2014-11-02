@@ -154,31 +154,6 @@
         }
     },
     {
-        "model": "salidas.Hierarchy",
-        "pk": 1,
-        "fields": {
-            "hierarchy": "Asistente",
-            "avaliable_days": 60
-        }
-    },
-    {
-        "model": "salidas.Hierarchy",
-        "pk": 2,
-        "fields": {
-            "hierarchy": "Asociado",
-            "avaliable_days": 60
-        }
-    },
-    {
-        "model": "salidas.Hierarchy",
-        "pk": 3,
-        "fields": {
-            "hierarchy": "Instructor",
-            "avaliable_days": 30
-
-        }
-    },
-    {
         "model": "salidas.WorkingDay",
         "pk": 1,
         "fields": {
@@ -191,5 +166,45 @@
         "fields": {
             "working_day": "Media"
         }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 1,
+        "fields": {
+            "hierarchy": "Asistente",
+            "avaliable_days": 60,
+            "working_day":1
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 2,
+        "fields": {
+            "hierarchy": "Asociado",
+            "avaliable_days": 60,
+            "working_day":1
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 3,
+        "fields": {
+            "hierarchy": "Titular",
+            "avaliable_days": 60,
+            "working_day":1
+
+        }
+    },
+    {
+        "model": "salidas.Hierarchy",
+        "pk": 4,
+        "fields": {
+            "hierarchy": "Adjunto",
+            "avaliable_days": 30,
+            "working_day":2
+
+        }
     }
+
+
 ]
