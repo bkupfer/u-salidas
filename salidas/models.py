@@ -104,7 +104,8 @@ class Application(models.Model):
         replacements = Replacement.objects.filter(id_Application=self)
         return replacements
     def discount_days(self):
-        if self.id_commission_type == CommissionType.objects.get(type="Academica"):
+        #TODO estados que no se cuentan: rechazado pk=1? algún otro estado?
+        if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state()!=State.objects.get(pk=1):
             return True
         return False
     def get_finances(self):
@@ -127,9 +128,11 @@ class Document(models.Model):
     id_application = models.ForeignKey('Application')
     file = models.FileField(blank=True, null=True,upload_to='documents')
 
+ #jornada:parcial -> jerarquia: profesor adjunto, jornada completa -> jerarquia : profesor asistente,asociado o titular
 class Hierarchy(models.Model):
     hierarchy = models.CharField(max_length=20)
     avaliable_days = models.IntegerField()
+    working_day = models.ForeignKey('WorkingDay')
     def __str__(self):
         return self.hierarchy
 
@@ -175,10 +178,10 @@ class Teacher(models.Model):
         return used_days
     def get_avaliable_days(self):
         used_days=self.get_used_days()
-        if used_days<14:
-            return self.hierarchy.avaliable_days-used_days
-        else:
-            return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
+        #if used_days<14:
+        return self.hierarchy.avaliable_days-used_days
+        #else:
+        #    return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
 
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()
