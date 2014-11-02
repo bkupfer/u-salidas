@@ -87,6 +87,7 @@
 
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+                    <li><a href="#PA" role="tab" data-toggle="tab">Pendiente Aprobación</a></li>
 					<li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
 					<li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
 					<li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
@@ -111,6 +112,38 @@
 									<tbody>
 									{% for app in apps %}
 										{% if app.get_state.state == "Pendiente DCC" %}
+											<tr>
+												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
+												<td>{{ app.id_commission_type }}</td>
+												<td>{{ app.creation_date }}</td>
+												<td>{{ app.sent_date }}</td>
+												<td>{{ app.get_state }}</td>
+                                                <td>{{ app.get_used_days }}</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                    <div class="row tab-pane" id="PA">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover table-condensed table-striped" id="PATable">
+									<thead>
+									<tr>
+										<th>Nº</th>
+										<th>Tipo de Comisión</th>
+										<th>Fecha de Creación</th>
+										<th>Fecha de Envío a Facultad</th>
+										<th>Estado</th>
+                                        <th>Días Utilizados</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for app in apps %}
+										{% if app.get_state.state == "Pendiente aprobación" %}
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
