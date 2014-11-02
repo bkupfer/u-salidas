@@ -16,7 +16,7 @@ from salidas.forms import *     #  for calendar
 #from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
 
 from io import StringIO
-from docx import * #to generate Docs
+#from docx import * #to generate Docs
 import os,os.path
 # Views for all users
 def home(request):

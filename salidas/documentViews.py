@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test,permi
 from django.core.urlresolvers import reverse
 from salidas.forms import *
 from io import StringIO
-from docx import * #to generate Docs
+#from docx import * #to generate Docs
 import io,os,os.path,tempfile, zipfile
 
 def getfiles(request):
