@@ -158,8 +158,8 @@ def teacher_calendar(request):
 
 def teachers_applications(request):
     rut = "17704795-3"  # todo: obtener el rut del profesor!
-    id_Teacher = Teacher.objects.filter(rut=rut)
-    apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
+    teacher = Teacher.objects.get(rut=rut)
+    apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
