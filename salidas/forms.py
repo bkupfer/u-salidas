@@ -8,7 +8,7 @@ from django.forms.extras.widgets import SelectDateWidget
 
 class NewApplicationForm(forms.ModelForm):
     id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),
-                                                empty_label="Seleccione Tipo de Comisión")  #
+                                                empty_label="Seleccione Tipo de Comisión")
     motive = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Fundamentos'}))
     financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
 

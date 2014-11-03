@@ -8,31 +8,32 @@ from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
 from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
 from django.utils.safestring import mark_safe   #  for calendar
 
+from salidas.forms import *
 from salidas.models import *
-from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import User, Group
 
-from salidas.forms import *     #  for calendar
+# from salidas.forms import *     #  for calendar
 #from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
 
-from OpenSSL.crypto import verify,load_certificate,load_privatekey,Error,FILETYPE_PEM #for externo
-
-
+#from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM #for externo
 import base64 #for externo
 import urllib.request #for externo
 
 from io import StringIO
 #from docx import * #to generate Docs
 import os,os.path
+
 # Views for all users
 # Login
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+
 
 def is_in_group(user, group):
 	users_in_group = Group.objects.get(name=group).user_set.all()
@@ -40,6 +41,7 @@ def is_in_group(user, group):
 		return True
 	else:
 		return False
+
 
 def externo(request):
     if request.method == "POST":
@@ -54,6 +56,8 @@ def externo(request):
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
+
+
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -228,6 +232,7 @@ def replacement_list(request):
     print(teacher)
     print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
+
 
 #todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
 @login_required
