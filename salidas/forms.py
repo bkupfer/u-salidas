@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from salidas.models import *
-import datetime
 from django.forms.models import inlineformset_factory, formset_factory
 from django.forms.extras.widgets import SelectDateWidget
 
@@ -54,15 +53,17 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class ReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
-    achoices = teacher.get_possible_replacement_teachers()
-    teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
+    teacher = Teacher.objects.filter(pk=1) # todo: cambiar a pk del usuario (request.user.id)
+    if len(teacher) != 0:
+        achoices = teacher[0].get_possible_replacement_teachers()
+        teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
 
 
 class AcademicReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
+    teacher = Teacher.objects.filter(pk=1) # todo: cambiar al pk del usuario
     all = Teacher.objects.all()
-    teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    if len(teacher) != 0:
+        teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
 
 

@@ -12,22 +12,18 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
-from django.utils.safestring import mark_safe   #  for calendar
-
 from salidas.forms import *
 from salidas.models import *
 from django.contrib.auth.models import User, Group
 
-# from salidas.forms import *     #  for calendar
-#from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
-
-#from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM #for externo
-import base64 #for externo
-import urllib.request #for externo
+# For externo
+# from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
+# import base64
+# import urllib.request
 
 from io import StringIO
 #from docx import * #to generate Docs
-import os,os.path
+import os, os.path
 
 # Views for all users
 # Login
@@ -143,11 +139,10 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
-
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
-    executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
-    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
+    academicReplacement  = ReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
