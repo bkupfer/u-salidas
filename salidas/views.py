@@ -11,13 +11,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
-
-from django.utils.safestring import mark_safe   #  for calendar
-
+from django.views.decorators.csrf import csrf_protect
+from django.utils.safestring import mark_safe   #  for calendpenar
+from salidas.forms import *
 from salidas.models import *
 from django.contrib.auth.models import User,Group
 
-from salidas.forms import *     #  for calendar
+#from salidas.forms import *     #  for calendar
 #from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
 
 from OpenSSL.crypto import verify,load_certificate,load_privatekey,Error,FILETYPE_PEM #for externo
@@ -51,6 +51,8 @@ def externo(request):
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
+
+@csrf_protect
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -138,8 +140,11 @@ def new_application(request):
 
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
-    executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
-    academicReplacement = AcademicReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    #executiveReplacement = ReplacementApplicationForm(request = request.POST or None,prefix="executiveReplacement").get_possible_replacement_teachers()
+    teacher = Teacher.objects.get(user=request.user)
+    #executiveReplacement = forms.ChoiceField(widget=forms.Select(choices=teacher.get_possible_replacement_teachers()))
+    executiveReplacement = ReplacementApplicationForm(request.user)
+    academicReplacement = AcademicReplacementApplicationForm(request.user)
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -167,7 +172,7 @@ def new_application(request):
             # replacement teacher information
             executiveReplace = executiveReplacement.cleaned_data['teachers']
             academicReplace = academicReplacement.cleaned_data['teachers']
-            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=int(executiveReplace)), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newExecutiveReplacement = Replacement(rut_teacher=executiveReplace, id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=academicReplace,  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
             newAcademicReplacement.save()

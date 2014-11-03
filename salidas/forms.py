@@ -54,16 +54,31 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class ReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
-    achoices = teacher.get_possible_replacement_teachers()
-    teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
+    #  teacher = Teacher.objects.get(pk=1)
+    # achoices = None
+    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
+    def __init__(self, user):
+      super(ReplacementApplicationForm,self).__init__()
+      self.fields['teachers'].queryset =Teacher.objects.exclude(user=user)
 
 class AcademicReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
-    all = Teacher.objects.all()
-    teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    # teacher = Teacher.objects.get(pk=1)
+    # all = Teacher.objects.all()
+    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
+    def __init__(self, user):
+      super(AcademicReplacementApplicationForm,self).__init__()
+      replacement=[('','--------')]
+      teachers = Teacher.objects.all()
+      teachers_2 = Teacher.objects.all()
+      y_modules= user.teacher.get_modules()
+      my_modules=set(y_modules)
+      for teacher in teachers:
+            their_modules=set(teacher.get_modules())
+            if my_modules.isdisjoint(their_modules):
+                replacement.append((teacher.id,teacher))
+      self.fields['teachers'].queryset =Teacher.objects.exclude(id__in=replacement)
 
 
 class DocumentForm(forms.ModelForm):

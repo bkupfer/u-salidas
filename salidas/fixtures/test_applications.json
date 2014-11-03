@@ -1,40 +1,51 @@
 [
-    {
-        "model": "salidas.Teacher",
-        "pk": 1,
-        "fields": {
-            "rut": "17704795-3",
-            "name": "Bernardo",
-            "last_name": "Kupfer",
-            "signature": "",
-            "working_day":1,
-            "hierarchy":3
-        }
-    },
-    {
-        "model": "salidas.Teacher",
-        "pk": 2,
-        "fields": {
-            "rut": "6704795-2",
-            "name": "Sergio",
-            "last_name": "Ochoa",
-            "signature": "",
-            "working_day":2,
-            "hierarchy":2
-        }
-    },
-    {
-        "model": "salidas.Teacher",
-        "pk": 3,
-        "fields": {
-            "rut": "7704795-3",
-            "name": "Jorge",
-            "last_name": "Perez",
-            "signature": "",
-            "working_day":1,
-            "hierarchy":1
-        }
-    },
+//    {
+//        "model": "salidas.Teacher",
+//        "user": 1,
+//        "fields": {
+//            "rut": "17704795-3",
+//            "name": "Bernardo",
+//            "last_name": "Kupfer",
+//            "signature": "",
+//            "working_day":1,
+//            "hierarchy":3
+//        }
+//    },{
+//        "model": "salidas.Teacher",
+//        "user": ,
+//        "fields": {
+//            "rut": "17704795-3",
+//            "name": "Bernardo",
+//            "last_name": "Kupfer",
+//            "signature": "",
+//            "working_day":1,
+//            "hierarchy":3
+//        }
+//    },
+//    {
+//        "model": "salidas.Teacher",
+//        "user": 2,
+//        "fields": {
+//            "rut": "6704795-2",
+//            "name": "Sergio",
+//            "last_name": "Ochoa",
+//            "signature": "",
+//            "working_day":2,
+//            "hierarchy":2
+//        }
+//    },
+//    {
+//        "model": "salidas.Teacher",
+//        "user": 3,
+//        "fields": {
+//            "rut": "7704795-3",
+//            "name": "Jorge",
+//            "last_name": "Perez",
+//            "signature": "",
+//            "working_day":1,
+//            "hierarchy":1
+//        }
+//    },
     {
         "model": "salidas.Application",
         "pk": 1,

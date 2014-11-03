@@ -9,7 +9,7 @@ from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
-from salidas.forms import *
+#from salidas.forms import *
 from io import StringIO
 #from docx import * #to generate Docs
 import io,os,os.path,tempfile, zipfile

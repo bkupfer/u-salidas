@@ -193,7 +193,7 @@ class Teacher(models.Model):
         for teacher in teachers:
             their_modules=set(teacher.get_modules())
             if my_modules.isdisjoint(their_modules):
-                replacement.append((teacher.pk,teacher))
+                replacement.append((teacher.id,teacher))
                 i+=1
         return replacement
 
