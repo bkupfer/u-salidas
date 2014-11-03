@@ -53,18 +53,30 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class ReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.filter(pk=1) # todo: cambiar a pk del usuario (request.user.id)
-    if len(teacher) != 0:
-        achoices = teacher[0].get_possible_replacement_teachers()
+    print("REPLACEMENT APPLICATION FORM")
+    # todo: There is a bug where this function is called at weird timing, causing replacement teachers not to work properlly!
+        # I really don't know why, probablly has to do with the imports (?)
+    try:
+        print("try")
+        id_teacher = Session.id_teacher
+        print(id_teacher)
+        teacher = Teacher.objects.get(pk=id_teacher)
+        print(teacher)
+        achoices = teacher.get_possible_replacement_teachers2() # returning a empty list
+        print(achoices)
         teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
-
+    except AttributeError:
+        print("Attribute Error in ReplacementApplicationForm ") # bug mentioned above 'walk around'
 
 class AcademicReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.filter(pk=1) # todo: cambiar al pk del usuario
-    all = Teacher.objects.all()
-    if len(teacher) != 0:
+    print("ACADEMIC REPLACEMENT APPLICATION FORM")
+    try:
+        id_teacher = Session.id_teacher
+        teacher = Teacher.objects.filter(pk = id_teacher)
+        all = Teacher.objects.all()
         teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
-
+    except AttributeError:
+        print("Atribute Error in AcademicReplacementApplicationForm") # same bug than in ReplacementApplicationForm
 
 
 class DocumentForm(forms.ModelForm):

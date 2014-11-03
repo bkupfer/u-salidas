@@ -187,6 +187,11 @@ class Teacher(models.Model):
         #else:
         #    return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
 
+    def get_possible_replacement_teachers2(self):
+        print(">> GET POSSIBLE REPLACEMENT TEACHERS 2")
+        teachers = Teacher.objects.all().exclude(pk = self.pk)
+        print(teachers)
+
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()
         my_modules=set(y_modules)

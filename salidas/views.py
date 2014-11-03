@@ -25,6 +25,7 @@ from io import StringIO
 #from docx import * #to generate Docs
 import os, os.path
 
+
 # Views for all users
 # Login
 def home(request):
@@ -63,6 +64,7 @@ def login(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
+                Session.id_teacher = request.user.id
                 if is_in_group(user, 'professor'):
                     return redirect('teachers_applications')
                 elif is_in_group(user, 'angelica'):
@@ -139,6 +141,7 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
@@ -224,8 +227,6 @@ def teachers_applications(request):
 def replacement_list(request):
     teacher= Teacher.objects.filter(user=request.user.id)
     replacements = Replacement.objects.filter(rut_teacher=teacher)
-    print(teacher)
-    print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 
