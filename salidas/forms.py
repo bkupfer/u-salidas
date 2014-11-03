@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from salidas.models import *
-import datetime
 from django.forms.models import inlineformset_factory, formset_factory
 from django.forms.extras.widgets import SelectDateWidget
 
 
 class NewApplicationForm(forms.ModelForm):
     id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),
-                                                empty_label="Seleccione Tipo de Comisión")  #
+                                                empty_label="Seleccione Tipo de Comisión")
     motive = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Fundamentos'}))
     financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
 
@@ -54,16 +53,30 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class ReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
-    achoices = teacher.get_possible_replacement_teachers()
-    teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
-
+    print("REPLACEMENT APPLICATION FORM")
+    # todo: There is a bug where this function is called at weird timing, causing replacement teachers not to work properlly!
+        # I really don't know why, probablly has to do with the imports (?)
+    try:
+        print("try")
+        id_teacher = Session.id_teacher
+        print(id_teacher)
+        teacher = Teacher.objects.get(pk=id_teacher)
+        print(teacher)
+        achoices = teacher.get_possible_replacement_teachers2() # returning a empty list
+        print(achoices)
+        teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
+    except AttributeError:
+        print("Attribute Error in ReplacementApplicationForm ") # bug mentioned above 'walk around'
 
 class AcademicReplacementApplicationForm(forms.Form):
-    teacher = Teacher.objects.get(pk=1)
-    all = Teacher.objects.all()
-    teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
-
+    print("ACADEMIC REPLACEMENT APPLICATION FORM")
+    try:
+        id_teacher = Session.id_teacher
+        teacher = Teacher.objects.filter(pk = id_teacher)
+        all = Teacher.objects.all()
+        teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    except AttributeError:
+        print("Atribute Error in AcademicReplacementApplicationForm") # same bug than in ReplacementApplicationForm
 
 
 class DocumentForm(forms.ModelForm):

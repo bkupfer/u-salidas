@@ -16,19 +16,19 @@
     <script src="{% static "js/jquery-ui.min.js" %}"></script>
 
     <title>Salidas DCC</title>
+
+	<script>
+     $(document).ready(function () {
+         $(".active").removeClass("active");
+         $("#2").addClass("active");
+     });
+	</script>
+
 </head>
 <body>
 <div class="container-fluid">
-    <!-- navegation bar -->
-    <div class="row hidden-print">
-        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
-            <ul class="nav nav-tabs">
-                <li><a href="list_of_applications" title="">Listado de solicitudes</a></li>
-                <li class="active"><a href="" title="">Calendario Histórico</a></li>
-                <li><a href="" title="">Logout</a></li>
-            </ul>
-        </div>
-    </div>
+
+	{%  include "Navbar/navbar_magna.html" %}
 
     <div class="row">
         <h2>Calendario Histórico</h2>

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
+
 from django.utils.encoding import smart_text
 
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
@@ -143,6 +146,7 @@ class WorkingDay(models.Model):
         return self.working_day
 
 class Teacher(models.Model):
+    user = models.OneToOneField(User)
     rut = models.CharField(max_length=10,unique=True)
     name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -183,6 +187,11 @@ class Teacher(models.Model):
         return self.hierarchy.avaliable_days-used_days
         #else:
         #    return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
+
+    def get_possible_replacement_teachers2(self):
+        print(">> GET POSSIBLE REPLACEMENT TEACHERS 2")
+        teachers = Teacher.objects.all().exclude(pk = self.pk)
+        print(teachers)
 
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()

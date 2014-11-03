@@ -9,12 +9,16 @@ from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
-from salidas.forms import *
+
+# from salidas.forms import *
+from salidas.models import Application, Document
+
 from io import StringIO
 #from docx import * #to generate Docs
 import io,os,os.path,tempfile, zipfile
 
 def getfiles(request):
+    print("get files")
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
     path1 = solicitud_facultad_doc(app)
@@ -51,6 +55,7 @@ def getfiles(request):
     return resp
 
 def peticion_docente_doc(app):
+    print("peticion docente")
     # user = request.user.id
     document = Document()
     document.add_paragraph("Eric Tanter").alignment = 2 #
@@ -72,6 +77,7 @@ def peticion_docente_doc(app):
     return path
 
 def solicitud_facultad_doc(app):
+    print("solicitud fac")
     document = Document()
     title = document.add_paragraph('SOLICITUD DE COMISION O PERMISO')
     title.alignment = 1

@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-#    'south',
+    'south',
     'salidas',
 )
 
@@ -106,5 +106,5 @@ if DEBUG:
         "/static/static-only/",
         "/static/static/"
     )
-    LOGIN_REDIRECT_URL = 'list_of_applications'
+   # LOGIN_REDIRECT_URL = 'list_of_applications'
     LOGIN_URL = 'login'
