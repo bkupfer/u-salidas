@@ -63,7 +63,7 @@ def login(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
-                if is_in_group(user, 'profesores'):
+                if is_in_group(user, 'professor'):
                     return redirect('teachers_applications')
                 elif is_in_group(user, 'angelica'):
                     return redirect('days_validation')
