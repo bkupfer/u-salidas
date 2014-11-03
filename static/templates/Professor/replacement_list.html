@@ -14,6 +14,14 @@
 	<script src="{% static "external/jquery/jquery.js" %}"></script>
 	<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
 	<script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/tablesort.js" %}"> </script>
+    <script type="text/javascript" src="{% static "js/dataTables.bootstrap.js" %}"> </script>
+    <script src="{% static "public/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/filestyle.js" %}"> </script>
+    <link href="{% static "css/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="{% static "js/dataTable.js" %}"></script>
+
 
 	<title>Salidas DCC</title>
 </head>
@@ -33,35 +41,55 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 
-			<div class="pannel panel-primary panel-body">
-				<h2>Solicitudes de Reemplazo</h2>
-				<br>
+            <div class="pannel panel-primary">
+                <div class="panel-body">
 
-				<table class="table">
-					<tr>
-						<th>Fecha Solicitud</th>
-						<th>Profesor Solicitante</th>
-						<th>Tipo de Reemplazo</th>
-						<th>Estado</th>
-						<th>Detalle</th>
-					</tr>
-					{% for rep in replacements %}
-						<tr>
-							<td>{{ rep.id_Application.creation_date }}</td>
-							<td>{{ rep.get_appliant_teacher }}</td>
-							<td>{{ rep.type }}</td>
-							<td>{{ rep.id_state }}</td>
-							<td><a href="replacement_requests?id={{ rep.id }}">Ver detalle </a></td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
+                    <h2>Solicitudes de reemplazo</h2>
+                    <br>
 
-		</div>
-	</div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active"><a href="#SL" role="tab" data-toggle="tab">Solicitudes</a></li>
+                    </ul>
+                    <br>
+
+                    <div class="tab-content">
+                        <div class="row tab-pane active" id="#SL">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="SLTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Fecha solicitud</th>
+                                            <th>Profesor solicitante</th>
+                                            <th>Tipo reemplazo</th>
+                                            <th>Estado</th>
+                                            <th>Detalle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rep in replacements %}
+                                            <tr>
+                                                <td>{{ rep.id_Application.creation_date }}</td>
+                                                <td>{{ rep.get_appliant_teacher }}</td>
+                                                <td>{{ rep.type }}</td>
+                                                <td>{{ rep.id_state }}</td>
+                                                <td><a href="replacement_requests?id={{ rep.id }}">Ver detalle </a></td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
