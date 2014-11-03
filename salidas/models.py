@@ -128,6 +128,7 @@ class Document(models.Model):
     id_application = models.ForeignKey('Application')
     file = models.FileField(blank=True, null=True,upload_to='documents')
 
+
  #jornada:parcial -> jerarquia: profesor adjunto, jornada completa -> jerarquia : profesor asistente,asociado o titular
 class Hierarchy(models.Model):
     hierarchy = models.CharField(max_length=20)
