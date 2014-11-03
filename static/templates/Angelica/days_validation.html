@@ -1,4 +1,3 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +10,7 @@
 <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
 <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
 <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
-<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+<script src="{% static 'public/js/jquery-1.11.0.min.js' %}"></script>
 
 <title>Salidas DCC</title>
 
@@ -21,18 +20,14 @@
 
 <div class="container-fluid">
     <div class="row hidden-print">
-    <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
-    	<ul class="nav nav-tabs">
-    	
-    		<!-- Aca colocar la barra de nevegacion correspondiente -->
-			<li class="active"><a href="" title="">Solicitudes</a></li>
-			<li><a href="" title="">Calendarios</a></li>
-			<li><a href="" title="">Logout</a></li>
-			<!-- fin barra de nevegacion -->
-			
-		</ul>
-    </div><!-- end nav bar-->
-    </div><!-- end row-->
+		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="" title="">Solicitudes</a></li>
+				<li><a href="" title="">Calendarios</a></li>
+				<li><a href="logout" title="">Logout</a></li>
+			</ul>
+		</div>
+    </div>
         
    	   
         

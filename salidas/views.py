@@ -10,34 +10,93 @@ from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
 from django.utils.safestring import mark_safe   #  for calendar
+
+from salidas.models import *
+from django.contrib.auth.models import User,Group
+
 from salidas.forms import *     #  for calendar
 #from salidas.calendar import *  #  for calendar # comentado por asuntos de compidad
+
+from OpenSSL.crypto import verify,load_certificate,load_privatekey,Error,FILETYPE_PEM #for externo
+
+
+import base64 #for externo
+import urllib.request #for externo
 
 from io import StringIO
 #from docx import * #to generate Docs
 import os,os.path
 # Views for all users
+# Login
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
 
-# General views
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = auth.authenticate(username=username,password=password)
-    if user is not None and user.is_active:
-        # Clave correcta, y el usuario está marcado "activo"
-        auth.login(request, user)
-        # Redirigir a la pagina que corresponda
-        return redirect(list_of_applications) # todo: enviar a la pagina que corresponda según el tipo de usuario!
-    else:
-        # Mostrar una página de error
-        return redirect(login)
+def is_in_group(user, group):
+	users_in_group = Group.objects.get(name=group).user_set.all()
+	if user in users_in_group or user.is_superuser:
+		return True
+	else:
+		return False
 
+def externo(request):
+    if request.method == "POST":
+        try:
+            #recibir firma todo:notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
+            firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_base64_decode(request.POST['firma']))
+            #recibir llave publica
+            certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
+            #verificar
+            verify(certificado,firma,request.POST.urlencode(), 'sha1')
+            return  redirect('login')
+        except Error:
+            print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
+            return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
+def login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = auth.authenticate(username=username,password=password)
+            if user is not None and user.is_active:
+                auth.login(request, user)
+                if is_in_group(user, 'profesores'):
+                    return redirect('teachers_applications')
+                elif is_in_group(user, 'angelica'):
+                    return redirect('days_validation')
+                elif is_in_group(user, 'magna'):
+                    return redirect('list_of_applications')
+                elif is_in_group(user, 'alejandro'):
+                    return redirect('list_alejandro')
+                else:
+                    return redirect('nothing_to_do_here')
+            else:
+                print("user no existe")
+                return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+        else:
+            print("error filling up the login form")
+    else:
+        form = AuthenticationForm()
+    return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect(login)
+
+
+# Not registered user (student of something..)
+def nothing_to_do_here(request):
+    return render_to_response("General/nothing_to_do_here.html", locals(), context_instance=RequestContext(request))
+
+
+# Access denied
 def access_denied(request):
-    return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request));
+    return render_to_response("General/access_denied.html", locals(), context_instance=RequestContext(request))
+
 
 #Views for teachers
 #Este es el formulario prototipo de financia
@@ -78,13 +137,13 @@ def documentForm(doc, newApp):
             file = None
 
 
+@login_required
 def new_application(request):
-    teacher_id=1
-    teacher=Teacher.objects.get(pk=teacher_id)
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None,prefix="executiveReplacement")
-    academicReplacement = AcademicReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
+    academicReplacement = ReplacementApplicationForm(request.POST or None,prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -92,7 +151,7 @@ def new_application(request):
     if len(request.POST) != 0:
         if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
             # Applications instance
-            id_teacher = Teacher.objects.get(pk=1)  # TODO: ¡¡ EL PROFE ES EL PRIMERO de la LISTA cambiar por usuario del sistema !!
+            id_teacher = Teacher.objects.get(user=request.user.id)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
             fb = application.cleaned_data['financed_by']
@@ -149,27 +208,29 @@ def new_application(request):
 
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
-
+@login_required
 def teacher_calendar(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor!
-    teacher = Teacher.objects.get(pk=1)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
+    teacher = Teacher.objects.filter(user=request.user.id)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def teachers_applications(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor!
-    teacher = Teacher.objects.get(rut=rut)
-    apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
+    id_Teacher = Teacher.objects.filter(user=request.user.id)
+    apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def replacement_list(request):
-    rut = "17704795-3"  # todo: obtener el rut del profesor! (o el id)
-    id=1
-    replacements = Replacement.objects.filter(rut_teacher=1)
+    teacher= Teacher.objects.filter(user=request.user.id)
+    replacements = Replacement.objects.filter(rut_teacher=teacher)
+    print(teacher)
+    print(replacements)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
-
+#todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
+@login_required
 def replacement_requests(request):
     replacement = Replacement.objects.get( pk = request.GET['id'] )
 
@@ -186,27 +247,32 @@ def replacement_requests(request):
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def application_detail(request):
     id_app = request.GET['id']
-    query = Application.objects.get(pk = id_app)
-    profesor = query.id_Teacher
-    sessions_rut = profesor.rut     # todo: cambiar esta variable para que calse con el rut del usuario de session!!
-    comm_type = query.id_commission_type
-    dest = Destination.objects.filter(application = query.id)
-    replacements = query.get_replacements()
-    finances = query.get_finances()
-    if (profesor.rut != sessions_rut):
+    app = Application.objects.get(pk = id_app)
+    profesor = app.id_Teacher
+    profesor_user = app.id_Teacher.user
+    user_id = request.user.id
+    comm_type = app.id_commission_type
+    dest = Destination.objects.filter(application = app.id)
+    replacements = app.get_replacements
+
+    if (profesor_user.id != user_id):
         return redirect(access_denied)
 
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
 # Views for administrative people
+# Magna
+@login_required
 def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def application_review(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
@@ -229,16 +295,19 @@ def application_review(request):
     return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def historic_calendar(request):
     return render_to_response("Magna/historic_calendar.html", locals(), content_type=RequestContext(request))
 
 
 # Views Alejandro
+@login_required
 def list_alejandro(request):
     apps = Application.objects.all()
     return render_to_response("Alejandro/list_alejandro.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
 def detail_alejandro(request):
     id_app = request.GET['id']
     application = Application.objects.get(pk = id_app)
@@ -246,6 +315,16 @@ def detail_alejandro(request):
     teacher = application.id_Teacher
     finances=Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
+
+
+def finance_validation(request):
+    return render_to_response("Alejandro/finance_validation.html", locals(), content_type=RequestContext(request))
+
+
+# Angelica
+def days_validation(request):
+    return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
+
 
 
 # Aditional views
@@ -264,13 +343,4 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
-
-
-# debuging views
-def list(request):
-    apps = Application.objects.all()
-    for app in apps:
-        print(app.get_state())
-    return render_to_response("Magna/list.html", locals(), context_instance=RequestContext(request))
-
 
