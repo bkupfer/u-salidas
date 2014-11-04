@@ -57,22 +57,22 @@ class ReplacementApplicationForm(forms.Form):
     # todo: There is a bug where this function is called at weird timing, causing replacement teachers not to work properlly!
         # I really don't know why, probablly has to do with the imports (?)
     try:
-        #print("try")
-        id_teacher = 1#Session.id_teacher
-        #print(id_teacher)
+        print("try")
+        id_teacher = Session.id_teacher
+        print(id_teacher)
         teacher = Teacher.objects.get(pk=id_teacher)
-        #print(teacher)
-        achoices = teacher.get_possible_replacement_teachers() # returning a empty list
-        #print(achoices)
+        print(teacher)
+        achoices = teacher.get_possible_replacement_teachers2() # returning a empty list
+        print(achoices)
         teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
     except AttributeError:
         print("Attribute Error in ReplacementApplicationForm ") # bug mentioned above 'walk around'
 
 class AcademicReplacementApplicationForm(forms.Form):
-    #print("ACADEMIC REPLACEMENT APPLICATION FORM")
+    print("ACADEMIC REPLACEMENT APPLICATION FORM")
     try:
-        id_teacher = 1#Session.id_teacher
-        teacher = Teacher.objects.get(pk= id_teacher)
+        id_teacher = Session.id_teacher
+        teacher = Teacher.objects.filter(pk = id_teacher)
         all = Teacher.objects.all()
         teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
     except AttributeError:
