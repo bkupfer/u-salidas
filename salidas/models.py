@@ -148,8 +148,8 @@ class WorkingDay(models.Model):
 class Teacher(models.Model):
     user = models.OneToOneField(User)
     rut = models.CharField(max_length=10,unique=True)
-    name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)#TODO
+    last_name = models.CharField(max_length=100)#TODO
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
     mail = models.EmailField()
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
