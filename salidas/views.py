@@ -24,7 +24,7 @@ import urllib.request
 from io import StringIO
 # from docx import * # to generate Docs
 import os, os.path
-
+from django.views.decorators.csrf import csrf_protect
 
 # Views for all users
 # Login
@@ -54,7 +54,7 @@ def externo(request):
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
 
-
+@csrf_protect
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -217,7 +217,7 @@ def teacher_calendar(request):
 
 @login_required
 def teachers_applications(request):
-    teacher = Teacher.objects.get(user=request.user.id)
+    teacher = Teacher.objects.get(user=request.user)
     apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
