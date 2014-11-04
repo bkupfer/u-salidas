@@ -53,28 +53,25 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class ReplacementApplicationForm(forms.Form):
-    #print("REPLACEMENT APPLICATION FORM")
-    # todo: There is a bug where this function is called at weird timing, causing replacement teachers not to work properlly!
-        # I really don't know why, probablly has to do with the imports (?)
     try:
-        #print("try")
-        id_teacher = 1#Session.id_teacher TODO obtener usuario
-        #print(id_teacher)
-        teacher = Teacher.objects.get(pk=id_teacher)
-        #print(teacher)
-        achoices = teacher.get_possible_replacement_teachers() # returning a empty list
-        #print(achoices)
+        id_teacher = 1
+        teacher = Teacher.objects.get(pk=1)
+        achoices = teacher.get_possible_replacement_teachers()
         teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
     except AttributeError:
         print("Attribute Error in ReplacementApplicationForm ") # bug mentioned above 'walk around'
 
+
 class AcademicReplacementApplicationForm(forms.Form):
-    #print("ACADEMIC REPLACEMENT APPLICATION FORM")
     try:
-        id_teacher = 1#Session.id_teacher TODO obtener usuario
-        teacher = Teacher.objects.get(pk = id_teacher)
-        all = Teacher.objects.all()
-        teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+        id_teacher = 1 # Session.id_teacher
+        options = Teacher.objects.all().exclude(pk = id_teacher)
+        achoices = [('', '---------')]
+        for t in options:
+            achoices.append((t.pk, t))
+
+        teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
+        # teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
     except AttributeError:
         print("Atribute Error in AcademicReplacementApplicationForm") # same bug than in ReplacementApplicationForm
 
