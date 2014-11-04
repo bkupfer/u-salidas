@@ -202,6 +202,7 @@ class Teacher(models.Model):
                 i+=1
         return replacement
 
+
 #rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
@@ -255,6 +256,7 @@ class TeacherHasCourse(models.Model):
     id_Course = models.ForeignKey('Course')
     def __str__(self):
         return str(self.id_Teacher) + str("/")+ str(self.id_Course)
+
 
 class ReplacementType(models.Model):
     type = models.CharField(max_length=20)
