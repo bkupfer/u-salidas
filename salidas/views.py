@@ -145,7 +145,7 @@ def new_application(request):
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
-    academicReplacement  = ReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
+    academicReplacement  = AcademicReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -218,8 +218,8 @@ def teacher_calendar(request):
 
 @login_required
 def teachers_applications(request):
-    id_Teacher = Teacher.objects.filter(user=request.user.id)
-    apps = Application.objects.filter(id_Teacher=id_Teacher).order_by('creation_date').reverse()
+    teacher = Teacher.objects.get(user=request.user.id)
+    apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
 
