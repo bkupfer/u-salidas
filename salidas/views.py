@@ -196,11 +196,17 @@ def new_application(request):
                 documentForm(document, newApp)
 
             # signature
+            print(request.FILES)
+            print(id_teacher)
             try:
                 asignature = request.FILES['signature']
-                id_teacher.signature.delete()
-                id_teacher.signature=asignature
-                id_teacher.save()
+                extention = asignature.__str__().split(".")[1]
+                if extention == "jpg" or extention == "jpeg" or extention == "png":
+                    id_teacher.signature.delete()
+                    id_teacher.signature = asignature
+                    id_teacher.save()
+                else:
+                    messages.error(request, "Formato de firma invalido. Usar '.jpg' o '.png'.")
             except:
                 asignature=None
 
