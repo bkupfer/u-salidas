@@ -12,9 +12,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
+from django.contrib.auth.models import User, Group
+
 from salidas.forms import *
 from salidas.models import *
-from django.contrib.auth.models import User, Group
+
+from usalidas.email_contat_list import *
 
 # For externo
 from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
@@ -64,7 +67,7 @@ def login(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
-                Session.id_teacher = request.user.id
+                session_id = request.user.id
                 if is_in_group(user, 'professor'):
                     return redirect('teachers_applications')
                 elif is_in_group(user, 'angelica'):
@@ -141,6 +144,7 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
@@ -200,7 +204,11 @@ def new_application(request):
             except:
                 asignature=None
 
+            subject = "Nueva solicitud de salida"
+            message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- No responda este correo, el correo fue generado automaticamente."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
             # send_mail(subject, message, from_email, to_list, fail_silently = True)
+
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
 

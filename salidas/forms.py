@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from salidas.models import *
 from django.forms.models import inlineformset_factory, formset_factory
 from django.forms.extras.widgets import SelectDateWidget
+from salidas.models import *
 
 
 class NewApplicationForm(forms.ModelForm):
@@ -54,7 +54,7 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 class ReplacementApplicationForm(forms.Form):
     try:
-        id_teacher = 1
+        id_teacher = 1 # change for teachers id
         teacher = Teacher.objects.get(pk=1)
         achoices = teacher.get_possible_replacement_teachers()
         teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
@@ -64,7 +64,7 @@ class ReplacementApplicationForm(forms.Form):
 
 class AcademicReplacementApplicationForm(forms.Form):
     try:
-        id_teacher = 1 # Session.id_teacher
+        id_teacher = 1 # change for teachers id
         options = Teacher.objects.all().exclude(pk = id_teacher)
         achoices = [('', '---------')]
         for t in options:
