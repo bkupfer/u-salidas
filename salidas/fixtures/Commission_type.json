@@ -10,35 +10,49 @@
         "model": "salidas.Currency",
         "pk": 2,
         "fields": {
-            "currency": "EUR"
+            "currency": "USD"
         }
     },
     {
         "model": "salidas.Currency",
         "pk": 3,
         "fields": {
-            "currency": "USD"
+            "currency": "EUR"
         }
     },
     {
         "model": "salidas.Currency",
         "pk": 4,
         "fields": {
-            "currency": "JPY"
+            "currency": "CAD"
         }
     },
     {
         "model": "salidas.Currency",
         "pk": 5,
         "fields": {
-            "currency": "GBP"
+            "currency": "CHY"
         }
     },
     {
         "model": "salidas.Currency",
         "pk": 6,
         "fields": {
-            "currency": "CAD"
+            "currency": "GBP"
+        }
+    },
+    {
+        "model": "salidas.Currency",
+        "pk": 7,
+        "fields": {
+            "currency": "JPY"
+        }
+    },
+    {
+        "model": "salidas.Currency",
+        "pk": 8,
+        "fields": {
+            "currency": "PHP"
         }
     },
     {
