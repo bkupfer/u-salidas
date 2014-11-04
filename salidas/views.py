@@ -17,12 +17,12 @@ from salidas.models import *
 from django.contrib.auth.models import User, Group
 
 # For externo
-# from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
-# import base64
-# import urllib.request
+from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
+import base64
+import urllib.request
 
 from io import StringIO
-#from docx import * #to generate Docs
+# from docx import * # to generate Docs
 import os, os.path
 
 
@@ -43,7 +43,7 @@ def is_in_group(user, group):
 def externo(request):
     if request.method == "POST":
         try:
-            #recibir firma todo:notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
+            #recibir firma todo: notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
             firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_base64_decode(request.POST['firma']))
             #recibir llave publica
             certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
@@ -141,11 +141,10 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
-
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
-    academicReplacement  = ReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
+    academicReplacement  = AcademicReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
@@ -172,9 +171,9 @@ def new_application(request):
 
             # replacement teacher information
             executiveReplace = executiveReplacement.cleaned_data['teachers']
-            academicReplace = academicReplacement.cleaned_data['teachers']
+            academicReplace  = academicReplacement.cleaned_data['teachers']
             newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=int(executiveReplace)), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
-            newAcademicReplacement  = Replacement(rut_teacher=academicReplace,  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
+            newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=int(academicReplace)),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
             newAcademicReplacement.save()
 

@@ -66,7 +66,7 @@
         "model": "salidas.ApplicationState",
         "pk": 1,
         "fields": {
-            "state": "Pendiente aprobación"
+            "state": "Pendiente aprobacion"
         }
     },
     {
@@ -205,6 +205,4 @@
 
         }
     }
-
-
 ]
