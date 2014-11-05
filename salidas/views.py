@@ -196,24 +196,34 @@ def new_application(request):
                 documentForm(document, newApp)
 
             # signature
+            print(request.FILES)
+            print(id_teacher)
             try:
                 asignature = request.FILES['signature']
-                id_teacher.signature.delete()
-                id_teacher.signature=asignature
-                id_teacher.save()
+                extention = asignature.__str__().split(".")[1]
+                if extention == "jpg" or extention == "jpeg" or extention == "png":
+                    id_teacher.signature.delete()
+                    id_teacher.signature = asignature
+                    id_teacher.save()
+                else:
+                    messages.error(request, "Formato de firma invalido. Usar '.jpg' o '.png'.")
             except:
                 asignature=None
 
+            # sending notification mail
             subject = "Nueva solicitud de salida"
             message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- No responda este correo, el correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
-            # send_mail(subject, message, from_email, to_list, fail_silently = True)
 
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
 
         else:
             messages.error(request, 'Error en el envío del formulario.')
+
+    has_previous_signature = False
+    if Teacher.objects.get(pk = request.user.id).signature != "":
+        has_previous_signature = True
 
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 

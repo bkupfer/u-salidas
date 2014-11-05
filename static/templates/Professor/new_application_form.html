@@ -283,9 +283,11 @@
                         <label class="col-sm-2 control-label"> Firma digitalizada</label>
 
                         <div class="col-sm-5">
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
-                            </div>
+							{% if has_previous_signature %}
+							<div class="checkbox">
+								<label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
+							</div>
+							{% endif %}
                             {{ teacher_signature.signature }}
                         </div>
                     </div>
