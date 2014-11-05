@@ -25,7 +25,7 @@ import base64
 import urllib.request
 
 from io import StringIO
-# from docx import * # to generate Docs
+from docx import * # to generate Docs
 import os, os.path
 from django.views.decorators.csrf import csrf_protect
 

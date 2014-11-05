@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-
+from datetime import date
 from django.utils.encoding import smart_text
 
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
@@ -114,6 +114,22 @@ class Application(models.Model):
     def get_finances(self):
         finances=Finance.objects.filter(id_application=self)
         return finances
+    def get_start_date(self):
+        dests=self.get_destinations()
+        start_date=date.max
+        for dest in dests:
+            if dest.start_date<start_date:
+                start_date=dest.start_date
+        return start_date
+    def get_end_date(self):
+        dests=self.get_destinations()
+        end_date=date.min
+        for dest in dests:
+            if dest.end_date>end_date:
+                end_date=dest.end_date
+        return end_date
+
+
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
