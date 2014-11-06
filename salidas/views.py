@@ -41,8 +41,8 @@ def is_in_group(user, group):
 		return True
 	else:
 		return False
-
-
+#externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
+#recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
 def externo(request):
     if request.method == "POST":
         try:
@@ -52,6 +52,15 @@ def externo(request):
             certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
             #verificar
             verify(certificado,firma,request.POST.urlencode(), 'sha1')
+            #TODO: cuando esto funcione,aqui se debe verificar que el usuario esta en nuestro sistema, y si esta loguearlo (views.login)
+            '''
+                dificultad del TODO: nuestro views.login autentifica al usuario usando auth.authenticate,
+                si upasaporte autentifica no tendremos usuario ni clave, no sabemos que informacion del profe
+                o de la persona nos manda upasaporte.
+                ahi aparece como autentificar sin autentificar
+                 http://stackoverflow.com/questions/2787650/manually-logging-in-a-user-without-password
+            '''
+            #retorna un request con el usuario
             return  redirect('login')
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
@@ -235,7 +244,7 @@ def teacher_calendar(request):
 
 @login_required
 def teachers_applications(request):
-    teacher = Teacher.objects.get(user=request.user)
+    teacher = Teacher.objects.get(user=request.user.id)
     apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
@@ -324,7 +333,7 @@ def list_alejandro(request):
     apps = Application.objects.all()
     return render_to_response("Alejandro/list_alejandro.html", locals(), context_instance=RequestContext(request))
 
-
+@csrf_protect
 @login_required
 def detail_alejandro(request):
     id_app = request.GET['id']
