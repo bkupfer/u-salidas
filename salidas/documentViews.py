@@ -28,7 +28,7 @@ def getfiles(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
     filenames.append(solicitud_facultad_doc(app))
-    filenames.append(peticion_docente_doc(app))
+
 
     solicitante=str(app.id_Teacher)
     replacements=app.get_replacements()
@@ -42,7 +42,7 @@ def getfiles(request):
         for replacement in replacements:
             filenames.append(carta_reemplazo_any(app,replacement))
 
-
+    filenames.append(peticion_docente_doc(app,replacement_teachers))
 
     # Folder name in ZIP archive which contains the above files
     # E.g [thearchive.zip]/somefiles/file2.txt
@@ -72,8 +72,26 @@ def getfiles(request):
 
     return resp
 
-def peticion_docente_doc(app):
+def peticion_docente_doc(app,replacement_teachers):
+    replacements=app.get_replacements()
     print("peticion docente")
+    path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
+
+    if len(replacement_teachers)==1:
+        replacement_type="En mis actividades académicas y docentes seré reemplazado por"+str(replacement_teachers.pop())
+    else:
+        i=0
+        replace=[]
+        for rep in replacements:
+            if(str(rep.type)=="Docente"):
+                replace.append("docentes")
+            else:
+                replace.append("académicas")
+            i+=1
+            replace.append(str(rep.rut_teacher))
+        replacement_type="En mis actividades " +replace[0]+ " seré reemplazado por " +replace[1]+ " y en mis actividades "+ replace[2]+ " seré reemplazado por " +replace[3]+"."
+
+
     # user = request.user.id
     document = Document()
     document.add_paragraph("Eric Tanter").alignment = 2 #
@@ -90,7 +108,8 @@ def peticion_docente_doc(app):
     p.add_run('Presente').bold = True
     p.add_run().add_break()
 
-    path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
+    reemplazo=document.add_paragraph(replacement_type)
+
     document.save(path)
     return path
 
