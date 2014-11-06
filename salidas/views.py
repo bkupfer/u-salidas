@@ -147,8 +147,8 @@ def new_application(request):
 
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
-    executiveReplacement = ReplacementApplicationForm(request.POST or None, prefix="executiveReplacement")
-    academicReplacement  = AcademicReplacementApplicationForm(request.POST or None, prefix="academicReplacement")
+    executiveReplacement = ReplacementApplicationForm(request.user)
+    academicReplacement  = AcademicReplacementApplicationForm(request.user)
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)

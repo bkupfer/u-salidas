@@ -52,29 +52,38 @@ class DestinationForm(forms.ModelForm):
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
-class ReplacementApplicationForm(forms.Form):
-    try:
-        id_teacher = 1
-        teacher = Teacher.objects.get(pk=1)
-        achoices = teacher.get_possible_replacement_teachers()
-        teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
-    except AttributeError:
-        print("Attribute Error in ReplacementApplicationForm ") # bug mentioned above 'walk around'
-
-
 class AcademicReplacementApplicationForm(forms.Form):
-    try:
-        id_teacher = 1 # Session.id_teacher
-        options = Teacher.objects.all().exclude(pk = id_teacher)
-        achoices = [('', '---------')]
-        for t in options:
-            achoices.append((t.pk, t))
+    #  teacher = Teacher.objects.get(pk=1)
+    # achoices = None
+    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
-        teachers = forms.ChoiceField(widget=forms.Select(attrs={'placeholder': 'Seleccione un Profesor'}), choices=achoices)
-        # teachers = forms.ModelChoiceField(queryset=all.exclude(pk=teacher.pk),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
-    except AttributeError:
-        print("Atribute Error in AcademicReplacementApplicationForm") # same bug than in ReplacementApplicationForm
+    def __init__(self, user):
+        super(AcademicReplacementApplicationForm,self).__init__()
+        self.fields['teachers'].queryset =Teacher.objects.exclude(user=user)
 
+
+class ReplacementApplicationForm(forms.Form):
+    # teacher = Teacher.objects.get(pk=1)
+    # all = Teacher.objects.all()
+    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+
+    def __init__(self, user):
+      super(ReplacementApplicationForm,self).__init__()
+      try:
+        teacher1=Teacher.objects.get(user=user.id)
+        y_modules=teacher1.get_modules()
+        my_modules=set(y_modules)
+        teachers = Teacher.objects.exclude(user=user)
+        query=teachers
+        for teacher in teachers:
+            their_modules=set(teacher.get_modules())
+            if not my_modules.isdisjoint(their_modules):
+                print(query)
+                query=query.exclude(id=teacher.id)
+      except TeacherHasCourse.DoesNotExist:
+          query=Teacher.objects.all()
+
+      self.fields['teachers'].queryset = query
 
 class DocumentForm(forms.ModelForm):
     file = forms.FileField()
