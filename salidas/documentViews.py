@@ -121,8 +121,18 @@ def carta_reemplazo_ac_doc(app,replacement_teacher):
     return carta_reemplazo(solicitante,app,replacement_teacher,replacement_type)
 
 def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
+
     signature_file=replacement_teacher.signature
-    #print(signature_file.path)
+    try:
+        signature_path=str(signature_file)
+        #print('firma')
+        #print(signature_path)
+        signature_path=signature_path.split("/")
+        #print(signature_path)
+        signature_path=signature_path[1]
+        #print(signature_path)
+    except:
+        print('no hay firma')
     fecha_inicio=app.get_start_date().strftime("%A %d %B %Y")
     fecha_fin=app.get_end_date().strftime("%A %d %B %Y")
 
@@ -141,7 +151,7 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     title.add_run().add_break()
     title.add_run().add_break()
     title.add_run().add_break()
-    cuerpo='Yo, '+str(replacement_teacher)+', me comprometo a reemplazar al señor académico '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)
+    cuerpo='Yo, '+str(replacement_teacher)+', me comprometo a reemplazar al señor académico '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
     jerarquia=replacement_teacher.hierarchy
     jornada=replacement_teacher.working_day
 
@@ -165,13 +175,15 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run().add_break()
-
-    signature_file=document.add_picture(os.path.join(settings.MEDIA_ROOT,"signatures","firma2.png"),width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT#signature_file.path)
-
+    p.add_run('                                                                                                               ')
+    try:
+        p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT,"signatures",signature_path),width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT#signature_file.path)
+    except:
+        print("no hay firma")
 
     signature=document.add_paragraph()
-    signature.add_run(str(replacement_teacher)+'       ').bold=True
-    signature.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    signature.add_run('                                                                  '+str(replacement_teacher)).bold=True
+    signature.alignment = WD_ALIGN_PARAGRAPH.CENTER
     signature.add_run().add_break()
     signature.add_run().add_break()
     signature.add_run().add_break()
