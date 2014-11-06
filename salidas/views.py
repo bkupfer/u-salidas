@@ -41,6 +41,7 @@ def is_in_group(user, group):
 		return True
 	else:
 		return False
+
 #externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
 #recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
 def externo(request):
@@ -226,9 +227,18 @@ def new_application(request):
 
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
-
+            # Applications instance
         else:
-            messages.error(request, 'Error en el envío del formulario.')
+            # for error displayial
+            err = 'Error en el envío del formulario.'
+            if not application.is_valid():
+                err = err + '\nInformación del viaje incompleta'
+            if not destinations.is_valid():
+                err = err + '\nInformación respecto de los destinos incompleta.'
+            if not executiveReplacement.is_valid() or not academicReplacement.is_valid():
+                err = err + '\nDebe escojer sus profesores reemplazantes.'
+
+            messages.error(request, err)
 
     has_previous_signature = False
     if Teacher.objects.get(pk = request.user.id).signature != "":
