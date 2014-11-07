@@ -167,10 +167,10 @@ def new_application(request):
         academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
 
     if len(request.POST) != 0:
-        print("!=0")
+        #print("!=0")
         if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
-            print("isvalid")
+            #print("isvalid")
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
@@ -245,7 +245,7 @@ def new_application(request):
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
 
             messages.error(request, err)
-    print("=0")
+    #print("=0")
     has_previous_signature = False
     if Teacher.objects.get(pk = request.user.id).signature != "":
         has_previous_signature = True
