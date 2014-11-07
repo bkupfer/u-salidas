@@ -154,19 +154,24 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
-
+    user=request.user
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
-    executiveReplacement = ReplacementApplicationForm(request.user)
-    academicReplacement  = AcademicReplacementApplicationForm(request.user)
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
+    if len(request.POST) == 0:
+
+        executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
+        academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
+
     if len(request.POST) != 0:
-        if application.is_valid() and destinations.is_valid() and executiveReplacement.is_valid() and academicReplacement.is_valid():
+        print("!=0")
+        if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
-            id_teacher = Teacher.objects.get(user=request.user.id)
+            print("isvalid")
+            id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
             fb = application.cleaned_data['financed_by']
@@ -184,10 +189,10 @@ def new_application(request):
             stateApp.save()
 
             # replacement teacher information
-            executiveReplace = executiveReplacement.cleaned_data['teachers']
-            academicReplace  = academicReplacement.cleaned_data['teachers']
-            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=int(executiveReplace)), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
-            newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=int(academicReplace)),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
+            executiveReplace = request.POST['repteachers']#executiveReplacement.cleaned_data['repteachers']
+            academicReplace  = request.POST['acteachers']#academicReplacement.cleaned_data['acteachers']
+            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
             newAcademicReplacement.save()
 
@@ -229,17 +234,18 @@ def new_application(request):
             return redirect(teachers_applications)
             # Applications instance
         else:
+            print("isnotvalid")
             # for error displayial
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta'
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
-            if not executiveReplacement.is_valid() or not academicReplacement.is_valid():
+            if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
 
             messages.error(request, err)
-
+    print("=0")
     has_previous_signature = False
     if Teacher.objects.get(pk = request.user.id).signature != "":
         has_previous_signature = True

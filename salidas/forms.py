@@ -55,35 +55,42 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 class AcademicReplacementApplicationForm(forms.Form):
     #  teacher = Teacher.objects.get(pk=1)
     # achoices = None
-    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    acteachers = forms.ModelChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
-    def __init__(self, user):
+    def __init__(self,*args,**kwargs):
+        #print(user)
+        user=args[1].id
         super(AcademicReplacementApplicationForm,self).__init__()
-        self.fields['teachers'].queryset =Teacher.objects.exclude(user=user)
+        self.fields['acteachers'].queryset =Teacher.objects.exclude(user=user)
 
 
 class ReplacementApplicationForm(forms.Form):
     # teacher = Teacher.objects.get(pk=1)
     # all = Teacher.objects.all()
-    teachers = forms.ModelMultipleChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
+    repteachers = forms.ModelChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
-    def __init__(self, user):
-      super(ReplacementApplicationForm,self).__init__()
-      try:
-        teacher1=Teacher.objects.get(user=user.id)
-        y_modules=teacher1.get_modules()
-        my_modules=set(y_modules)
-        teachers = Teacher.objects.exclude(user=user)
-        query=teachers
-        for teacher in teachers:
-            their_modules=set(teacher.get_modules())
-            if not my_modules.isdisjoint(their_modules):
-                print(query)
-                query=query.exclude(id=teacher.id)
-      except TeacherHasCourse.DoesNotExist:
-          query=Teacher.objects.all()
+    def __init__(self,*args,**kwargs):
+        super(ReplacementApplicationForm,self).__init__()
+        #print(args)
+        #print(kwargs)
+        #print(args[1])
+        user=args[1].id
+        try:
+            #print(user)
+            teacher1=Teacher.objects.get(user=user)
+            y_modules=teacher1.get_modules()
+            my_modules=set(y_modules)
+            teachers = Teacher.objects.all().exclude(user=user)
+            query=teachers
+            for teacher in teachers:
+                their_modules=set(teacher.get_modules())
+                if not my_modules.isdisjoint(their_modules):
+                    print(query)
+                    query=query.exclude(id=teacher.id)
+        except TeacherHasCourse.DoesNotExist:
+            query=Teacher.objects.all()
 
-      self.fields['teachers'].queryset = query
+        self.fields['repteachers'].queryset = query
 
 class DocumentForm(forms.ModelForm):
     file = forms.FileField()
