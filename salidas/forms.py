@@ -71,7 +71,7 @@ class ReplacementApplicationForm(forms.Form):
 
     def __init__(self,*args,**kwargs):
         super(ReplacementApplicationForm,self).__init__()
-        #print(args)
+         print(args)
         #print(kwargs)
         #print(args[1])
         user=args[1].id

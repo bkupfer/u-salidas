@@ -161,10 +161,7 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
-    if len(request.POST) == 0:
 
-        executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
-        academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
 
     if len(request.POST) != 0:
         #print("!=0")
@@ -246,6 +243,9 @@ def new_application(request):
 
             messages.error(request, err)
     #print("=0")
+    executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
+    academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
+
     has_previous_signature = False
     if Teacher.objects.get(pk = request.user.id).signature != "":
         has_previous_signature = True
