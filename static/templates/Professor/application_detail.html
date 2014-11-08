@@ -15,15 +15,20 @@
 	<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
 	<script src="{% static "js/jquery-ui.min.js" %}"></script>
 
+	<script>
+		$(document).ready(function () {
+			$(".active").removeClass("active");
+		 });
+	</script>
+
 	<title>Salidas DCC</title>
 </head>
-<body>
 
+<body>
 <div class="container-fluid">
 
 	{%  include "Navbar/navbar_teacher.html" %}
 
-	<!-- page content -->
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 			<div class="row">
@@ -121,9 +126,4 @@
 </div>
 
 </body>
-<script>
-     $(document).ready(function () {
-         $(".active").removeClass("active");
-     });
-</script>
 </html>

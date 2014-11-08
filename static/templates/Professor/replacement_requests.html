@@ -12,6 +12,10 @@
     <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
     <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
 
+	<script src="{% static "public/js/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+
+
     <title>Salidas DCC</title>
 
 </head>
@@ -20,7 +24,7 @@
 
 <div class="container-fluid">
 
-    {%  include "Navbar/navbar_teacher.html" %}
+    {% include "Navbar/navbar_teacher.html" %}
 
 
     <div class="row">
@@ -102,14 +106,10 @@
                 </div>
             </div>
 
-
-            <!-- fin contenido -->
         </div>
-        <!-- end contenido-->
     </div>
-    <!-- end row-->
 </div>
-<!--end container-->
+
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -133,8 +133,6 @@
     </div>
 </div>
 
-<script src="{% static "public/js/bootstrap.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
 
 
 </body>

@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^replacement_requests', 'salidas.views.replacement_requests', name='replacement_requests'),
     url(r'^replacement_list', 'salidas.views.replacement_list', name='replacement_list'),
     url(r'^application_detail', 'salidas.views.application_detail', name='application_detail'),
+    url(r'^my_information', 'salidas.views.my_information', name='my_information'),
 
     # Administrative view pages
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),

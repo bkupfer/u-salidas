@@ -309,6 +309,11 @@ def application_detail(request):
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
+@login_required
+def my_information(request):
+    return render_to_response("Professor/my_information.html", locals(), context_instance=RequestContext(request))
+
+
 # Views for administrative people
 # Magna
 @login_required

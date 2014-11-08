@@ -18,8 +18,16 @@
     <script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
     <script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
 
+	<script>
+	$(document).ready(function() {
+		$(".active").removeClass("active");
+		$("#2").addClass("active");
+	});
+	</script>
+
     <title>Salidas DCC</title>
 </head>
+
 <body>
 <div class="container-fluid">
 
@@ -320,8 +328,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $( ".datepicker" ).datepicker();
-        $(".active").removeClass("active");
-        $("#2").addClass("active");
         // Code adapted from http://djangosnippets.org/snippets/1389/
         function updateElementIndex(el, prefix, ndx) {
             var id_regex = new RegExp('(' + prefix + '-\\d+-)');
@@ -490,7 +496,9 @@
     });
 </script>
 
-<script language="javascript">print_country("id_destinations-0-country");</script>
+<script language="javascript">
+	print_country("id_destinations-0-country");
+</script>
 
 </html>
  
