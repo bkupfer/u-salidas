@@ -161,8 +161,6 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
-
-
     if len(request.POST) != 0:
         #print("!=0")
         if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
@@ -186,8 +184,8 @@ def new_application(request):
             stateApp.save()
 
             # replacement teacher information
-            executiveReplace = request.POST['repteachers']#executiveReplacement.cleaned_data['repteachers']
-            academicReplace  = request.POST['acteachers']#academicReplacement.cleaned_data['acteachers']
+            executiveReplace = request.POST['repteachers'] # executiveReplacement.cleaned_data['repteachers']
+            academicReplace  = request.POST['acteachers']  #  academicReplacement.cleaned_data['acteachers']
             newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
@@ -242,7 +240,7 @@ def new_application(request):
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
 
             messages.error(request, err)
-    #print("=0")
+
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
 

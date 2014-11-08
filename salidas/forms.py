@@ -53,30 +53,23 @@ DestinationFormSet = formset_factory(DestinationForm, extra=1)
 
 
 class AcademicReplacementApplicationForm(forms.Form):
-    #  teacher = Teacher.objects.get(pk=1)
-    # achoices = None
+
     acteachers = forms.ModelChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
     def __init__(self,*args,**kwargs):
-        #print(user)
         user=args[1].id
         super(AcademicReplacementApplicationForm,self).__init__()
         self.fields['acteachers'].queryset =Teacher.objects.exclude(user=user)
 
 
 class ReplacementApplicationForm(forms.Form):
-    # teacher = Teacher.objects.get(pk=1)
-    # all = Teacher.objects.all()
     repteachers = forms.ModelChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
     def __init__(self,*args,**kwargs):
         super(ReplacementApplicationForm,self).__init__()
-         print(args)
-        #print(kwargs)
-        #print(args[1])
+        print(args)
         user=args[1].id
         try:
-            #print(user)
             teacher1=Teacher.objects.get(user=user)
             y_modules=teacher1.get_modules()
             my_modules=set(y_modules)
