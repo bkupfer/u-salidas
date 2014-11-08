@@ -7,26 +7,26 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
-    <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
-    <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "css/jquery-ui.min.css" %}" rel="stylesheet" >
-    <script src="{% static "external/jquery/jquery.js" %}"></script>
-    <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
-    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+	<link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
+	<link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
+	<link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
+	<link href="{% static "css/jquery-ui.min.css" %}" rel="stylesheet">
+	<script src="{% static "external/jquery/jquery.js" %}"></script>
+	<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+	<script src="{% static "js/jquery-ui.min.js" %}"></script>
 
 	<title>Salidas DCC</title>
 
 	<script>
-	$(document).ready(function () {
-		$(".active").removeClass("active");
-		$("#5").addClass("active");
-	});
+		$(document).ready(function () {
+			$(".active").removeClass("active");
+			$("#5").addClass("active");
+		});
 	</script>
 
 </head>
-<body>
 
+<body>
 <div class="container-fluid">
 
 	{% include "Navbar/navbar_teacher.html" %}
@@ -39,7 +39,57 @@
 					<h2>Mis datos</h2>
 					<br>
 
-					<p>firma y jornada</p>
+					<form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<span class="glyphicon glyphicon-user"></span> Datos {{ prof }}
+										<p style="float: right"><a title="- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="form-group">
+												<div class="col-sm-8">
+
+													<!-- Jornada -->
+													<div class="col-sm-12">
+														<label class="control-label col-sm-5" for="nombre">Tipo de Jornada *</label>
+
+														<div class="col-sm-5">
+															{{ application.id_commission_type }}
+														</div>
+													</div>
+
+													<!-- Firma digitalizada -->
+													<div class="col-sm-12">
+														<br/>
+														<label class="control-label col-sm-5" for="nombre">Firma digitalizada *</label>
+
+														<div class="col-sm-5">
+															{{ teacher_signature.signature }}
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Boton enviar solicitud -->
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="submit" class="btn btn-lg btn-primary" value="Actualizar información"/>
+								</div>
+							</div>
+						</div>
+
+					</form>
 
 				</div>
 			</div>

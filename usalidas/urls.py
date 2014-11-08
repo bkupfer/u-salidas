@@ -6,7 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Pages:
     # General views
     url(r'^login', 'salidas.views.login', name='login'),
     url(r'^logout', 'salidas.views.logout', name='logout'),
@@ -33,13 +32,14 @@ urlpatterns = patterns('',
     url(r'^finance_validation', 'salidas.views.finance_validation', name='finance_validation'),
     url(r'^days_validation', 'salidas.views.days_validation', name='days_validation'),
 
-    #documents
+    # Documents
     url(r'^getfiles', 'salidas.documentViews.getfiles',name='exportar_doc'),
-
-    # Debuging pages
 
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
+
+    # Debuging pages
+
 )
 
 if settings.DEBUG:

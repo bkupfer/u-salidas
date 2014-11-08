@@ -284,23 +284,6 @@
                 </div>
                 <br>
 
-                <!-- Firma digitalizada -->
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"> Firma digitalizada</label>
-
-                        <div class="col-sm-5">
-							{% if has_previous_signature %}
-							<div class="checkbox">
-								<label><input type="checkbox" name="firma" value="" checked> Usar firma anterior</label>
-							</div>
-							{% endif %}
-                            {{ teacher_signature.signature }}
-                        </div>
-                    </div>
-                </div>
-                <hr>
-
 				<p class="text-right">Los campos marcados como (*) son obligatorios</p>
 
                 <!-- Boton enviar solicitud -->

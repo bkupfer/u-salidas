@@ -36,11 +36,11 @@ def home(request):
 
 
 def is_in_group(user, group):
-	users_in_group = Group.objects.get(name=group).user_set.all()
-	if user in users_in_group or user.is_superuser:
-		return True
-	else:
-		return False
+    users_in_group = Group.objects.get(name=group).user_set.all()
+    if user in users_in_group or user.is_superuser:
+        return True
+    else:
+        return False
 
 #externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
 #recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
@@ -159,13 +159,10 @@ def new_application(request):
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
-    teacher_signature = TeacherSignatureForm(request.FILES or None)
 
     if len(request.POST) != 0:
-        #print("!=0")
         if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
-            #print("isvalid")
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
@@ -206,8 +203,6 @@ def new_application(request):
                 documentForm(document, newApp)
 
             # signature
-            print(request.FILES)
-            print(id_teacher)
             try:
                 asignature = request.FILES['signature']
                 extention = asignature.__str__().split(".")[1]
@@ -222,14 +217,13 @@ def new_application(request):
 
             # sending notification mail
             subject = "Nueva solicitud de salida"
-            message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- No responda este correo, el correo fue generado automaticamente."
+            message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
 
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
             # Applications instance
         else:
-            print("isnotvalid")
             # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
@@ -243,10 +237,6 @@ def new_application(request):
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
-
-    has_previous_signature = False
-    if Teacher.objects.get(pk = request.user.id).signature != "":
-        has_previous_signature = True
 
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
@@ -311,6 +301,15 @@ def application_detail(request):
 
 @login_required
 def my_information(request):
+    has_previous_signature = False
+    if Teacher.objects.get(pk = request.user.id).signature != "":
+        has_previous_signature = True
+
+    prof = Teacher.objects.get(pk = request.user.id)
+    print(prof)
+
+    teacher_signature = TeacherSignatureForm(request.FILES or None)
+
     return render_to_response("Professor/my_information.html", locals(), context_instance=RequestContext(request))
 
 
