@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#PDCCTable').dataTable( {
+    $('#PATable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -24,7 +24,7 @@ $(document).ready(function() {
             }
         }
     } );
-    $('#PATable').dataTable( {
+	$('#PDCCTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",

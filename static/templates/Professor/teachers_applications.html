@@ -27,9 +27,6 @@
 
    {%  include "Navbar/navbar_teacher.html" %}
 
-	<!-- page content -->
-
-
      <div class="row">
         <div class="col-md-1 col-md-offset-0">
             <table class="table table-bordered table-hover table-condensed table-striped">
@@ -71,15 +68,16 @@
 
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#PA" role="tab" data-toggle="tab">Pendiente Aprobación</a></li>
-                    <li><a href="#PA" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+                    <li><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
 					<li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
 					<li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
 					<li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
 				</ul>
 				<br>
 
+				<!-- Pendiente aprobacion -->
 				<div class="tab-content">
-					<div class="row tab-pane" id="PA">
+					<div class="row tab-pane active" id="PA">
 						<div class="form-group">
 							<div class="col-sm-12">
 								<table class="table table-bordered table-hover table-condensed table-striped" id="PATable">
@@ -112,7 +110,8 @@
 						</div>
 					</div>
 
-					<div class="row tab-pane active" id="PDCC">
+					<!-- Pendiente DCC -->
+					<div class="row tab-pane" id="PDCC">
 						<div class="form-group">
 							<div class="col-sm-12">
 								<table class="table table-bordered table-hover table-condensed table-striped" id="PDCCTable">
@@ -145,6 +144,7 @@
 						</div>
 					</div>
 
+					<!-- Pendiente Facultad -->
 					<div class="row tab-pane" id="PF">
 						<div class="form-group">
 							<div class="col-sm-12">
@@ -167,7 +167,7 @@
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
-												<td> {{ app.get_state }}</td>
+												<td>{{ app.get_state }}</td>
                                                 <td>{{ app.get_used_days }}</td>
 											</tr>
 										{% endif %}
@@ -178,6 +178,7 @@
 						</div>
 					</div>
 
+					<!-- Terminada -->
 					<div class="row tab-pane" id="Tda">
 						<div class="form-group">
 							<div class="col-sm-12">
@@ -211,6 +212,7 @@
 						</div>
 					</div>
 
+					<!-- Todas -->
 					<div class="row tab-pane" id="Tdo">
 						<div class="form-group">
 							<div class="col-sm-12">
@@ -243,6 +245,7 @@
 					</div>
 
 				</div>
+
             </div>
         </div>
 
