@@ -65,7 +65,7 @@ def externo(request):
             return  redirect('login')
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
-            return redirect('access_denied') #todo:arreglar access_denied para usuarios externos e internos
+            return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
 
 @csrf_protect
 def login(request):
@@ -74,7 +74,7 @@ def login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = auth.authenticate(username=username,password=password)
+            user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
                 session_id = request.user.id
@@ -230,7 +230,7 @@ def new_application(request):
             # Applications instance
         else:
             print("isnotvalid")
-            # for error displayial
+            # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta'
