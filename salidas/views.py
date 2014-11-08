@@ -291,16 +291,20 @@ def replacement_requests(request):
 @login_required
 def application_detail(request):
     id_app = request.GET['id']
-    app = Application.objects.get(pk = id_app)
-    profesor = app.id_Teacher
-    profesor_user = app.id_Teacher.user
-    user_id = request.user.id
-    comm_type = app.id_commission_type
-    dest = Destination.objects.filter(application = app.id)
-    replacements = app.get_replacements
+    try:
+        app = Application.objects.get(pk = id_app)
+        profesor = app.id_Teacher
+        profesor_user = app.id_Teacher.user
+        user_id = request.user.id
+    except: # application dosent excist -- stil do not reveal that it dosent exist.
+        return redirect(access_denied)
 
     if (profesor_user.id != user_id):
         return redirect(access_denied)
+
+    comm_type = app.id_commission_type
+    dest = Destination.objects.filter(application = app.id)
+    replacements = app.get_replacements
 
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
