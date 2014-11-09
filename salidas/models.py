@@ -228,6 +228,9 @@ class Replacement(models.Model):
     id_state = models.ForeignKey('State')
     def get_appliant_teacher(self):
         return self.id_Application.id_Teacher
+    def get_state(self):
+        state = self.id_Application.get_state()
+        return state
 
 
 class State(models.Model):

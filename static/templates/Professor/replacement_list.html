@@ -41,33 +41,134 @@
                     <br>
 
                     <ul class="nav nav-tabs" role="tablist">
-                        <li class="active"><a href="#SL" role="tab" data-toggle="tab">Solicitudes</a></li>
+                        <li class="active"><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+                        <li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
+                        <li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
+                        <li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
                     </ul>
                     <br>
 
                     <div class="tab-content">
-                        <div class="row tab-pane active" id="#SL">
+                        <div class="row tab-pane active" id="PDCC">
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover table-condensed table-striped" id="SLTable">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PDCCTable">
                                         <thead>
                                         <tr>
+                                            <th>Nº</th>
                                             <th>Fecha solicitud</th>
                                             <th>Profesor solicitante</th>
                                             <th>Tipo reemplazo</th>
                                             <th>Estado</th>
-                                            <th>Detalle</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for rep in replacements %}
+                                            {% if rep.get_state.state == "Pendiente DCC" %}
+                                                <tr>
+                                                    <td><a href="replacement_requests?id={{ rep.id }}"> {{ rep.id_Application.id }} </a></td>
+                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.get_appliant_teacher }}</td>
+                                                    <td>{{ rep.type }}</td>
+                                                    <td>{{ rep.get_state }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pendiente Facultad -->
+                        <div class="row tab-pane" id="PF">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="PFTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Fecha solicitud</th>
+                                            <th>Profesor solicitante</th>
+                                            <th>Tipo reemplazo</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rep in replacements %}
+                                            {% if rep.get_state.state == "Pendiente Facultad" %}
+                                                <tr>
+                                                    <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
+                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.get_appliant_teacher }}</td>
+                                                    <td>{{ rep.type }}</td>
+                                                    <td>{{ rep.get_state }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terminada -->
+                        <div class="row tab-pane" id="Tda">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdaTable">
+                                         <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Fecha solicitud</th>
+                                            <th>Profesor solicitante</th>
+                                            <th>Tipo reemplazo</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rep in replacements %}
+                                            {% if rep.get_state.state == "Terminada" %}
+                                                <tr>
+                                                    <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
+                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.get_appliant_teacher }}</td>
+                                                    <td>{{ rep.type }}</td>
+                                                    <td>{{ rep.get_state }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Todas -->
+                        <div class="row tab-pane" id="Tdo">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-condensed table-striped" id="TdoTable">
+                                         <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Fecha solicitud</th>
+                                            <th>Profesor solicitante</th>
+                                            <th>Tipo reemplazo</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rep in replacements %}
+                                            {% if rep.get_state.state != "Pendiente aprobacion" %}
                                             <tr>
+                                                <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
                                                 <td>{{ rep.id_Application.creation_date }}</td>
                                                 <td>{{ rep.get_appliant_teacher }}</td>
                                                 <td>{{ rep.type }}</td>
-                                                <td>{{ rep.id_state }}</td>
-                                                <td><a href="replacement_requests?id={{ rep.id }}">Ver detalle </a></td>
+                                                <td>{{ rep.get_state }}</td>
                                             </tr>
+                                            {% endif %}
                                         {% endfor %}
                                         </tbody>
                                     </table>
@@ -75,6 +176,7 @@
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -84,7 +186,7 @@
 </body>
 <script>
      $(document).ready(function () {
-         $(".active").removeClass("active");
+         $("#1").removeClass("active");
          $("#3").addClass("active");
      });
 </script>
