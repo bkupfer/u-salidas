@@ -160,7 +160,7 @@ def new_application(request):
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
 
-    if len(request.POST) != 0:
+    if request.method == 'POST':
         if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
@@ -289,9 +289,31 @@ def application_detail(request):
 @login_required
 def my_information(request):
 
-    prof = Teacher.objects.get(pk = request.user.id)
+    teacher = Teacher.objects.get(pk = request.user.id)
     form = MyInformation(request.POST or None)
+    signature = TeachersSignature2(request.FILES or None)
 
+    print(teacher.name)
+
+    print(form.is_valid())
+    print(request.FILES)
+    if request.method == 'POST' and len(request.FILES) != 0:
+        email = form.cleaned_data['email']
+        jornada = form.cleaned_data['jornada']
+        sign = request.FILES['sign']
+
+        sign_extention =  sign.__str__().split(".")[1]
+        _5K = 5 * 1024 * 1024 - 1024 # -1K for error
+        if form.is_valid() and (sign_extention == "jpg" or sign_extention == "jpeg" or sign_extention == "png") and sign._size < _5K:
+            teacher.signature.delete()
+            teacher.signature = sign
+            teacher.save()
+
+        teacher = Teacher.objects.get(pk = request.user.id)
+        teacher.mail = email
+        # teacher.working_day = jornada
+        teacher.signature = request.FILES['sign']
+        teacher.save()
 
     '''
     teacher_signature = TeacherSignatureForm(request.FILES or None)

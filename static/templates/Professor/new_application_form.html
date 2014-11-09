@@ -67,21 +67,25 @@
                                     <div class="form-group">
                                         <div class="col-sm-8">
                                             <div class="col-sm-12">
-                                                <label class="control-label col-sm-5" for="nombre">Tipo de comisión  <label  style="color:red">* </label></label>
+                                                <label class="control-label col-sm-5" for="nombre">Tipo de comisión *</label>
                                                 <div class="col-sm-5">
                                                     {{ application.id_commission_type }}
                                                 </div>
                                             </div>
+											<br>
+
                                             <div class="col-sm-12">
-                                                <br/>
+                                                
                                                 <label class="control-label col-sm-5" for="nombre">Motivo  <label  style="color:red">* </label></label>
 
                                                 <div class="col-sm-5">
                                                     {{ application.motive }}
                                                 </div>
                                             </div>
+											<br>
+
                                             <div class="col-sm-12">
-                                                <br/>
+                                                
                                                 <label class="control-label col-sm-5" for="nombre">Financiamiento  <label  style="color:red">* </label></label>
                                                 <div class="col-sm-5">
                                                     {{ application.financed_by }}
@@ -160,22 +164,22 @@
                                                     <div class="item">
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label">Destino</label>
-                                                            <p class="col-sm-2">País  <label  style="color:red">* </label></p>
+                                                            <p class="col-sm-2">País *</p>
                                                             {{ destination.country }}
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label"></label>
-                                                            <p class="col-sm-2">Ciudad  <label  style="color:red">* </label> </p>
+                                                            <p class="col-sm-2">Ciudad * </p>
                                                             {{ destination.city }}
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
-                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Inicio  <label  style="color:red">* </label></label>
+                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Inicio *</label>
                                                             {{ destination.start_date }}
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
-                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Término  <label  style="color:red">* </label></label>
+                                                            <label class="control-label col-sm-4" for="nombre">Fecha de Término *</label>
                                                             {{ destination.end_date }}
                                                         </div>
                                                         <div align="right"><a class="delete" href="#">Borrar</a></div>
@@ -213,7 +217,7 @@
                                 <!-- para cada curso -->
                                 <div class="row">
                                     <div class="form-group" id="academicReplacement">
-                                        <label class="col-sm-3 control-label">Reemplazo Docente  <label  style="color:red">* </label></label>
+                                        <label class="col-sm-3 control-label">Reemplazo Docente *</label>
                                         <div class="col-sm-4">
                                             {{ executiveReplacement.repteachers }}
                                         </div>
@@ -228,7 +232,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="form-group" id="executiveReplacement">
-                                        <label class="col-sm-3 control-label">Reemplazo Académico  <label  style="color:red">* </label></label>
+                                        <label class="col-sm-3 control-label">Reemplazo Académico *</label>
                                         <div class="col-sm-4">
                                             {{ academicReplacement.acteachers }}
                                         </div>
@@ -284,7 +288,7 @@
                 </div>
                 <br>
 
-				<p class="text-right">Los campos marcados como ( <label  style="color:red">* </label>) son obligatorios</p>
+				<p class="text-right">Los campos marcados como (*) son obligatorios</p>
 
                 <!-- Boton enviar solicitud -->
                 <div class="row">
