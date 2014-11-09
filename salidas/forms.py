@@ -97,13 +97,12 @@ class DocumentForm(forms.ModelForm):
 DocumentFormSet = formset_factory(DocumentForm, extra=1)
 
 # My information form
-class MyInformation(forms.ModelForm):
-    jornada = forms.ModelChoiceField(queryset=WorkingDay.objects.all(), empty_label="------")
+class MyInformation(forms.Form):
+    email = forms.EmailField()
+    jornada = forms.CharField()
+    signature = forms.ImageField()
 
-    class Meta:
-        model = WorkingDay
-
-
+# ( deprecated )
 class TeacherSignatureForm(forms.ModelForm):
     signature = forms.ImageField()
 

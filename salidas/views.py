@@ -288,13 +288,12 @@ def application_detail(request):
 
 @login_required
 def my_information(request):
-    # has_previous_signature = False
-    # if Teacher.objects.get(pk = request.user.id).signature != "":
-    #     has_previous_signature = True
 
     prof = Teacher.objects.get(pk = request.user.id)
-    id_teacher = prof.id
-    jornada = MyInformation(request.POST or None)
+    form = MyInformation(request.POST or None)
+
+
+    '''
     teacher_signature = TeacherSignatureForm(request.FILES or None)
 
     # signature verification and update
@@ -302,13 +301,14 @@ def my_information(request):
         asignature = request.FILES['signature']
         extention = asignature.__str__().split(".")[1]
         if extention == "jpg" or extention == "jpeg" or extention == "png":
-            id_teacher.signature.delete()
-            id_teacher.signature = asignature
-            id_teacher.save()
+            prof.signature.delete()
+            prof.signature = asignature
+            prof.save()
         else:
             messages.error(request, "Formato de firma invalido. Usar '.jpg' o '.png'.")
     except:
         asignature=None
+    '''
 
     return render_to_response("Professor/my_information.html", locals(), context_instance=RequestContext(request))
 
