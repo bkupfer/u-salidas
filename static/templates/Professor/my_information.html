@@ -39,13 +39,49 @@
 					<h2>Mis datos</h2>
 					<br>
 
-					<form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+					<!-- My current information -->
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-user"></span> Datos actuales
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-8">
+												<!-- Profesor -->
+												Nombre: {{ prof }}
 
+												<br>
+												<!-- Jornada -->
+												Jornada: {{ prof.working_day }}
+
+												<br>
+												<!-- Firma digitalizada actual -->
+												Firma digitalizada:
+												{% if prof.signature == "" %}
+													No ha subido ninguna firma.
+												{% else %}
+													{{ prof.signature }}
+												{% endif %}
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				<hr>@@ aun trabajando en esto ;) @@<br>
+					<!-- Update my information -->
+					<form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<span class="glyphicon glyphicon-user"></span> {{ prof }}
+										<span class="glyphicon glyphicon-user"></span> Actualizar datos
 										<p style="float: right"><a title="- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
 									</div>
 									<div class="panel-body">
@@ -58,7 +94,7 @@
 														<label class="control-label col-sm-5" for="nombre">Tipo de Jornada *</label>
 
 														<div class="col-sm-5">
-															{{ application.id_commission_type }}
+															{{ jornada }}
 														</div>
 													</div>
 
@@ -88,7 +124,6 @@
 								</div>
 							</div>
 						</div>
-
 					</form>
 
 				</div>

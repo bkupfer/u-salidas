@@ -98,7 +98,7 @@ DocumentFormSet = formset_factory(DocumentForm, extra=1)
 
 # My information form
 class MyInformation(forms.ModelForm):
-    jornada = forms.ModelChoiceField(queryset=[1, 2, 3, 4, 5], empty_label="Jornada")
+    jornada = forms.ModelChoiceField(queryset=WorkingDay.objects.all(), empty_label="------")
 
     class Meta:
         model = WorkingDay
