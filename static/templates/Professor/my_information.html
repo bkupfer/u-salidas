@@ -53,27 +53,27 @@
 												<table class="table">
 													<tr>
 														<th>Nombre</th>
-														<td>{{ prof }}</td>
+														<td>{{ teacher }}</td>
 													</tr>
 													<tr>
 														<th>Rut</th>
-														<td>{{ prof.rut }}</td>
+														<td>{{ teacher.rut }}</td>
 													</tr>
 													<tr>
 														<th>E-mail</th>
-														<td>{{ prof.mail }}</td>
+														<td>{{ teacher.mail }}</td>
 													</tr>
 													<tr>
 														<th>Jornada</th>
-														<td>{{ prof.working_day }}</td>
+														<td>{{ teacher.working_day }}</td>
 													</tr>
 													<tr>
 														<th>Firma digitalizada</th>
 														<td>
-															{% if prof.signature == "" %}
+															{% if teacher.signature == "" %}
 																No ha subido ninguna firma.
 															{% else %}
-																{{ prof.signature }}
+																{{ teacher.signature }}
 															{% endif %}
 														</td>
 													</tr>
@@ -90,10 +90,10 @@
 					<form method="POST" enctype="multipart/form-data" action=""> {% csrf_token %}
 						<div class="row">
 							<div class="col-sm-12">
-								<div class="panel panel-default">
+								<div class="panel panel-{% if teacher.mail == None or teacher.signature == "" %}danger{% else %}primary{% endif %}">
 									<div class="panel-heading">
 										<span class="glyphicon glyphicon-cog"></span> Actualizar datos
-										<p style="float: right"><a title="- Ingrese su dirección de correo&#013;- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+										<p style="float: right"><a title="- Ingrese su dirección de correo electrónico.&#013;- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos, esta debe estar en formato 'jpg' o 'png' y pesar menos de 5[MB]." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
 									</div>
 									<div class="panel-body">
 										<div class="row">
@@ -102,12 +102,12 @@
 
 													<!-- E-mail -->
 													<div class="col-sm-12">
-														<label class="control-label col-sm-5" for="nombre">Email</label>
+														<label class="control-label col-sm-5" for="nombre">Email *</label>
 														<div class="col-sm-5">
 															{{ form.email }}
 														</div>
 													</div>
-
+													{{ form.email.errors }}
 													<!-- Jornada -->
 													<div class="col-sm-12">
 														<label class="control-label col-sm-5" for="nombre">Tipo de Jornada *</label>
@@ -115,17 +115,15 @@
 															{{ form.jornada }}
 														</div>
 													</div>
-
+													{{ form.jornada.errors }}
 													<!-- Firma digitalizada -->
 													<div class="col-sm-12">
-														<br/>
 														<label class="control-label col-sm-5" for="nombre">Firma digitalizada *</label>
-
 														<div class="col-sm-5">
-															{{ form.signature }}
+															{{ signature.sign }}
 														</div>
 													</div>
-
+ 													{{ form.email.errors }}  <!-- walk arround {{ signature.sign.errors }} -->
 												</div>
 											</div>
 										</div>

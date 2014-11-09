@@ -100,12 +100,13 @@ DocumentFormSet = formset_factory(DocumentForm, extra=1)
 class MyInformation(forms.Form):
     email = forms.EmailField()
     jornada = forms.CharField()
-    signature = forms.ImageField()
 
-# ( deprecated )
-class TeacherSignatureForm(forms.ModelForm):
-    signature = forms.ImageField()
+class TeachersSignature2(forms.Form):
+    sign = forms.ImageField()
 
+
+class TeacherSignature(forms.ModelForm):
+    signature = forms.ImageField()
     class Meta:
         model = Teacher
         exclude = {'rut', 'name', 'last_name', 'profile_picture = models.URLField()', 'mail'}
