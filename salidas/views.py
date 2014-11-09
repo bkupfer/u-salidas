@@ -202,19 +202,6 @@ def new_application(request):
             for document in documents:
                 documentForm(document, newApp)
 
-            # signature
-            try:
-                asignature = request.FILES['signature']
-                extention = asignature.__str__().split(".")[1]
-                if extention == "jpg" or extention == "jpeg" or extention == "png":
-                    id_teacher.signature.delete()
-                    id_teacher.signature = asignature
-                    id_teacher.save()
-                else:
-                    messages.error(request, "Formato de firma invalido. Usar '.jpg' o '.png'.")
-            except:
-                asignature=None
-
             # sending notification mail
             subject = "Nueva solicitud de salida"
             message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
@@ -301,14 +288,27 @@ def application_detail(request):
 
 @login_required
 def my_information(request):
-    has_previous_signature = False
-    if Teacher.objects.get(pk = request.user.id).signature != "":
-        has_previous_signature = True
+    # has_previous_signature = False
+    # if Teacher.objects.get(pk = request.user.id).signature != "":
+    #     has_previous_signature = True
 
     prof = Teacher.objects.get(pk = request.user.id)
-    print(prof)
-
+    id_teacher = prof.id
+    jornada = MyInformation(request.POST or None)
     teacher_signature = TeacherSignatureForm(request.FILES or None)
+
+    # signature verification and update
+    try:
+        asignature = request.FILES['signature']
+        extention = asignature.__str__().split(".")[1]
+        if extention == "jpg" or extention == "jpeg" or extention == "png":
+            id_teacher.signature.delete()
+            id_teacher.signature = asignature
+            id_teacher.save()
+        else:
+            messages.error(request, "Formato de firma invalido. Usar '.jpg' o '.png'.")
+    except:
+        asignature=None
 
     return render_to_response("Professor/my_information.html", locals(), context_instance=RequestContext(request))
 

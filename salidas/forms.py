@@ -5,6 +5,7 @@ from django.forms.models import inlineformset_factory, formset_factory
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 
+# New application form
 class NewApplicationForm(forms.ModelForm):
     id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),
                                                 empty_label="Seleccione Tipo de Comisión")
@@ -94,6 +95,13 @@ class DocumentForm(forms.ModelForm):
 
 
 DocumentFormSet = formset_factory(DocumentForm, extra=1)
+
+# My information form
+class MyInformation(forms.ModelForm):
+    jornada = forms.ModelChoiceField(queryset=[1, 2, 3, 4, 5], empty_label="Jornada")
+
+    class Meta:
+        model = WorkingDay
 
 
 class TeacherSignatureForm(forms.ModelForm):

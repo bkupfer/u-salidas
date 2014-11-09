@@ -152,7 +152,6 @@ class Document(models.Model):
 class Hierarchy(models.Model):
     hierarchy = models.CharField(max_length=20)
     avaliable_days = models.IntegerField()
-    working_day = models.ForeignKey('WorkingDay')
     def __str__(self):
         return self.hierarchy
 
@@ -203,7 +202,6 @@ class Teacher(models.Model):
         return self.hierarchy.avaliable_days-used_days
         #else:
         #    return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
-
 
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()

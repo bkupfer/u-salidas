@@ -33,7 +33,7 @@ How to get this up and running.
 
 8.- Create teacher instances.
     This could previously be done by using the loaddata command (but most probably wont be working anymore)
-      > python manage.py loaddata test_applications.json
+      > python manage.py loaddata Test_applications.json
     Under the scenario that it did not work, you must create the teachers manually, to do this go to
       127.0.0.1:8000/admin/salidas/teacher/
     And add the teacher, remember to link it to it's user in the django site!
