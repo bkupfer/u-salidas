@@ -166,7 +166,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)#TODO
     last_name = models.CharField(max_length=100)#TODO
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
-    mail = models.EmailField()
+    mail = models.EmailField() # todo: refactor to 'email'
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
     #full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
     working_day=models.ForeignKey('WorkingDay') #Jornada docente: Completa(1) Media (2)

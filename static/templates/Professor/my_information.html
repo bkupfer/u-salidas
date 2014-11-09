@@ -60,6 +60,10 @@
 														<td>{{ prof.rut }}</td>
 													</tr>
 													<tr>
+														<th>E-mail</th>
+														<td>{{ prof.mail }}</td>
+													</tr>
+													<tr>
 														<th>Jornada</th>
 														<td>{{ prof.working_day }}</td>
 													</tr>
@@ -88,7 +92,7 @@
 							<div class="col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<span class="glyphicon glyphicon-user"></span> Actualizar datos
+										<span class="glyphicon glyphicon-cog"></span> Actualizar datos
 										<p style="float: right"><a title="- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
 									</div>
 									<div class="panel-body">
@@ -96,10 +100,17 @@
 											<div class="form-group">
 												<div class="col-sm-8">
 
+													<!-- E-mail -->
+													<div class="col-sm-12">
+														<label class="control-label col-sm-5" for="nombre">Email</label>
+														<div class="col-sm-5">
+															{{ jornada }}
+														</div>
+													</div>
+
 													<!-- Jornada -->
 													<div class="col-sm-12">
 														<label class="control-label col-sm-5" for="nombre">Tipo de Jornada *</label>
-
 														<div class="col-sm-5">
 															{{ jornada }}
 														</div>
@@ -119,10 +130,13 @@
 											</div>
 										</div>
 									</div>
+
 								</div>
+								<p class="align-right">Los datos marcados como (*) no pueden estar vacíos al momento de enviar una solicitud.</p>
 							</div>
 						</div>
-
+						<br>
+						
 						<!-- Boton enviar solicitud -->
 						<div class="row">
 							<div class="form-group">
