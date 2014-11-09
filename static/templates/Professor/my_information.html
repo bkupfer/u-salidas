@@ -50,22 +50,30 @@
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-8">
-												<!-- Profesor -->
-												Nombre: {{ prof }}
-
-												<br>
-												<!-- Jornada -->
-												Jornada: {{ prof.working_day }}
-
-												<br>
-												<!-- Firma digitalizada actual -->
-												Firma digitalizada:
-												{% if prof.signature == "" %}
-													No ha subido ninguna firma.
-												{% else %}
-													{{ prof.signature }}
-												{% endif %}
-
+												<table class="table">
+													<tr>
+														<th>Nombre</th>
+														<td>{{ prof }}</td>
+													</tr>
+													<tr>
+														<th>Rut</th>
+														<td>{{ prof.rut }}</td>
+													</tr>
+													<tr>
+														<th>Jornada</th>
+														<td>{{ prof.working_day }}</td>
+													</tr>
+													<tr>
+														<th>Firma digitalizada</th>
+														<td>
+															{% if prof.signature == "" %}
+																No ha subido ninguna firma.
+															{% else %}
+																{{ prof.signature }}
+															{% endif %}
+														</td>
+													</tr>
+												</table>
 											</div>
 										</div>
 									</div>
@@ -74,7 +82,6 @@
 						</div>
 					</div>
 
-				<hr>@@ aun trabajando en esto ;) @@<br>
 					<!-- Update my information -->
 					<form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
 						<div class="row">
