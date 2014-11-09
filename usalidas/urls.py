@@ -7,14 +7,15 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # General views
-    url(r'^login', 'salidas.views.login', name='login'),
+    url(r'^$', 'salidas.views.login', name='login'),
+    url(r'^login.php','salidas.views.externo',name='externo'),
+    url(r'^login', 'salidas.views.externo', name='logExterno'),
     url(r'^logout', 'salidas.views.logout', name='logout'),
     url(r'^access_denied', 'salidas.views.access_denied', name='access_denied'),
     url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
-    url(r'^externo.php','salidas.views.externo',name='externo'),
+
 
     # Teacher view pages
-    url(r'^$', 'salidas.views.login', name='login'),
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
     url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
