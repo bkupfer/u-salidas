@@ -62,11 +62,11 @@ def externo(request):
                  http://stackoverflow.com/questions/2787650/manually-logging-in-a-user-without-password
             '''
             #retorna un request con el usuario
-            return  redirect('login')
+            return  HttpResponse("hola mundo")
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
-
+    return  HttpResponse("chao mundo")
 @csrf_protect
 def login(request):
     if request.method == "POST":
