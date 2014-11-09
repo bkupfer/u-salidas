@@ -87,13 +87,13 @@
 					</div>
 
 					<!-- Update my information -->
-					<form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+					<form method="POST" enctype="multipart/form-data" action=""> {% csrf_token %}
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<span class="glyphicon glyphicon-cog"></span> Actualizar datos
-										<p style="float: right"><a title="- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+										<p style="float: right"><a title="- Ingrese su dirección de correo&#013;- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
 									</div>
 									<div class="panel-body">
 										<div class="row">
@@ -104,7 +104,7 @@
 													<div class="col-sm-12">
 														<label class="control-label col-sm-5" for="nombre">Email</label>
 														<div class="col-sm-5">
-															{{ jornada }}
+															{{ form.email }}
 														</div>
 													</div>
 
@@ -112,7 +112,7 @@
 													<div class="col-sm-12">
 														<label class="control-label col-sm-5" for="nombre">Tipo de Jornada *</label>
 														<div class="col-sm-5">
-															{{ jornada }}
+															{{ form.jornada }}
 														</div>
 													</div>
 
@@ -122,7 +122,7 @@
 														<label class="control-label col-sm-5" for="nombre">Firma digitalizada *</label>
 
 														<div class="col-sm-5">
-															{{ teacher_signature.signature }}
+															{{ form.signature }}
 														</div>
 													</div>
 
@@ -136,7 +136,7 @@
 							</div>
 						</div>
 						<br>
-						
+
 						<!-- Boton enviar solicitud -->
 						<div class="row">
 							<div class="form-group">
