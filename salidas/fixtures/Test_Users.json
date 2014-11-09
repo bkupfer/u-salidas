@@ -1,0 +1,93 @@
+[
+    {
+        "model": "auth.User",
+        "pk":2,
+        "fields": {
+            "username":"profe1",
+            "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
+            "groups":[["professor"]],
+            "first_name": "Sergio",
+            "last_name": "Ochoa",
+            "is_active": true,
+            "email": "a@a.com"
+        }
+    },
+    {
+        "model": "auth.User",
+        "pk":3,
+        "fields": {
+            "username":"profe2",
+            "password":"pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
+            "groups":[["professor"]],
+            "first_name": "Jorge",
+            "last_name": "Perez",
+            "is_active": true,
+            "email": "a@a.com"
+        }
+    },
+    {
+        "model": "auth.User",
+        "pk":4,
+        "fields": {
+            "username":"profe3",
+            "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
+            "groups":[["professor"]],
+            "first_name": "Nancy",
+            "last_name": "Hitschfeld",
+            "is_active": true,
+            "email": "a@a.com"
+        }
+    },
+    {
+        "model": "auth.User",
+        "pk":5,
+        "fields": {
+            "username":"magna",
+            "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
+            "groups":[["magna"]],
+            "first_name": "Magna",
+            "last_name": "Magna",
+            "is_active": true,
+            "email": "a@a.com"
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": 1,
+        "fields": {
+            "user":2,
+            "rut": "6704795-2",
+            "name": "Sergio",
+            "last_name": "Ochoa",
+            "signature": "",
+            "working_day":2,
+            "hierarchy":2
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": 2,
+        "fields": {
+            "user":3,
+            "rut": "7704795-3",
+            "name": "Jorge",
+            "last_name": "Perez",
+            "signature": "",
+            "working_day":1,
+            "hierarchy":1
+        }
+    },
+    {
+        "model": "salidas.Teacher",
+        "pk": 3,
+        "fields": {
+            "user":4,
+            "rut": "17704795-3",
+            "name": "Nancy",
+            "last_name": "Hitschfeld",
+            "signature": "",
+            "working_day":1,
+            "hierarchy":3
+        }
+    }
+]
