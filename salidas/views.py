@@ -304,7 +304,7 @@ def application_detail(request):
 @login_required
 def my_information(request):
 
-    teacher = Teacher.objects.get(pk = request.user.id -1)
+    teacher = Teacher.objects.get(pk = request.user.id)
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 
