@@ -139,7 +139,13 @@ class Application(models.Model):
                 week_days_missed[str(datetime.weekday(date))]+=1
         return week_days_missed
 
+    def get_replacement_state(self):
+        replacements = Replacement.objects.get(id_Application=self,type=1)
+        return replacements.get_state()
 
+    def get_academic_replacement_state(self):
+        replacements = Replacement.objects.get(id_Application=self,type=2)
+        return replacements.get_state()
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
@@ -259,8 +265,7 @@ class Replacement(models.Model):
     def get_appliant_teacher(self):
         return self.id_Application.id_Teacher
     def get_state(self):
-        state = self.id_Application.get_state()
-        return state
+        return self.id_state
 
 
 class State(models.Model):

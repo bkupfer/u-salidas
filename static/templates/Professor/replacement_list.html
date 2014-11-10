@@ -64,7 +64,7 @@
                                         </thead>
                                         <tbody>
                                         {% for rep in replacements %}
-                                            {% if rep.get_state.state == "Pendiente DCC" %}
+                                            {% if rep.id_Application.get_state.state == "Pendiente DCC" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}"> {{ rep.id_Application.id }} </a></td>
                                                     <td>{{ rep.id_Application.creation_date }}</td>
@@ -96,7 +96,7 @@
                                         </thead>
                                         <tbody>
                                         {% for rep in replacements %}
-                                            {% if rep.get_state.state == "Pendiente Facultad" %}
+                                            {% if rep.id_Application.get_state.state == "Pendiente Facultad" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
                                                     <td>{{ rep.id_Application.creation_date }}</td>
@@ -128,7 +128,7 @@
                                         </thead>
                                         <tbody>
                                         {% for rep in replacements %}
-                                            {% if rep.get_state.state == "Terminada" %}
+                                            {% if rep.id_Application.get_state.state == "Terminada" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
                                                     <td>{{ rep.id_Application.creation_date }}</td>
@@ -160,7 +160,7 @@
                                         </thead>
                                         <tbody>
                                         {% for rep in replacements %}
-                                            {% if rep.get_state.state != "Pendiente aprobacion" %}
+                                            {% if rep.id_Application.get_state.state != "Pendiente aprobacion" %}
                                             <tr>
                                                 <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
                                                 <td>{{ rep.id_Application.creation_date }}</td>
