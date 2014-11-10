@@ -73,7 +73,7 @@
 															{% if teacher.signature == "" %}
 																No ha subido ninguna firma.
 															{% else %}
-																{{ teacher.signature }}
+																<img src="{{ teacher.signature.url }}" alt="Firma digitalizada actual del profesor {{ teacher }}.">
 															{% endif %}
 														</td>
 													</tr>
@@ -93,7 +93,7 @@
 								<div class="panel panel-{% if teacher.mail == None or teacher.signature == "" %}danger{% else %}default{% endif %}">
 									<div class="panel-heading">
 										<span class="glyphicon glyphicon-cog"></span> Actualizar datos
-										<p style="float: right"><a title="- Ingrese su dirección de correo electrónico.&#013;- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos, esta debe estar en formato 'jpg' o 'png' y pesar menos de 5[MB]." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+										<p style="float: right"><a title="- Ingrese su dirección de correo electrónico.&#013;- Seleccione su tipo de jornada.&#013;- Seleccione una firma a utilizar para los documentos, esta debe estar en formato 'jpg' o 'png' y pesar menos de 1[MB]." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
 									</div>
 									<div class="panel-body">
 										<div class="row">
