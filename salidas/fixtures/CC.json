@@ -119,7 +119,7 @@
 {"model":"salidas.City","pk":"61","fields":{"country":"55","city":"Bratislava"}},
 {"model":"salidas.Country","pk":"56","fields":{"country":"ESLOVENIA"}},
 {"model":"salidas.City","pk":"62","fields":{"country":"56","city":"Ljubliana"}},
-{"model":"salidas.Country","pk":"57","fields":{"country":"ESPAÃ‘A"}},
+{"model":"salidas.Country","pk":"57","fields":{"country":"ESPANA"}},
 {"model":"salidas.City","pk":"63","fields":{"country":"57","city":"Madrid"}},
 {"model":"salidas.Country","pk":"58","fields":{"country":"EE.UU."}},
 {"model":"salidas.City","pk":"64","fields":{"country":"58","city":"Washington"}},
