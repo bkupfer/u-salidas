@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^my_information', 'salidas.views.my_information', name='my_information'),
 
     # Administrative view pages
+    url(r'^edit_application_form','salidas.views.edit_application', name='edit_application'),
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_review', 'salidas.views.application_review', name='application_review'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),

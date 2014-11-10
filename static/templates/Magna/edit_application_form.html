@@ -1,0 +1,332 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
+    <script src="{% static "js/countries.js" %}"></script>
+    <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "external/jquery/jquery.js" %}"></script>
+    <script src="{% static "public/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+    <script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
+
+	<script>
+	$(document).ready(function() {
+		$(".active").removeClass("active");
+		$("#2").addClass("active");
+	});
+	</script>
+
+    <title>Salidas DCC</title>
+</head>
+
+<body>
+<div class="container-fluid">
+
+    {%  include "Navbar/navbar_magna.html" %}
+
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
+            <div class="pannel panel-primary panel-body">
+
+                <h2>Nueva Solicitud de Salida</h2>
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-7">
+                        <a href="application_review?id={{ id_app }}" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-eye-open"></span> Ir a modo vista</a>
+                    </div>
+				</div>
+                <br>
+                <br>
+
+                <!-- For message to user -->
+                {% if messages %}
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            {% for message in messages %}
+                                <p {% if message.tags == "error" %} class="alert alert-danger text-center"{% endif %}> {{ message }} </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- THE FORM -->
+                <form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+
+                <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+								<span class="glyphicon glyphicon-leaf"></span> Información de viaje
+								<p style="float: right"><a title="- Tipo de comisión: Seleccione el tipo de comisión.&#013;- Motivo: Ingrese el motivo del viaje. Ejemplo: Competencia ACM. &#013;- Financiamiento: Indique el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+							</div>
+							<div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            <div class="col-sm-12">
+                                                <label class="control-label col-sm-5" for="nombre">Tipo de comisión <label style="color:red">*</label></label>
+                                                <div class="col-sm-5">
+                                                    {{ application.id_commission_type }}
+                                                </div>
+                                            </div>
+											<br>
+
+                                            <div class="col-sm-12">
+
+                                                <label class="control-label col-sm-5" for="nombre">Motivo  <label  style="color:red">* </label></label>
+
+                                                <div class="col-sm-5">
+                                                    {{ application.motive }}
+                                                </div>
+                                            </div>
+											<br>
+
+                                            <div class="col-sm-12">
+
+                                                <label class="control-label col-sm-5" for="nombre">Financiamiento  <label  style="color:red">* </label></label>
+                                                <div class="col-sm-5">
+                                                    {{ application.financed_by }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+               </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+
+<!-- Javascripts -->
+
+<!-- script para multi-form de montos -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $( ".datepicker" ).datepicker();
+        // Code adapted from http://djangosnippets.org/snippets/1389/
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+            var replacement = prefix + '-' + ndx + '-';
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function deleteForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            if (formCount > 1) {
+                // Delete the item/form
+                $(btn).parents('.item').remove();
+
+                var forms = $('.item'); // Get all the forms
+
+                // Update the total number of forms (1 less than before)
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+                var i = 0;
+                // Go through the forms and set their indices, names and IDs
+                for (formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).children().children().each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            else {
+                alert("Debes agregar al menos un destino!");
+            }
+            return false;
+        }
+
+        function addForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            // You can only submit a maximum of 20 forms
+            if (formCount < 20) {
+                // Clone a form (without event handlers) from the first form
+                var row = $(".item:first").clone(false).get(0);
+                // Insert it after the last form
+                $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+                // Remove the bits we don't want in the new row/form
+                // e.g. error messages
+                $(".errorlist", row).remove();
+                $(row).children().removeClass('error');
+                // Relabel/rename all the relevant bits
+                $(row).children().children().each(function () {
+                    updateElementIndex(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
+
+                // Add an event handler for the delete item/form link
+                $(row).find('.delete').click(function () {
+                    return deleteForm(this, prefix);
+                });
+                citySelector = $(row).find('.city')[0];
+                citySelector.options.length = 0;
+                citySelector.options[0] = new Option("Seleccione Ciudad", "");
+                // Update the total form count;
+                $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+                $(".datepicker").datepicker();
+
+            } // End if
+            else {
+                alert("Lo siento, no más de 20 destinos.");
+            }
+            return false;
+        }
+
+        // Register the click event handlers
+        $("#add_destination").click(function () {
+            return addForm(this, 'destinations');
+        });
+
+        $(".delete").click(function () {
+            return deleteForm(this, 'destinations');
+        });
+    });
+</script>
+
+<!-- script para multi-form de archivos -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        function updateElementIndex2(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+            var replacement = prefix + '-' + ndx + '-';
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function deleteForm2(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            if (formCount > 1) {
+                // Delete the item/form
+                $(btn).parents('.itemDoc').remove();
+
+                var forms = $('.itemDoc'); // Get all the forms
+
+                // Update the total number of forms (1 less than before)
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+                var i = 0;
+                // Go through the forms and set their indices, names and IDs
+                for (formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).children().children().each(function () {
+                        updateElementIndex2(this, prefix, i);
+                    });
+                }
+            }
+            else {
+                alert("Debes agregar al menos un archivo!");
+            }
+            return false;
+        }
+
+        function addForm2(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            // You can only submit a maximum of 20 forms
+            if (formCount < 30) {
+                // Clone a form (without event handlers) from the first form
+                var row = $(".itemDoc:first").clone(false).get(0);
+                // Insert it after the last form
+                $(row).removeAttr('id').hide().insertAfter(".itemDoc:last").slideDown(300);
+
+                // Remove the bits we don't want in the new row/form
+                // e.g. error messages
+                $(".errorlist", row).remove();
+                $(row).children().removeClass('error');
+                // Relabel/rename all the relevant bits
+                $(row).children().children().each(function () {
+                    updateElementIndex2(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
+
+                // Add an event handler for the delete item/form link
+                $(row).find('.deleteDoc').click(function () {
+                    return deleteForm2(this, prefix);
+                });
+                // Update the total form count;
+                $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+
+            } // End if
+            else {
+                alert("Lo siento, no más de 30 archivos.");
+            }
+            return false;
+        }
+
+        // Register the click event handlers
+        $("#add_documents").click(function () {
+            return addForm2(this, 'documents');
+        });
+
+        $(".deleteDoc").click(function () {
+            return deleteForm2(this, 'documents');
+        });
+    });
+</script>
+
+<script language="javascript">
+	print_country("id_destinations-0-country");
+</script>
+<script type="text/javascript">
+        function  count_avaliable_days(date) {
+            var avaliable_days=parseInt(document.getElementById("avaliable_days").innerHTML)
+
+            var destCount = parseInt($('#id_destinations-TOTAL_FORMS').val());
+            var count_days=0
+            for (var i = 0; i < destCount; i++) {
+                var sd=document.getElementById('id_destinations-' + i + '-start_date').value.split('/');
+                //console.log(sd[1]+'/'+sd[0]+'/'+sd[2])
+                var ed=document.getElementById('id_destinations-' + i + '-end_date').value.split('/');
+                var start_date = new Date(sd[1]+'/'+sd[0]+'/'+sd[2]);
+                var end_date = new Date(ed[1]+'/'+ed[0]+'/'+ed[2]);
+
+                //console.log(end_date);
+                //console.log(start_date);
+                if (end_date!="Invalid Date" &&  start_date!="Invalid Date" && end_date < start_date) {
+                    document.getElementById("warning_used_days").innerHTML="La fecha de fin no puede ser menor a la fecha de inicio"
+                }
+                else{
+                    //console.log("good date");
+                    var one_day=1000*60*60*24
+                    count_days+=Math.ceil((end_date-start_date)/one_day);
+                    //console.log('count_days '+count_days)
+                    if (count_days>avaliable_days)
+                        document.getElementById("warning_used_days").innerHTML="Usted tiene "+avaliable_days+" días disponibles y está pidiendo "+count_days+" días."
+                    else
+                        document.getElementById("warning_used_days").innerHTML=""
+                }
+
+
+
+            }
+
+
+        }
+</script>
+</html>

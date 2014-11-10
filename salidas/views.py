@@ -18,7 +18,7 @@ from salidas.forms import *
 from salidas.models import *
 
 from usalidas.email_contat_list import *
-
+from django.views.generic.edit import UpdateView
 # For externo
 from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
 import base64
@@ -165,7 +165,9 @@ def new_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                if dest.start_date>=dest.end_date:
+                print(dest)
+                print(dest.cleaned_data['start_date'])
+                if dest.cleaned_data['start_date']<=dest.cleaned_data['end_date']:
                     valid_dest=True
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
 
@@ -326,6 +328,99 @@ def my_information(request):
 def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
+
+@login_required
+def edit_application(request):
+    id_app = request.GET['id']
+    app = Application.objects.get(pk=id_app)
+    user=request.user
+    teacher=app.id_Teacher
+
+    dest = Destination.objects.filter(application = app.id)
+    replacements = app.get_replacements
+    finances = app.get_finances()
+
+    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':app.id_commission_type,'motive':app.motive,'financed_by':app.financed_by})
+
+    destinations = DestinationFormSet(request.POST or None,prefix="destinations")
+
+    financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
+    documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
+
+    if request.method == 'POST':
+        valid_dest=False
+        if destinations.is_valid():
+            for dest in destinations:
+                if dest.start_date>=dest.end_date:
+                    valid_dest=True
+        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
+
+            # Applications instance
+            id_teacher = Teacher.objects.get(user=request.user)
+            ct = application.cleaned_data['id_commission_type']
+            motive = application.cleaned_data['motive']
+            fb = application.cleaned_data['financed_by']
+            daysv = State.objects.get(pk=1)     # pendiente
+            fundsv = State.objects.get(pk=1)    # pendiente
+
+            newApp = Application(id_Teacher = id_teacher, id_commission_type = ct, motive = motive, financed_by = fb,
+                                 id_days_validation_state = daysv, id_funds_validation_state = fundsv)
+            newApp.save()
+
+            #agregarle estado a la App
+            #estado pendiente dcc
+            state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
+            stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
+            stateApp.save()
+
+            # replacement teacher information
+            executiveReplace = request.POST['repteachers'] # executiveReplacement.cleaned_data['repteachers']
+            academicReplace  = request.POST['acteachers']  #  academicReplacement.cleaned_data['acteachers']
+            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
+            newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
+            newExecutiveReplacement.save()
+            newAcademicReplacement.save()
+
+            # money
+            i = 1
+            for finance in financeFormSet:
+                financeForm(finance, newApp, i)
+                i += 1
+
+            # destinations
+            for destination in destinations:
+                destinationForm(destination, newApp)
+
+            # documents
+            for document in documents:
+                documentForm(document, newApp)
+
+            # sending notification mail
+            subject = "Nueva solicitud de salida"
+            message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
+
+            messages.success(request, 'Solicitud enviada exitosamente!')
+            return redirect(teachers_applications)
+            # Applications instance
+        else:
+            # for error display
+            err = 'Error en el envío del formulario.'
+            if not application.is_valid():
+                err = err + '\nInformación del viaje incompleta'
+            if not destinations.is_valid():
+                err = err + '\nInformación respecto de los destinos incompleta.'
+            if not request.POST['repteachers'] or not request.POST['acteachers']:
+                err = err + '\nDebe escojer sus profesores reemplazantes.'
+            if not valid_dest:
+                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
+            messages.error(request, err)
+
+    executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive")
+    academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic")
+
+
+    return render_to_response("Magna/edit_application_form.html", locals(), context_instance=RequestContext(request))
 
 
 @login_required
