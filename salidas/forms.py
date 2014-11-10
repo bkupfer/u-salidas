@@ -110,3 +110,6 @@ class TeacherSignature(forms.ModelForm):
     class Meta:
         model = Teacher
         exclude = {'rut', 'name', 'last_name', 'profile_picture = models.URLField()', 'mail'}
+
+class stateForm(forms.Form):
+    state=forms.ModelChoiceField(queryset=ApplicationState.objects.all())

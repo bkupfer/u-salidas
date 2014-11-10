@@ -96,6 +96,10 @@
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
 											<th>Estado</th>
+                                            <th id="RD" title="Firma Reemplazo Docente">Firma R.D</th>
+                                            <th id="RA" title="Firma Reemplazo Académico">Firma R.A</th>
+                                            <th id="JE" title="Validación Jefa de Estudios">Validación J.E.</th>
+                                            <th id="JA" title="Validación Jefa Administrativa">Validación J.A</th>
 											<th>Días Utilizados</th>
 										</tr>
 										</thead>
@@ -108,6 +112,10 @@
 													<td>{{ app.creation_date }}</td>
 													<td>{{ app.sent_date }}</td>
 													<td>{{ app.get_state }}</td>
+                                                    <td class="state" align="center">{{ app.get_replacement_state }}</td>
+                                                    <td class="state" align="center">{{ app.get_academic_replacement_state }}</td>
+                                                    <td class="state" align="center">{{ app.id_days_validation_state }}</td>
+                                                    <td class="state" align="center">{{ app.id_funds_validation_state }}</td>
 													<td>{{ app.get_used_days }}</td>
 												</tr>
 											{% endif %}
@@ -225,6 +233,23 @@
     </div>
 </div>
 </body>
-
+<script>
+    $(function(){
+        var length = $(".state").length;
+        for (i = 0; i <length; i++) {
+            var state = $(".state").first().html();
+            if(state=="Pendiente"){
+                $(".state").first().html('<span class="glyphicon glyphicon-minus"></span>');
+            }
+            if(state=="Aceptado"){
+                $(".state").first().html('<span class="glyphicon glyphicon-ok"></span>');
+            }
+            if(state=="Rechazado"){
+                $(".state").first().html('<span class="glyphicon glyphicon-remove"></span>');
+            }
+            $(".state").first().removeClass("state");
+        }
+	});
+</script>
 </html>
  
