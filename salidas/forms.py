@@ -41,9 +41,9 @@ class DestinationForm(forms.ModelForm):
     city = forms.CharField(widget=forms.Select(attrs={'class': 'city', 'onchange': "updateStateTxt(this);"},
                                                choices=([("", "Seleccione Ciudad")])))
     start_date = forms.DateField(input_formats=['%d/%m/%y'], widget=forms.DateInput(
-        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy"}))  #
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy", 'onchange': "count_avaliable_days(this);"}))  #
     end_date = forms.DateField(input_formats=['%d/%m/%y'], widget=forms.DateInput(
-        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy"}))  # widget=SelectDateWidget()
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
 
     class Meta:
         model = Destination
