@@ -298,14 +298,13 @@ def application_detail(request):
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements
-
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
 @login_required
 def my_information(request):
 
-    teacher = Teacher.objects.get(pk = request.user.id)
+    teacher = Teacher.objects.get(pk = request.user.id -1)
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 
