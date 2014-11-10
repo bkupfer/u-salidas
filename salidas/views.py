@@ -16,6 +16,7 @@ from django.contrib.auth.models import User, Group
 
 from salidas.forms import *
 from salidas.models import *
+from salidas.models import Document as DocumentModel
 
 from usalidas.email_contat_list import *
 from django.views.generic.edit import UpdateView
@@ -30,7 +31,6 @@ import os, os.path
 from django.views.decorators.csrf import csrf_protect
 
 # Views for all users
-# Login
 def home(request):
     return render_to_response("General/login.html", locals(), context_instance=RequestContext(request))
 
@@ -146,7 +146,7 @@ def documentForm(doc, newApp):
     if doc.is_valid():
         try:
             file = doc.cleaned_data['file']
-            newDocument = Document(id_application = newApp, file = file)
+            newDocument = DocumentModel(id_application = newApp, file = file)
             newDocument.save()
         except:
             file = None
@@ -165,8 +165,8 @@ def new_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                print(dest)
-                print(dest.cleaned_data['start_date'])
+                #print(dest)
+                #print(dest.cleaned_data['start_date'])
                 if dest.cleaned_data['start_date']<=dest.cleaned_data['end_date']:
                     valid_dest=True
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
@@ -335,17 +335,39 @@ def edit_application(request):
     app = Application.objects.get(pk=id_app)
     user=request.user
     teacher=app.id_Teacher
-
-    dest = Destination.objects.filter(application = app.id)
-    replacements = app.get_replacements
-    finances = app.get_finances()
-
     application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':app.id_commission_type,'motive':app.motive,'financed_by':app.financed_by})
+    finances = app.get_finances()
+    fins=[]
+    finance_types=FinanceType.objects.all()
+    for finance_type in finance_types:
+        try:
+            finance=Finance.objects.get(id_application=app,id_finance_type=finance_type)
+            fins.append({'checkbox':True,'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type})
+        except:
+            fins.append({'id_finance_type':finance_type})
+    financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
 
-    destinations = DestinationFormSet(request.POST or None,prefix="destinations")
+    dests = Destination.objects.filter(application = app.id)
+    dess=[]
+    for dest in dests:
+        dess.append({'country':dest.country,'city':dest.city,'start_date':dest.start_date,'end_date':dest.end_date})
+    destinations = DestinationFormSet_Edit(request.POST or None,prefix="destinations",initial=dess)
+    replacements = app.get_replacements()
+    for reps in replacements:
+        if str(reps.type)=="Docente":
+            docrep=reps.rut_teacher
 
-    financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
-    documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
+        else:
+            acrep=reps.rut_teacher
+    try:
+        print(DocumentModel)
+        docs=DocumentModel.objects.filter(id_application=app)
+        in_docs=[]
+        for doc in docs:
+            in_docs.append({'file':doc.file})
+    except:
+        in_docs=[]
+    documents = DocumentFormSet_Edit(request.POST or None, request.FILES or None, prefix="documents",initial=in_docs)
 
     if request.method == 'POST':
         valid_dest=False
@@ -416,8 +438,8 @@ def edit_application(request):
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
             messages.error(request, err)
 
-    executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive")
-    academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic")
+    executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive",initial=docrep)
+    academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic",initial=acrep)
 
 
     return render_to_response("Magna/edit_application_form.html", locals(), context_instance=RequestContext(request))

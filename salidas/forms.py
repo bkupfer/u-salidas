@@ -22,10 +22,10 @@ class NewApplicationForm(forms.ModelForm):
 class FinanceForm(forms.ModelForm):
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Tipo de Moneda")
     amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': u'  Ingrese un Monto...'}))
-
+    #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
         model = Finance
-        exclude = {'id_application', 'id_finance_type'}
+        exclude = {'id_application'}
 
 
 class FinanceDccForm(FinanceForm):
@@ -33,6 +33,7 @@ class FinanceDccForm(FinanceForm):
 
 
 FinanceFormSet = formset_factory(FinanceDccForm, extra=3)
+FinanceFormSet_Edit= formset_factory(FinanceDccForm,extra=0)
 
 
 class DestinationForm(forms.ModelForm):
@@ -51,6 +52,7 @@ class DestinationForm(forms.ModelForm):
 
 
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
+DestinationFormSet_Edit = formset_factory(DestinationForm, extra=0)
 
 
 class AcademicReplacementApplicationForm(forms.Form):
@@ -60,15 +62,28 @@ class AcademicReplacementApplicationForm(forms.Form):
     def __init__(self,*args,**kwargs):
         user=args[1].id
         super(AcademicReplacementApplicationForm,self).__init__()
+        try:
+            initial=kwargs['initial']
+            print(initial)
+        except:
+            initial=None
         self.fields['acteachers'].queryset =Teacher.objects.exclude(user=user)
+        self.fields['acteachers'].initial = initial
 
 
 class ReplacementApplicationForm(forms.Form):
+
     repteachers = forms.ModelChoiceField(queryset=Teacher.objects.none(),widget=forms.Select(attrs={'placeholder':'Seleccione un Profesor'}))
 
     def __init__(self,*args,**kwargs):
         super(ReplacementApplicationForm,self).__init__()
         print(args)
+        print(kwargs)
+        try:
+            initial=kwargs['initial']
+            print(initial)
+        except:
+            initial=None
         user=args[1].id
         try:
             teacher1=Teacher.objects.get(user=user)
@@ -79,12 +94,13 @@ class ReplacementApplicationForm(forms.Form):
             for teacher in teachers:
                 their_modules=set(teacher.get_modules())
                 if not my_modules.isdisjoint(their_modules):
-                    print(query)
+                    #print(query)
                     query=query.exclude(id=teacher.id)
         except TeacherHasCourse.DoesNotExist:
             query=Teacher.objects.all()
 
         self.fields['repteachers'].queryset = query
+        self.fields['repteachers'].initial = initial
 
 class DocumentForm(forms.ModelForm):
     file = forms.FileField()
@@ -95,6 +111,7 @@ class DocumentForm(forms.ModelForm):
 
 
 DocumentFormSet = formset_factory(DocumentForm, extra=1)
+DocumentFormSet_Edit = formset_factory(DocumentForm, extra=0)
 
 # My information form
 class MyInformation(forms.Form):
