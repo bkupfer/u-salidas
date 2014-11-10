@@ -67,6 +67,8 @@ def externo(request):
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
     return  HttpResponse("chao mundo")
+
+
 @csrf_protect
 def login(request):
     if request.method == "POST":
@@ -79,7 +81,11 @@ def login(request):
                 auth.login(request, user)
                 session_id = request.user.id
                 if is_in_group(user, 'professor'):
-                    return redirect('teachers_applications')
+                    prof = Teacher.objects.get(pk = user.id)
+                    if prof.mail == None or prof.signature == "":
+                        return redirect('my_information')
+                    else:
+                        return redirect('teachers_applications')
                 elif is_in_group(user, 'angelica'):
                     return redirect('days_validation')
                 elif is_in_group(user, 'magna'):
