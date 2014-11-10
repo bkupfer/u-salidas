@@ -60,20 +60,31 @@
 						</tr>
 						<tr>
 							<td>Motivo</td>
-							<td>{{ query.motive }}<td>
+							<td>{{ app.motive }}<td>
 						</tr>
 						<tr>
 							<td>Financiamiento</td>
-							<td>{{ query.financed_by }}</td>
+							<td>{{ app.financed_by }}</td>
 						</tr>
-
-                        {% for fin in finances %}
-                            <tr>
-                                <td>{{ fin.get_finance_type }}</td>
-                                <td>{{ fin.amount }} {{ fin.id_currency}}</td>
-
-                            </tr>
-                        {% endfor %}
+                        <tr>
+                            <td>Montos Solicitados</td>
+                            <td>
+                                <table class="table">
+                                <tr>
+                                    <th>Tipo de Financiamiento</th>
+                                    <th>Monto</th>
+                                    <th>Moneda</th>
+                                </tr>
+                                {% for fin in finances %}
+                                    <tr>
+                                        <td>{{ fin.get_finance_type }}</td>
+                                        <td>{{ fin.amount }}</td>
+                                        <td>{{ fin.id_currency}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            </td>
+                        </tr>
 
 						<tr>
 							<td>Destino(s)</td>
