@@ -161,7 +161,13 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
 
     if request.method == 'POST':
-        if application.is_valid() and destinations.is_valid() and request.POST['repteachers'] and request.POST['acteachers']:
+        valid_dest=False
+        if destinations.is_valid():
+            for dest in destinations:
+                if dest.start_date>=dest.end_date:
+                    valid_dest=True
+        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
+
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
@@ -219,7 +225,8 @@ def new_application(request):
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
-
+            if not valid_dest:
+                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
             messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")

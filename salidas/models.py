@@ -128,6 +128,16 @@ class Application(models.Model):
             if dest.end_date>end_date:
                 end_date=dest.end_date
         return end_date
+    def get_week_days_missed(self):
+        destinations=self.get_destinations()
+        week_days_missed=dict()
+        for destination in destinations:
+            start_date=destination.start_date
+            end_date=destination.end_date
+            for date in range(start_date,end_date):
+                #TODO inactive days
+                week_days_missed[str(datetime.weekday(date))]+=1
+        return week_days_missed
 
 
 
@@ -215,6 +225,28 @@ class Teacher(models.Model):
                 replacement.append((teacher.pk,teacher))
                 i+=1
         return replacement
+    def get_teaching_weeks_by_course(self):
+        his_applications=Application.objects.filter(id_Teacher=self)
+        week_days_missed=dict()
+        for application in his_applications:#por cada solicitud cuento cuantos lunes falte y cuántos martes y etc
+            this_days_missed=application.get_week_days_missed()
+            for day in week_days_missed:
+                week_days_missed[day]+=this_days_missed[day]
+        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)
+        weeks_by_course=dict()
+        for course in his_courses.id_Course:
+            course_modules=course.get_modules()
+            for module in course_modules:
+                week_day=module.get_week_day()
+                if week_days_missed[week_day]>0:
+                    if course.get_ud == 5:
+                        weeks_by_course[str(course)]+=1
+                    elif course.get_ud == 10:
+                        weeks_by_course[str(course)]+=0.5
+                    else:
+                        print("curso de uds raras")
+        return weeks_by_course
+
 
 
 #rut_teacher es un Teacher no un rut!!!
@@ -261,6 +293,9 @@ class Module(models.Model):
     block = models.CharField(max_length=3)
     def __str__(self):
         return self.block
+    def get_week_day(self):
+        #TODO retorna un string con el día de la semana
+        return 'lunes'
 
 
 class CourseHasModule(models.Model):

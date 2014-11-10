@@ -192,6 +192,9 @@
                                     <br/>
 
                                     <div class="row">
+                                         <p id="warning_used_days" class="text-center" style="color:red" >
+                                        </p>
+
                                         <div id="add_destination" class="col-sm-12" align="right">
                                             <button class="btn btn-info"><span class="glyphicon glyphicon-plus"></span></button>
                                             <label class="control-label">Agregar Destino</label>
@@ -298,7 +301,9 @@
                         </div>
                     </div>
                 </div>
-
+                <label id="avaliable_days" hidden="true" >
+                    {{ teacher.get_avaliable_days }}
+                </label>
                 </form>
 
            </div>
@@ -486,6 +491,41 @@
 <script language="javascript">
 	print_country("id_destinations-0-country");
 </script>
+<script type="text/javascript">
+        function  count_avaliable_days(date) {
+            var avaliable_days=parseInt(document.getElementById("avaliable_days").innerHTML)
 
+            var destCount = parseInt($('#id_destinations-TOTAL_FORMS').val());
+            var count_days=0
+            for (var i = 0; i < destCount; i++) {
+                var sd=document.getElementById('id_destinations-' + i + '-start_date').value.split('/');
+                //console.log(sd[1]+'/'+sd[0]+'/'+sd[2])
+                var ed=document.getElementById('id_destinations-' + i + '-end_date').value.split('/');
+                var start_date = new Date(sd[1]+'/'+sd[0]+'/'+sd[2]);
+                var end_date = new Date(ed[1]+'/'+ed[0]+'/'+ed[2]);
+
+                //console.log(end_date);
+                //console.log(start_date);
+                if (end_date!="Invalid Date" &&  start_date!="Invalid Date" && end_date < start_date) {
+                    document.getElementById("warning_used_days").innerHTML="La fecha de fin no puede ser menor a la fecha de inicio"
+                }
+                else{
+                    //console.log("good date");
+                    var one_day=1000*60*60*24
+                    count_days+=Math.ceil((end_date-start_date)/one_day);
+                    //console.log('count_days '+count_days)
+                    if (count_days>avaliable_days)
+                        document.getElementById("warning_used_days").innerHTML="Usted tiene "+avaliable_days+" días disponibles y está pidiendo "+count_days+" días."
+                    else
+                        document.getElementById("warning_used_days").innerHTML=""
+                }
+
+
+
+            }
+
+
+        }
+</script>
 </html>
  
