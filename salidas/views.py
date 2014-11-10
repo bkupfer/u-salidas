@@ -155,6 +155,7 @@ def documentForm(doc, newApp):
 @login_required
 def new_application(request):
     user=request.user
+    teacher=Teacher.objects.get(user=user)
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
