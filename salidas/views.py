@@ -81,7 +81,7 @@ def login(request):
                 auth.login(request, user)
                 session_id = request.user.id
                 if is_in_group(user, 'professor'):
-                    prof = Teacher.objects.get(pk = user.id)
+                    prof = Teacher.objects.get(user = user.id)
                     if prof.mail == None or prof.signature == "":
                         return redirect('my_information')
                     else:
@@ -171,8 +171,6 @@ def new_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                #print(dest)
-                #print(dest.cleaned_data['start_date'])
                 if dest.cleaned_data['start_date']<=dest.cleaned_data['end_date']:
                     valid_dest=True
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
@@ -304,7 +302,7 @@ def application_detail(request):
 @login_required
 def my_information(request):
 
-    teacher = Teacher.objects.get(pk = request.user.id)
+    teacher = Teacher.objects.get(user = request.user.id)
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 
