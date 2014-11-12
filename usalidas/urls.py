@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # General views
     url(r'^$', 'salidas.views.login', name='login'),
+    url(r'^2$', 'salidas.views.login2', name='login2'),
     url(r'^login.php','salidas.views.externo',name='externo'),
     url(r'^login', 'salidas.views.externo', name='logExterno'),
     url(r'^logout', 'salidas.views.logout', name='logout'),

@@ -89,6 +89,9 @@ def success(request):
         return redirect('nothing_to_do_here')
 
 
+@csrf_protect
+def login2(request):
+    return render_to_response("General/login2.html", locals(), context_instance=RequestContext(request))
 
 @csrf_protect
 def login(request):
