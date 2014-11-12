@@ -30,7 +30,7 @@
 <body>
 <div class="container-fluid">
 
-    {%  include "Navbar/navbar_magna..html" %}
+    {%  include "Navbar/navbar_magna.html" %}
 
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
@@ -51,7 +51,7 @@
                 {% endif %}
 
                 <!-- THE FORM -->
-                <form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+                <form method="POST" enctype="multipart/form-data" action="{% url 'editApplication' %}"> {% csrf_token %}
 
                 <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
                 <div class="row">

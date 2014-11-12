@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.sessions.backends.db import SessionStore
 
 from django.contrib.auth.models import User, Group
 
@@ -57,23 +58,28 @@ def externo(request):
             #retorna un request con el usuario
             username=request.POST['rut']
             user = auth.authenticate(username=username, password="1")
+            auth.login(request,user)
+            s=SessionStore()
+            s['user_id']=request.user.username
+            s.save()
             if user is not None and user.is_active:
-                return HttpResponse('http://usalidas.dcc.uchile.cl/success/?u=%s' % username)
+                session_key = s.session_key
+                auth.logout(request)
+                return HttpResponse('http://usalidas.dcc.uchile.cl/success/?s=%s' % session_key)
             return  HttpResponse("Ingrese con una cuenta válida")
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
-    return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
+    return redirect('access_denied')
 
 @csrf_exempt
 def success(request):
-    username = request.GET['u']
-    user = auth.authenticate(username=username, password="1")
-    auth.login(request, user)
-    user = User.objects.get(username=username)
+    session = request.GET['s']
+    s= Session.objects.get(session_key=session)
+    user = auth.authenticate(username=s.get_decoded().get('user_id'), password="1")
+    auth.login(request,user)
     if is_in_group(user, 'professor'):
         prof = Teacher.objects.get(user = user.id)
-        #return redirect('teachers_applications')
         if prof.mail == None or prof.signature == "":
             return redirect('my_information')
         else:
@@ -87,7 +93,6 @@ def success(request):
     else:
         auth.logout(request)
         return redirect('nothing_to_do_here')
-
 
 @csrf_protect
 def login2(request):
@@ -325,8 +330,7 @@ def application_detail(request):
 
 @login_required
 def my_information(request):
-
-    teacher = Teacher.objects.get(user = request.user.id)
+    teacher = Teacher.objects.get(user = request.user)
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 
