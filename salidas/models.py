@@ -47,10 +47,10 @@ class Destination(models.Model):
     city    = models.CharField(max_length=55)
     start_date = models.DateField()
     end_date   = models.DateField()
-
     def get_used_days(self):
         dt=self.end_date - self.start_date
         return dt.days
+
 
 class CommissionType(models.Model):
     type = models.CharField(max_length=20)
@@ -285,8 +285,8 @@ class Course(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=8)
     section = models.IntegerField(max_length=2)
-    semester = models.IntegerField()
-    year = models.IntegerField()
+    year = models.IntegerField(max_length=4)
+    semester = models.IntegerField(max_length=8)
     def __str__(self):
         return self.name
     def get_modules(self):

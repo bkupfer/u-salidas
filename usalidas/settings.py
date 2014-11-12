@@ -106,4 +106,4 @@ if DEBUG:
         "/static/static/"
     )
    # LOGIN_REDIRECT_URL = 'list_of_applications'
-    LOGIN_URL = 'login'
+   # LOGIN_URL = 'login'

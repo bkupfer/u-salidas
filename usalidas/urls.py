@@ -7,10 +7,12 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # General views
-    url(r'^$', 'salidas.views.login', name='login'),
+    url(r'^2$', 'salidas.views.login', name='login'),
+    url(r'^$', 'salidas.views.login2', name='login2'),
     url(r'^login.php','salidas.views.externo',name='externo'),
     url(r'^login', 'salidas.views.externo', name='logExterno'),
     url(r'^logout', 'salidas.views.logout', name='logout'),
+    url(r'^success', 'salidas.views.success', name='success'),
     url(r'^access_denied', 'salidas.views.access_denied', name='access_denied'),
     url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
 

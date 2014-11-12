@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.contrib import auth
 from django.shortcuts import render,render_to_response,redirect,get_object_or_404
 from django.contrib.auth import  authenticate
@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.sessions.backends.db import SessionStore
 
 from django.contrib.auth.models import User, Group
 
@@ -28,7 +29,7 @@ import urllib.request
 from io import StringIO
 from docx import * # to generate Docs
 import os, os.path
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 # Views for all users
 def home(request):
@@ -44,30 +45,58 @@ def is_in_group(user, group):
 
 #externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
 #recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
+@csrf_exempt
 def externo(request):
     if request.method == "POST":
         try:
             #recibir firma todo: notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
-            firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_base64_decode(request.POST['firma']))
+            #firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_b64decode(request.POST['firma']))
             #recibir llave publica
-            certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read(1000))
+            #certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read())
             #verificar
-            verify(certificado,firma,request.POST.urlencode(), 'sha1')
-            #TODO: cuando esto funcione,aqui se debe verificar que el usuario esta en nuestro sistema, y si esta loguearlo (views.login)
-            '''
-                dificultad del TODO: nuestro views.login autentifica al usuario usando auth.authenticate,
-                si upasaporte autentifica no tendremos usuario ni clave, no sabemos que informacion del profe
-                o de la persona nos manda upasaporte.
-                ahi aparece como autentificar sin autentificar
-                 http://stackoverflow.com/questions/2787650/manually-logging-in-a-user-without-password
-            '''
+            #verify(certificado,firma,"holahola", 'sha1')
             #retorna un request con el usuario
-            return  HttpResponse("hola mundo")
+            username=request.POST['rut']
+            user = auth.authenticate(username=username, password="1")
+            auth.login(request,user)
+            s=SessionStore()
+            s['user_id']=request.user.username
+            s.save()
+            if user is not None and user.is_active:
+                session_key = s.session_key
+                auth.logout(request)
+                return HttpResponse('http://usalidas.dcc.uchile.cl/success/?s=%s' % session_key)
+            return  HttpResponse("Ingrese con una cuenta válida")
         except Error:
             print("ERROR EXTERNO")#todo: agregar mensaje en caso de ingresar mal los datos
             return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
-    return  HttpResponse("chao mundo")
+    return redirect('access_denied')
 
+@csrf_exempt
+def success(request):
+    session = request.GET['s']
+    s= Session.objects.get(session_key=session)
+    user = auth.authenticate(username=s.get_decoded().get('user_id'), password="1")
+    auth.login(request,user)
+    if is_in_group(user, 'professor'):
+        prof = Teacher.objects.get(user = user.id)
+        if prof.mail == None or prof.signature == "":
+            return redirect('my_information')
+        else:
+            return redirect('teachers_applications')
+    elif is_in_group(user, 'angelica'):
+        return redirect('days_validation')
+    elif is_in_group(user, 'magna'):
+        return redirect('list_of_applications')
+    elif is_in_group(user, 'alejandro'):
+        return redirect('list_alejandro')
+    else:
+        auth.logout(request)
+        return redirect('nothing_to_do_here')
+
+@csrf_protect
+def login2(request):
+    return render_to_response("General/login2.html", locals(), context_instance=RequestContext(request))
 
 @csrf_protect
 def login(request):
@@ -272,7 +301,7 @@ def teacher_calendar(request):
 #@csrf_protect
 @login_required
 def teachers_applications(request):
-    teacher = Teacher.objects.get(user=request.user.id)
+    teacher = Teacher.objects.get(user=request.user)
     apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
@@ -318,14 +347,14 @@ def application_detail(request):
 
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
+    finances = Finance.objects.filter(id_application=id_app)
     replacements = app.get_replacements
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
 
 @login_required
 def my_information(request):
-
-    teacher = Teacher.objects.get(user = request.user.id)
+    teacher = Teacher.objects.get(user = request.user)
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 

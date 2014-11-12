@@ -66,15 +66,6 @@
 							<td>{{ app.financed_by }}</td>
 						</tr>
 
-
-                        {% for fin in finances %}
-                            <tr>
-                                <td>{{ fin.get_finance_type }}</td>
-                                <td>{{ fin.amount }} {{ fin.id_currency}}</td>
-
-                            </tr>
-                        {% endfor %}
-
 						<tr>
 							<td>Destino(s)</td>
 							<td>
@@ -94,6 +85,27 @@
 								</table>
 							</td>
 						</tr>
+
+						<tr>
+							<td>Monto(s)</td>
+							<td>
+								<table class="table">
+									<tr>
+										<th>Montos</th>
+										<th>Cantidad</th>
+										<th>Moneda</th>
+									</tr>
+									{% for fin in finances %}
+									<tr>
+										<td>{{ fin.get_finance_type }}</td>
+										<td>{{ fin.amount }}</td>
+										<td>{{ fin.id_currency }}</td>
+									</tr>
+									{% endfor %}
+								</table>
+							</td>
+						</tr>
+
 						<tr>
 							<td>Profesor reemplazante</td>
 							<td>
