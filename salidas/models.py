@@ -284,6 +284,8 @@ class Course(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=8)
     section = models.IntegerField(max_length=2)
+    year = models.IntegerField(max_length=4)
+    semester = models.IntegerField(max_length=8)
     def __str__(self):
         return self.name
     def get_modules(self):
