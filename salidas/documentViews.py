@@ -76,9 +76,17 @@ def peticion_docente_doc(app,replacement_teachers):
     replacements=app.get_replacements()
     print("peticion docente")
     path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
+    tipo_comision=str(app.id_commission_type)
+    con_o_sin_remuneracion="sin" #TODO cuando es con? cuando es sin?
+    motivo=str(app.motive)
+    fecha_inicio=str(app.get_start_date())
+    fecha_fin=str(app.get_end_date())
+
+    intro="Por la presente ruego a usted tenga a bien autorizar una Comisión "+tipo_comision +""+ con_o_sin_remuneracion+" con goce de remuneraciones, del "+fecha_inicio+" al "+fecha_fin+". El motivo de esta solicitud es "+motivo+". Se adjuntan los documentos pertinentes."
+    financiamiento=str(app.financed_by)
 
     if len(replacement_teachers)==1:
-        replacement_type="En mis actividades académicas y docentes seré reemplazado por"+str(replacement_teachers.pop())
+        replacement_type="En mis actividades académicas y docentes seré reemplazado por "+str(replacement_teachers.pop())+"."
     else:
         i=0
         replace=[]
@@ -91,6 +99,17 @@ def peticion_docente_doc(app,replacement_teachers):
             replace.append(str(rep.rut_teacher))
         replacement_type="En mis actividades " +replace[0]+ " seré reemplazado por " +replace[1]+ " y en mis actividades "+ replace[2]+ " seré reemplazado por " +replace[3]+"."
 
+    signature_file = app.id_Teacher.signature
+    try:
+        signature_path = str(signature_file)
+        # print('firma')
+        #print(signature_path)
+        signature_path = signature_path.split("/")
+        #print(signature_path)
+        signature_path = signature_path[1]
+        #print(signature_path)
+    except:
+        print('no hay firma')
 
     # user = request.user.id
     document = Document()
@@ -108,8 +127,30 @@ def peticion_docente_doc(app,replacement_teachers):
     p.add_run('Presente').bold = True
     p.add_run().add_break()
 
+    intro=document.add_paragraph(intro)
+    intro.add_run().add_break()
+    financiamiento=document.add_paragraph(financiamiento)
+    financiamiento.add_run().add_break()
     reemplazo=document.add_paragraph(replacement_type)
+    saludo = "Sin otro particular, le saluda atentamente,"
+    saludo=document.add_paragraph(saludo)
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    try:
+        p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT, "signatures", signature_path),
+                                width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT  # signature_file.path)
+    except:
+        print("no hay firma")
 
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    saludo.add_run().add_break()
+    profe=str(app.id_Teacher)
+    profe=document.add_paragraph(profe)
+    profe.alignment = WD_ALIGN_PARAGRAPH.CENTER
     document.save(path)
     return path
 
