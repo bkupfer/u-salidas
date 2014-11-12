@@ -324,6 +324,7 @@ def application_detail(request):
 
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
+    finances = Finance.objects.filter(id_application=id_app)
     replacements = app.get_replacements
     return render_to_response("Professor/application_detail.html", locals(), context_instance=RequestContext(request))
 
