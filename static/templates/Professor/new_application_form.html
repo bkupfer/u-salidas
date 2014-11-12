@@ -60,7 +60,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
 								<span class="glyphicon glyphicon-leaf"></span> Información de viaje
-								<p style="float: right"><a title="- Tipo de comisión: Seleccione el tipo de comisión.&#013;- Motivo: Ingrese el motivo del viaje. Ejemplo: Competencia ACM. &#013;- Financiamiento: Indique el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO." class="masterTooltip col-sm-2"><b>Ayuda</b></a></p>
+								<a href="#"><p style="float: right" class="col-sm-2" onclick="alert('- Tipo de comisión: Seleccione el tipo de comisión.\n- Motivo: Ingrese el motivo del viaje. Ejemplo: Competencia ACM. \n- Financiamiento: Indique el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO.');"><b>Ayuda</b></p> </a>
 							</div>
 							<div class="panel-body">
                                 <div class="row">
@@ -206,6 +206,13 @@
                     </div>
                 </div>
                 <br>
+                <div class="panel-body">
+                    <div class="row">
+                         <div class="col-sm-3">
+                              {{ application.used_days }}
+                         </div>
+                    </div>
+                </div>
 
                 <!-- Profesores reemplazantes -->
                 <div class="row">
