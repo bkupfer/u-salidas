@@ -3,18 +3,34 @@
         "model": "auth.User",
         "pk": 0,
         "fields": {
+            "username": "ing",
+            "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
+            "first_name": "ing",
+            "last_name": "soft",
+            "is_active": true,
+            "email": "a@a.com",
+            "is_staff": true,
+            "is_superuser":true
+        }
+    },
+    {
+        "model": "auth.User",
+        "pk": 1,
+        "fields": {
             "username":"profe1",
             "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
             "groups":[["professor"]],
             "first_name": "Sergio",
             "last_name": "Ochoa",
             "is_active": true,
-            "email": "a@a.com"
+            "email": "a@a.com",
+            "is_staff":true,
+            "is_superuser":true
         }
     },
     {
         "model": "auth.User",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "username":"profe2",
             "password":"pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
@@ -27,7 +43,7 @@
     },
     {
         "model": "auth.User",
-        "pk": 2,
+        "pk": 3,
         "fields": {
             "username":"profe3",
             "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
@@ -40,7 +56,7 @@
     },
     {
         "model": "auth.User",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "username":"magna",
             "password": "pbkdf2_sha256$12000$qrt7ycP75rBb$v61lpW32OI0CNMSkCEtJ63EZaUGqYYg32PSQg8zhnCE=",
@@ -55,7 +71,7 @@
         "model": "salidas.Teacher",
         "pk": 0,
         "fields": {
-            "user": 0,
+            "user": 1,
             "rut": "6704795-2",
             "name": "Sergio",
             "last_name": "Ochoa",
@@ -68,7 +84,7 @@
         "model": "salidas.Teacher",
         "pk": 1,
         "fields": {
-            "user": 1,
+            "user": 2,
             "rut": "7704795-3",
             "name": "Jorge",
             "last_name": "Perez",
@@ -81,7 +97,7 @@
         "model": "salidas.Teacher",
         "pk": 2,
         "fields": {
-            "user": 2,
+            "user": 3,
             "rut": "17704795-3",
             "name": "Nancy",
             "last_name": "Hitschfeld",
