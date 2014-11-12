@@ -532,7 +532,11 @@ def application_review(request):
         if 'accept_button' in request.POST:
             id_state = 2    # pendiente dcc
         if 'reject_button' in request.POST:
-            id_state = 4    # rechazado
+            id_state = 5    # rechazado
+        if 'report_sent_button' in request.POST:
+            id_state = 3    # pendiente facultad
+        if 'report_receive_button' in request.POST:
+            id_state = 4    # terminado
 
         state = ApplicationState.objects.get(pk = id_state)
         stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)

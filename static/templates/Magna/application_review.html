@@ -142,19 +142,28 @@
 						</tr>
 					</table>
 
-					<hr><br/><br/>
+					<hr><br><br>
 					<form method="POST"> {% csrf_token %}
+
                         <div class="row form-group">
                             <div class="col-sm-8">
-	  						    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
-                                <button type="submit" class="btn btn-lg btn-danger"  name="reject_button"> Rechazar</button>
+								{% if actual_state.state == 'Pendiente aprobacion' %}
+	  						    	<button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
+                                	<button type="submit" class="btn btn-lg btn-danger"  name="reject_button"> Rechazar</button>
+                           		{% elif actual_state.state == 'Pendiente DCC' %}
+									<button type="submit" class="btn btn-lg btn-primary" name="report_sent_button"> Reportar envio de documentos a facultad</button>
+								{% elif actual_state.state == 'Pendiente Facultad' %}
+									<button type="submit" class="btn btn-lg btn-primary" name="report_receive_button"> Reportar recibo de respuesta facultad</button>
+								{% endif %}
                             </div>
                         </div>
+
                         <div class="col-sm-12" align="right">
                             <div id="generateDoc" class="btn btn-success ">
                                 <i class="glyphicon glyphicon-file"></i>&nbsp;Exportar Documentos
                             </div>
                         </div>
+
 					</form>
 
 				</div>
