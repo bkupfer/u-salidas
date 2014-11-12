@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
 # from salidas.forms import *
-from salidas.models import Application, Document
+from salidas.models import Application, Replacement
 from datetime import date
 import locale
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -155,15 +155,104 @@ def peticion_docente_doc(app,replacement_teachers):
     return path
 
 def solicitud_facultad_doc(app):
+    teacher=app.id_Teacher
     print("solicitud fac")
     document = Document()
+    pretitle=document.add_paragraph()
+    pretitle.add_run("OFICIO N°")
+    pretitle.add_run().add_break()
+    pretitle.add_run("FECHA:   "+str(date.today().strftime("%d.%m.%Y")))
+    pretitle.add_run().add_break()
+    pretitle.add_run("USO INTERNO FACULTAD").bold = True
+    pretitle.add_run().add_break()
+    pretitle.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+
     title = document.add_paragraph('SOLICITUD DE COMISION O PERMISO')
     title.alignment = 1
     p = document.add_paragraph()
     run = p.add_run()
     run.add_break()
-    p.add_run('UNIDAD ACADEMICA ').bold = True
-    p.add_run('     DEPARTAMENTO DE CIENCIAS DE LA COMPUTACION')
+    p.add_run('UNIDAD ACADEMICA         ').bold = True
+    p.add_run('DEPARTAMENTO DE CIENCIAS DE LA COMPUTACION')
+    p.add_run().add_break()
+    p.add_run('NOMBRE                                  ').bold = True
+    p.add_run(str(teacher).upper())
+    p.add_run('            RUT   ').bold = True
+    p.add_run(str(teacher.rut))
+    p.add_run().add_break()
+    p.add_run('CARGO                                      ').bold = True
+    p.add_run('ACADEMICO JORNADA '+str(teacher.working_day).upper())#TODO jornada?
+    p.add_run('          GRADO ').bold = True
+    p.add_run().add_break()
+    p.add_run('JERARQUIA                            ').bold = True
+    p.add_run(str(teacher.hierarchy).upper())
+    p.add_run().add_break()
+    p.add_run('TIPO DE MOVIMIENTO     ').bold = True
+    p.add_run('COMISION '+str(app.id_commission_type).upper())#TODO remuneraciones
+    p.add_run().add_break()
+    p.add_run('PERIODO                                ').bold = True
+    p.add_run('DEL     ').bold = True
+    p.add_run(app.get_start_date().strftime("%d.%m.%Y"))
+    p.add_run('    AL    ').bold = True
+    p.add_run(app.get_end_date().strftime("%d.%m.%Y"))
+    p.add_run().add_break()
+    p.add_run('LUGAR                                   ').bold = True
+    p.add_run()#TODO destinos?
+    p.add_run().add_break()
+    p.add_run('OBJETIVO ').bold = True
+    p.add_run().add_break()
+    p.add_run(str(app.motive))
+    p.add_run().add_break()
+    p.add_run('FUENTES DE FINANCIAMIENTO (INDICAR MONTO Y ORIGEN)').bold = True
+    p.add_run().add_break()
+
+
+    p.add_run('PASAJES                        ').bold = True
+    try:
+        finance=Finance.objects.get(id_application=app,id_finance_type=1)
+        p.add_run(str(finance))
+    except:
+        p.add_run(str("No solicita"))
+    p.add_run().add_break()
+    p.add_run('AYUDA DE VIAJE       ').bold = True
+    try:
+        finance = Finance.objects.get(id_application=app, id_finance_type=2)
+        p.add_run(str(finance))
+    except:
+        p.add_run(str("No solicita"))
+    p.add_run().add_break()
+    p.add_run('INSCRIPCION              ').bold = True
+    try:
+        finance = Finance.objects.get(id_application=app, id_finance_type=3)
+        p.add_run(str(finance))
+    except:
+        p.add_run(str("No solicita"))
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run('OBSERVACIONES ').bold = True
+    #TODO obs? no recibe remuneracion?
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run('REEMPLAZANTE DE CATEDRAS     ').bold = True #TODO revisar reemplazo orden academico y docente
+    p.add_run(str(Replacement.objects.get(id_Application=app,type=1).rut_teacher))#1?
+    p.add_run().add_break()
+    p.add_run('REEMPLAZANTE DE CARGO             ').bold = True
+    p.add_run(str(Replacement.objects.get(id_Application=app, type=2).rut_teacher))  # 2?
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run().add_break()
+    p.add_run().add_break()
+    firmadir=document.add_paragraph()
+    firmadir.add_run('             SERGIO OCHOA                ').bold = True
+    firmadir.add_run().add_break()
+    firmadir.add_run('                DIRECTOR                  ')
+    firmadir.add_run().add_break()
+    firmadir.add_run('DEPARTAMENTO DE CIENCIAS DE LA COMPUTACIÓN')
+    firmadir.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
     path = os.path.join(settings.MEDIA_ROOT, 'solicitud_facultad.doc')
     document.save(path)
     return path
@@ -193,15 +282,15 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
         #print(signature_path)
     except:
         print('no hay firma')
-    fecha_inicio=app.get_start_date().strftime("%A %d %B %Y")
-    fecha_fin=app.get_end_date().strftime("%A %d %B %Y")
+    fecha_inicio=app.get_start_date().strftime("%d.%m.%Y")
+    fecha_fin=app.get_end_date().strftime("%d.%m.%Y")
 
     print("carta de reemplazo")
     filename= 'compromiso_reemplazo'+str(replacement_type)+'.doc'
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
 
-    today=date.today().strftime("%A %d %B %Y")
+    today=date.today().strftime("%d.%m.%Y")
     today_date=document.add_paragraph(str(today))
     today_date.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     today_date.add_run().add_break()
