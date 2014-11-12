@@ -186,8 +186,7 @@
         "pk": 1,
         "fields": {
             "hierarchy": "Asistente",
-            "avaliable_days": 60,
-            "working_day":1
+            "avaliable_days": 60
         }
     },
     {
@@ -195,8 +194,7 @@
         "pk": 2,
         "fields": {
             "hierarchy": "Asociado",
-            "avaliable_days": 60,
-            "working_day":1
+            "avaliable_days": 60
         }
     },
     {
@@ -204,8 +202,7 @@
         "pk": 3,
         "fields": {
             "hierarchy": "Titular",
-            "avaliable_days": 60,
-            "working_day":1
+            "avaliable_days": 60
 
         }
     },
@@ -214,9 +211,7 @@
         "pk": 4,
         "fields": {
             "hierarchy": "Adjunto",
-            "avaliable_days": 30,
-            "working_day":2
-
+            "avaliable_days": 30
         }
     },
     {

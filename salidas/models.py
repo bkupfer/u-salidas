@@ -4,7 +4,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from datetime import date
 from django.utils.encoding import smart_text
-
+from datetime import datetime
 #Las funciones  de __str__ son el nombre con el que se representan en la pantalla de admin las filas de las tablas, por defecto diria
 #"[Tabla.name] object"
 class Currency(models.Model):
@@ -68,6 +68,7 @@ class Application(models.Model):
     id_funds_validation_state = models.ForeignKey('State')
     directors_name = models.CharField(max_length=30)
     directors_rut = models.CharField(max_length=10)
+    used_days = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return "Application "+str(self.id)
     #Obtiene el ultimo estado asociado a la solicitud
@@ -107,8 +108,8 @@ class Application(models.Model):
         replacements = Replacement.objects.filter(id_Application=self)
         return replacements
     def discount_days(self):
-        #TODO estados que no se cuentan: rechazado pk=1? algún otro estado?
-        if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state()!=State.objects.get(pk=1):
+        #TODO estados que no se cuentan: rechazado pk=3? algún otro estado?
+        if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state()!=State.objects.get(pk=3):
             return True
         return False
     def get_finances(self):

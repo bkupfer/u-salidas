@@ -25,7 +25,7 @@ class FinanceForm(forms.ModelForm):
     #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
         model = Finance
-        exclude = {'id_application'}
+        exclude = {'id_application','id_finance_type'}
 
 
 class FinanceDccForm(FinanceForm):
@@ -41,10 +41,10 @@ class DestinationForm(forms.ModelForm):
         attrs={'onchange': "print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
     city = forms.CharField(widget=forms.Select(attrs={'class': 'city', 'onchange': "updateStateTxt(this);"},
                                                choices=([("", "Seleccione Ciudad")])))
-    start_date = forms.DateField(input_formats=['%d/%m/%y'], widget=forms.DateInput(
-        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy", 'onchange': "count_avaliable_days(this);"}))  #
-    end_date = forms.DateField(input_formats=['%d/%m/%y'], widget=forms.DateInput(
-        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
+    start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
+    end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
 
     class Meta:
         model = Destination
