@@ -239,13 +239,13 @@
         for (i = 0; i <length; i++) {
             var state = $(".state").first().html();
             if(state=="Pendiente"){
-                $(".state").first().html('<span class="glyphicon glyphicon-minus"></span>');
+                $(".state").first().html('<label style="color:gray"><span class="glyphicon glyphicon-minus"></span></label>');
             }
             if(state=="Aceptado"){
-                $(".state").first().html('<span class="glyphicon glyphicon-ok"></span>');
+                $(".state").first().html('<label style="color:green"><span class="glyphicon glyphicon-ok"></span></label>');
             }
             if(state=="Rechazado"){
-                $(".state").first().html('<span class="glyphicon glyphicon-remove"></span>');
+                $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span>');
             }
             $(".state").first().removeClass("state");
         }
