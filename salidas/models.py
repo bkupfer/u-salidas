@@ -263,6 +263,7 @@ class Replacement(models.Model):
     answer_date = models.DateTimeField(blank=True, null=True)
     type = models.ForeignKey('ReplacementType')
     id_state = models.ForeignKey('State')
+
     def get_appliant_teacher(self):
         return self.id_Application.id_Teacher
     def get_state(self):
