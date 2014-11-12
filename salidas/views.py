@@ -43,8 +43,9 @@ def is_in_group(user, group):
     else:
         return False
 
-#externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
-#recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
+
+# externo es llamado por upasaporte, se le debe retornar un request con la sesion del usuario
+# recibe el post de upasaporte, valida la firma, y si pasa hay que enviar
 @csrf_exempt
 def externo(request):
     if request.method == "POST":
@@ -72,6 +73,7 @@ def externo(request):
             return redirect('access_denied') # todo:arreglar access_denied para usuarios externos e internos
     return redirect('access_denied')
 
+
 @csrf_exempt
 def success(request):
     session = request.GET['s']
@@ -94,9 +96,11 @@ def success(request):
         auth.logout(request)
         return redirect('nothing_to_do_here')
 
+
 @csrf_protect
 def login2(request):
     return render_to_response("General/login2.html", locals(), context_instance=RequestContext(request))
+
 
 @csrf_protect
 def login(request):
@@ -194,7 +198,6 @@ def destinationForm(destination, newApp):
         print(destination.errors)
 
 
-
 def documentForm(doc, newApp):
     if doc.is_valid():
         try:
@@ -260,9 +263,8 @@ def new_application(request):
                 destinationForm(destination, newApp)
             used_days = newApp.get_used_days()
             newApp.used_days=used_days
-            print("used_Days")
-            print(used_days)
             newApp.save()
+
             # documents
             for document in documents:
                 documentForm(document, newApp)
@@ -313,7 +315,7 @@ def replacement_list(request):
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 
-#todo: bloquear obtencion de id que no pertenece a usuario CON UN TEST?
+#todo: bloquear obtencion de id que no pertenece a usuario
 @login_required
 def replacement_requests(request):
     replacement = Replacement.objects.get( pk = request.GET['id'] )
@@ -433,14 +435,11 @@ def edit_application(request):
                 else:
                     valid_dest=False
                     break
-            print(dest.cleaned_data['start_date'])
-            print(dest.cleaned_data['end_date'])
         else:
             print("error")
             print(destinations.errors)
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
 
-            print("is_valid")
             last_dests.delete()
 
             # Applications instance
@@ -452,8 +451,6 @@ def edit_application(request):
             daysv = State.objects.get(pk=1)     # pendiente
             fundsv = State.objects.get(pk=1)    # pendiente
 
-
-
             last_app.id_commission_type=ct
             last_app.motive=motive
             last_app.financed_by=fb
@@ -464,7 +461,6 @@ def edit_application(request):
 
             # replacement teacher information
             executiveReplace = Teacher.objects.get(pk=request.POST['repteachers']) # executiveReplacement.cleaned_data['repteachers']
-            print(executiveReplace)
             ex_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Docente"))
             ex_rep.rut_teacher=executiveReplace
             ex_rep.save()
@@ -495,12 +491,7 @@ def edit_application(request):
             for document in documents:
                 documentForm(document, last_app)
 
-            # sending notification mail
-            #subject = "Nueva solicitud de salida"
-            #message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
-            #send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
-
-            messages.success(request, 'Solicitud modificada exitosamente!')
+           # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
             # Applications instance
         else:
@@ -518,7 +509,6 @@ def edit_application(request):
 
     executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive",initial=docrep)
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic",initial=acrep)
-
 
     return render_to_response("Magna/edit_application_form.html", locals(), context_instance=RequestContext(request))
 
@@ -558,6 +548,7 @@ def list_alejandro(request):
     apps = Application.objects.all()
     return render_to_response("Alejandro/list_alejandro.html", locals(), context_instance=RequestContext(request))
 
+
 @csrf_protect
 @login_required
 def detail_alejandro(request):
@@ -578,7 +569,6 @@ def days_validation(request):
     return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
 
-
 # Aditional views
 def calendar(request, year, month):
     # primero debemos obtenemos los datos de la base de datos, luego le damos la query a WorkoutCalendar
@@ -595,4 +585,3 @@ def calendar(request, year, month):
     cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
     return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
     '''
-
