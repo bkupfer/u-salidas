@@ -39,6 +39,19 @@
 					<h2>Mis datos</h2>
 					<br>
 
+					<!-- For message to user -->
+					{% if messages %}
+						<div class="row">
+							<div class="col-sm-12">
+								{% for message in messages %}
+									<p class="alert alert-{% if message.tags == "success" %}success{% else %}danger{% endif %} text-center">
+										{{ message }}
+									</p>
+								{% endfor %}
+							</div>
+						</div>
+					{% endif %}
+
 					<!-- My current information -->
 					<div class="row">
 						<div class="col-sm-12">
