@@ -278,7 +278,7 @@ def teacher_calendar(request):
 
 @login_required
 def teachers_applications(request):
-    teacher = Teacher.objects.get(user=request.user.id)
+    teacher = Teacher.objects.get(user=request.user)
     apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
