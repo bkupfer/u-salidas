@@ -360,21 +360,26 @@ def my_information(request):
     form = MyInformation(request.POST or None)
     signature = TeachersSignature2(request.FILES or None)
 
-    if request.method == 'POST' and form.is_valid() and len(request.FILES) != 0:
-        email = form.cleaned_data['email']
-        jornada = form.cleaned_data['jornada']
-        sign = request.FILES['sign']
+    if request.method == 'POST':
+        if form.is_valid() and len(request.FILES) != 0:
+            email = form.cleaned_data['email']
+            jornada = form.cleaned_data['jornada']
+            sign = request.FILES['sign']
 
-        sign_extention =  sign.__str__().split(".")[1]
-        size_of_sign = 1 * 1024 * 1024 + 1024 # 1K for error
-        if form.is_valid() and (sign_extention == "jpg" or sign_extention == "jpeg" or sign_extention == "png") and sign._size <= size_of_sign:
-            teacher.mail = email
-            teacher.working_day = jornada
-            teacher.signature.delete()
-            teacher.signature = sign
-            teacher.save()
+            sign_extention =  sign.__str__().split(".")[1]
+            size_of_sign = 1 * 1024 * 1024 + 1024 # 1K for error
+            if (sign_extention == "jpg" or sign_extention == "jpeg" or sign_extention == "png") and sign._size <= size_of_sign:
+                teacher.mail = email
+                teacher.working_day = jornada
+                teacher.signature.delete()
+                teacher.signature = sign
+                teacher.save()
+                messages.success(request, 'Datos actualizados exitosamente!')
+            else:
+                err = 'La firma debe estar en formato .jpg o .png, y pesar menos de 1MB.'
+                messages.error(request, err)
         else:
-            print("error en validacion de archivos")
+            messages.error(request, 'Debe ingresar todos los campos obligatorios.')
 
     return render_to_response("Professor/my_information.html", locals(), context_instance=RequestContext(request))
 
