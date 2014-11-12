@@ -282,15 +282,15 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
         #print(signature_path)
     except:
         print('no hay firma')
-    fecha_inicio=app.get_start_date().strftime("%A %d %B %Y")
-    fecha_fin=app.get_end_date().strftime("%A %d %B %Y")
+    fecha_inicio=app.get_start_date().strftime("%d.%m.%Y")
+    fecha_fin=app.get_end_date().strftime("%d.%m.%Y")
 
     print("carta de reemplazo")
     filename= 'compromiso_reemplazo'+str(replacement_type)+'.doc'
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
 
-    today=date.today().strftime("%A %d %B %Y")
+    today=date.today().strftime("%d.%m.%Y")
     today_date=document.add_paragraph(str(today))
     today_date.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     today_date.add_run().add_break()
