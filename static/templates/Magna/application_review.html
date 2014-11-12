@@ -40,9 +40,9 @@
 					<h2>Detalle de solicitud</h2>
 					<br>
 
-					{% if actual_state.state == 'Pendiente Aprobación' or actual_state.state == 'Pendiente DCC' %}
+					{% if actual_state.state == 'Pendiente aprobacion' or actual_state.state == 'Pendiente DCC' %}
                      <div class="form-group">
-                        <div class="col-sm-7">
+                        <div class="col-sm-7 col-lg-offset-9">
                             <a href="edit_application_form?id={{ id_app }}" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-pencil"></span> Ir a modo edición</a>
                         </div>
 				    </div>
