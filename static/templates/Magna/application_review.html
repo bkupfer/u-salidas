@@ -45,7 +45,12 @@
                         </div>
 				    </div>
                     <br/><br/>
+
 					<table class="table">
+						<tr>
+							<td>Estado actual</td>
+							<td>{{ actual_state }}</td>
+						</tr>
 						<tr>
 							<td>Profesor</td>
 							<td>{{ profesor }}</td>
@@ -67,8 +72,9 @@
 							<td>{{ app.financed_by }}</td>
 						</tr>
                         <tr>
-                            <td>Montos Solicitados</td>
+                            <td>Monto(s) Solicitado(s)</td>
                             <td>
+								{% if finances|length != 0 %}
                                 <table class="table">
                                 <tr>
                                     <th>Tipo de Financiamiento</th>
@@ -83,6 +89,9 @@
                                     </tr>
                                 {% endfor %}
                             </table>
+							{% else %}
+								No se han solicitado montos.
+							{% endif %}
                             </td>
                         </tr>
 

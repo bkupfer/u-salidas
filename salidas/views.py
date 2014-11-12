@@ -481,6 +481,7 @@ def edit_application(request):
 def application_review(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
+    actual_state = app.get_state()
     profesor = app.id_Teacher
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
