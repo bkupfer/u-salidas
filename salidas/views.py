@@ -122,30 +122,48 @@ def access_denied(request):
 #Views for teachers
 #Este es el formulario prototipo de financia
 def financeForm(finance, newApp, id_finance_type):
+
+    type = FinanceType.objects.get(pk=id_finance_type)
     if finance.is_valid():
         try:
             checkbox = finance.cleaned_data['checkbox']
             if checkbox:
                 currency = finance.cleaned_data['id_currency']
+                print("currency")
+                print(currency)
                 amount = finance.cleaned_data['amount']
                 type = FinanceType.objects.get(pk=id_finance_type)
+                print("finance type")
+                print(type)
                 newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
                 newFinance.save()
-        except:
+        except Exception as e:
+            print(e)
             print("error en financeForm method. view.py")
+    else:
+        print("finance not valid")
 
 
 def destinationForm(destination, newApp):
+    print('destinationForm')
     if destination.is_valid():
         try:
             country = destination.cleaned_data['country']
             city    = destination.cleaned_data['city']
+            print("date")
             start_date = destination.cleaned_data['start_date']
+            print("start_date")
+            print(start_date)
             end_date= destination.cleaned_data['end_date']
+            print(end_date)
             destiny = Destination(application=newApp,country=country, city=city, start_date=start_date, end_date=end_date)
             destiny.save()
         except:
             print("error en destinationForm method. view.py")
+    else:
+        print("error en destinationForm method. view.py 2")
+        print(destination.errors)
+
 
 
 def documentForm(doc, newApp):
@@ -187,6 +205,7 @@ def new_application(request):
                                  id_days_validation_state = daysv, id_funds_validation_state = fundsv)
             newApp.save()
 
+
             #agregarle estado a la App
             #estado pendiente dcc
             state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
@@ -210,7 +229,11 @@ def new_application(request):
             # destinations
             for destination in destinations:
                 destinationForm(destination, newApp)
-
+            used_days = newApp.get_used_days()
+            newApp.used_days=used_days
+            print("used_Days")
+            print(used_days)
+            newApp.save()
             # documents
             for document in documents:
                 documentForm(document, newApp)
@@ -246,7 +269,7 @@ def teacher_calendar(request):
     teacher = Teacher.objects.filter(user=request.user.id)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
     return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
 
-
+#@csrf_protect
 @login_required
 def teachers_applications(request):
     teacher = Teacher.objects.get(user=request.user.id)
@@ -335,28 +358,28 @@ def list_of_applications(request):
 @login_required
 def edit_application(request):
     id_app = request.GET['id']
-    app = Application.objects.get(pk=id_app)
+    last_app = Application.objects.get(pk=id_app)
     user=request.user
-    teacher=app.id_Teacher
-    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':app.id_commission_type,'motive':app.motive,'financed_by':app.financed_by})
-    finances = app.get_finances()
+    teacher=last_app.id_Teacher
+    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'motive':last_app.motive,'financed_by':last_app.financed_by,'used_days':last_app.used_days})
+    last_finances = last_app.get_finances()
     fins=[]
     finance_types=FinanceType.objects.all()
     for finance_type in finance_types:
         try:
-            finance=Finance.objects.get(id_application=app,id_finance_type=finance_type)
+            finance=Finance.objects.get(id_application=last_app,id_finance_type=finance_type)
             fins.append({'checkbox':True,'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type})
         except:
             fins.append({'id_finance_type':finance_type})
     financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
 
-    dests = Destination.objects.filter(application = app.id)
+    last_dests = Destination.objects.filter(application = last_app.id)
     dess=[]
-    for dest in dests:
+    for dest in last_dests:
         dess.append({'country':dest.country,'city':dest.city,'start_date':dest.start_date,'end_date':dest.end_date})
     destinations = DestinationFormSet_Edit(request.POST or None,prefix="destinations",initial=dess)
-    replacements = app.get_replacements()
-    for reps in replacements:
+    last_replacements = last_app.get_replacements()
+    for reps in last_replacements:
         if str(reps.type)=="Docente":
             docrep=reps.rut_teacher
 
@@ -364,9 +387,9 @@ def edit_application(request):
             acrep=reps.rut_teacher
     try:
         print(DocumentModel)
-        docs=DocumentModel.objects.filter(id_application=app)
+        last_docs=DocumentModel.objects.filter(id_application=last_app)
         in_docs=[]
-        for doc in docs:
+        for doc in last_docs:
             in_docs.append({'file':doc.file})
     except:
         in_docs=[]
@@ -376,57 +399,80 @@ def edit_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                if dest.start_date>=dest.end_date:
+                if dest.cleaned_data['start_date'] <= dest.cleaned_data['end_date']:
                     valid_dest=True
+                else:
+                    valid_dest=False
+                    break
+            print(dest.cleaned_data['start_date'])
+            print(dest.cleaned_data['end_date'])
+        else:
+            print("error")
+            print(destinations.errors)
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
+
+            print("is_valid")
+            last_dests.delete()
 
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
             motive = application.cleaned_data['motive']
             fb = application.cleaned_data['financed_by']
+            used_days = application.cleaned_data['used_days']
             daysv = State.objects.get(pk=1)     # pendiente
             fundsv = State.objects.get(pk=1)    # pendiente
 
-            newApp = Application(id_Teacher = id_teacher, id_commission_type = ct, motive = motive, financed_by = fb,
-                                 id_days_validation_state = daysv, id_funds_validation_state = fundsv)
-            newApp.save()
 
-            #agregarle estado a la App
-            #estado pendiente dcc
-            state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
-            stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
-            stateApp.save()
+
+            last_app.id_commission_type=ct
+            last_app.motive=motive
+            last_app.financed_by=fb
+            print(last_app.used_days)
+            last_app.used_days=used_days
+            print(last_app.used_days)
+            last_app.save()
 
             # replacement teacher information
-            executiveReplace = request.POST['repteachers'] # executiveReplacement.cleaned_data['repteachers']
-            academicReplace  = request.POST['acteachers']  #  academicReplacement.cleaned_data['acteachers']
-            newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
-            newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
-            newExecutiveReplacement.save()
-            newAcademicReplacement.save()
+            executiveReplace = Teacher.objects.get(pk=request.POST['repteachers']) # executiveReplacement.cleaned_data['repteachers']
+            print(executiveReplace)
+            ex_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Docente"))
+            ex_rep.rut_teacher=executiveReplace
+            ex_rep.save()
+            academicReplace = Teacher.objects.get(pk=request.POST['acteachers'])  # academicReplacement.cleaned_data['acteachers']
+            ac_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Academico"))
+            ac_rep.rut_teacher=academicReplace
+            ac_rep.save()
 
             # money
             i = 1
+            #delete other finances
+            last_finances.delete()
             for finance in financeFormSet:
-                financeForm(finance, newApp, i)
+                financeForm(finance, last_app, i)
                 i += 1
 
             # destinations
-            for destination in destinations:
-                destinationForm(destination, newApp)
+            # delete ther destinations
 
-            # documents
+            for destination in destinations:
+                destinationForm(destination, last_app)
+
+            #TODO delete other documents?
+            try:
+                last_docs.delete()
+            except:
+                print("error deleting last documents (?)")
             for document in documents:
-                documentForm(document, newApp)
+                documentForm(document, last_app)
 
             # sending notification mail
-            subject = "Nueva solicitud de salida"
-            message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
-            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
+            #subject = "Nueva solicitud de salida"
+            #message = "El docente " + id_teacher.__str__() + " ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente, no lo responda."
+            #send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = False)
 
-            messages.success(request, 'Solicitud enviada exitosamente!')
-            return redirect(teachers_applications)
+            messages.success(request, 'Solicitud modificada exitosamente!')
+            return redirect(list_of_applications)
             # Applications instance
         else:
             # for error display

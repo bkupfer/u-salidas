@@ -59,7 +59,7 @@
                 {% endif %}
 
                 <!-- THE FORM -->
-                <form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+                <form method="POST" enctype="multipart/form-data" action="{% url 'edit_application' %}?id={{ id_app }}"> {% csrf_token %}
 
                 <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
                 <div class="row">
@@ -179,7 +179,7 @@
                                                         <div class="col-sm-12">
                                                             <br>
                                                             <label class="control-label col-sm-4" for="nombre">Fecha de Inicio <label style="color:red">*</label></label>
-                                                            {{ destination.start_date }}
+                                                            {{ destination.start_date}}
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
@@ -211,6 +211,34 @@
                 </div>
                 <br>
 
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+								<span class="glyphicon glyphicon-calendar"></span> Conteo de Días
+								<p style="float: right"><a title="Conteo de días utilizados.&#013;" class="masterTooltip"><b>Ayuda</b></a></p>
+							</div>
+                            <div class="panel-body">
+                                 <div class="row">
+                                     <div class="form-group">
+                                         <div class="col-sm-12">
+                                             <br>
+                                             <label class="col-sm-3 control-label"> Días Disponibles</label>
+                                             {{ teacher.get_avaliable_days }}
+                                         </div>
+                                         <div class="col-sm-12">
+                                             <br>
+                                             <label class="col-sm-3 control-label"> Días utilizados en esta solicitud </label>
+                                             {{ application.used_days }}
+                                         </div>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Profesores reemplazantes -->
                 <div class="row">
                     <div class="col-sm-12">
@@ -240,9 +268,7 @@
                                 <div class="row">
                                     <div class="form-group" id="executiveReplacement">
                                         <label class="col-sm-3 control-label">Reemplazo Académico <label style="color:red">*</label></label>
-                                        <div class="col-sm-4">
-                                            {{ academicReplacement.acteachers }}
-                                        </div>
+                                        {{ academicReplacement.acteachers }}
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +336,7 @@
                 </label>
                 </form>
 
-           </div>
+            </div>
         </div>
     </div>
 </div>
