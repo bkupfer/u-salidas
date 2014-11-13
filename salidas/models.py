@@ -105,7 +105,7 @@ class Application(models.Model):
             files+=doc.file
         return files
     def get_replacements(self):
-        replacements = Replacement.objects.filter(id_Application=self)
+        replacements = Replacement.objects.filter(id_Application = self)
         return replacements
     def discount_days(self):
         #TODO estados que no se cuentan: rechazado pk=3? algún otro estado?

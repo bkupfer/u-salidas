@@ -443,6 +443,7 @@ def edit_application(request):
         else:
             print("error")
             print(destinations.errors)
+
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
 
             last_dests.delete()
@@ -459,9 +460,7 @@ def edit_application(request):
             last_app.id_commission_type=ct
             last_app.motive=motive
             last_app.financed_by=fb
-            print(last_app.used_days)
             last_app.used_days=used_days
-            print(last_app.used_days)
             last_app.save()
 
             # replacement teacher information
@@ -496,9 +495,13 @@ def edit_application(request):
             for document in documents:
                 documentForm(document, last_app)
 
+            # sending notification mail
+            subject = "Solicitud de salida modificada"
+            message = "La solicitud de salida realizada el " + last_app.creation_date + " ha sido modificada.\n\n-- Este correo fue generado automaticamente."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { id_teacher.mail }, fail_silently = False)
+
            # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
-            # Applications instance
         else:
             # for error display
             err = 'Error en el envío del formulario.'
@@ -523,20 +526,32 @@ def application_review(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
     actual_state = app.get_state()
-    profesor = app.id_Teacher
+    teacher = app.id_Teacher
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
-    replacements = app.get_replacements
+    replacements = app.get_replacements()
     finances = app.get_finances()
+
     if len(request.POST) != 0:
         if 'accept_button' in request.POST:
             id_state = 2    # pendiente dcc
+            subject = "Nueva solicitud de salida"
+            message = "Se ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_ANGELICA, EMAIL_ALEJANDRO }, fail_silently = False)
+            messages = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
+            for replacement in replacements:
+                if replacement.rut_teacher.mail != None:
+                    send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = False)
         if 'reject_button' in request.POST:
             id_state = 5    # rechazado
         if 'report_sent_button' in request.POST:
             id_state = 3    # pendiente facultad
         if 'report_receive_button' in request.POST:
             id_state = 4    # terminado
+            subject = "Nueva solicitud de salida aprobada"
+            message = "Su solicitud de salida ha sido aprobada.\n\n-- Este correo fue generado automaticamente."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = False)
+
 
         state = ApplicationState.objects.get(pk = id_state)
         stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
