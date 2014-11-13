@@ -159,17 +159,12 @@ def financeForm(finance, newApp, id_finance_type):
     type = FinanceType.objects.get(pk=id_finance_type)
     if finance.is_valid():
         try:
-            checkbox = finance.cleaned_data['checkbox']
-            if checkbox:
-                currency = finance.cleaned_data['id_currency']
-                print("currency")
-                print(currency)
-                amount = finance.cleaned_data['amount']
-                type = FinanceType.objects.get(pk=id_finance_type)
-                print("finance type")
-                print(type)
-                newFinance = Finance(id_application=newApp,id_finance_type=type, id_currency=currency, amount=amount)
-                newFinance.save()
+            financed_by_dcc = finance.cleaned_data['financed_by_dcc']
+            currency = finance.cleaned_data['id_currency']
+            amount = finance.cleaned_data['amount']
+            type = FinanceType.objects.get(pk=id_finance_type)
+            newFinance = Finance(id_application=newApp,id_finance_type=type, financed_by_dcc=financed_by_dcc, id_currency=currency, amount=amount)
+            newFinance.save()
         except Exception as e:
             print(e)
             print("error en financeForm method. view.py")
@@ -237,7 +232,6 @@ def new_application(request):
                                  id_days_validation_state = daysv, id_funds_validation_state = fundsv)
             newApp.save()
 
-
             #agregarle estado a la App
             #estado pendiente dcc
             state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
@@ -282,6 +276,8 @@ def new_application(request):
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta'
+            if not financeFormSet.is_valid():
+                err = err + '\nInformación de montos solicitados incompleta'
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
@@ -444,7 +440,7 @@ def edit_application(request):
             print("error")
             print(destinations.errors)
 
-        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
+        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():
 
             last_dests.delete()
 
@@ -509,6 +505,8 @@ def edit_application(request):
                 err = err + '\nInformación del viaje incompleta'
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
+            if not financeFormSet.is_valid():
+                err = err + '\nInformación respecto de los montos solicitados incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
             if not valid_dest:

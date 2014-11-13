@@ -22,6 +22,7 @@ class FinanceType(models.Model):
 class Finance(models.Model):
     id_application = models.ForeignKey('Application')
     id_finance_type = models.ForeignKey('FinanceType')
+    financed_by_dcc = models.BooleanField(default=False)
     id_currency = models.ForeignKey('Currency')
     amount = models.PositiveIntegerField()
     def get_finance_type(self):
@@ -323,3 +324,7 @@ class ReplacementType(models.Model):
     type = models.CharField(max_length=20)
     def __str__(self):
         return self.type
+
+class Salidas_admin(models.Model):
+    user = models.CharField(max_length=20)
+    hash =models.CharField(max_length=100)

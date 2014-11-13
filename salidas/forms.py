@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from salidas.models import *
-from django.forms.models import inlineformset_factory, formset_factory
+from django.forms.models import inlineformset_factory, formset_factory, modelformset_factory
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 
@@ -22,18 +22,18 @@ class NewApplicationForm(forms.ModelForm):
 class FinanceForm(forms.ModelForm):
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Tipo de Moneda")
     amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': u'  Ingrese un Monto...'}))
+    financed_by_dcc = forms.BooleanField(widget=forms.CheckboxInput())
     #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
         model = Finance
         exclude = {'id_application','id_finance_type'}
 
 
-class FinanceDccForm(FinanceForm):
-    checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
+# class FinanceDccForm(FinanceForm):
+#     checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
 
-
-FinanceFormSet = formset_factory(FinanceDccForm, extra=3)
-FinanceFormSet_Edit= formset_factory(FinanceDccForm,extra=0)
+FinanceFormSet = formset_factory(FinanceForm, max_num=3, extra=3)
+#FinanceFormSet_Edit= formset_factory(FinanceDccForm,extra=0)
 
 
 class DestinationForm(forms.ModelForm):
