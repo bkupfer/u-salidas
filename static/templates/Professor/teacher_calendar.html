@@ -27,6 +27,13 @@
 	});
 	</script>
 
+	<script>
+		$(document).ready(function(){
+			var elem = document.getElementById('calendar-div')
+			elem.firstElementChild.className += " table table-bordered"
+		});
+	</script>
+
 </head>
 <body>
 
@@ -34,26 +41,18 @@
 
 	{% include "Navbar/navbar_teacher.html" %}
 
-
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
 			<div class="pannel panel-primary panel-body">
-
 
 				<h2>Mi Calendario</h2>
 				<br>
 
 				<div class="row">
+					<h3>Situacion actual</h3>
 					<!-- Situacion actual -->
 					<div class="col-md-10 col-md-offset-1">
 						<table class="table table-bordered table-hover table-condensed table-striped">
-							<thead>
-							<tr>
-								<th></th>
-								<th>Situación Actual</th>
-							</tr>
-							</thead>
-							<tbody>
 							<tr class="info">
 								<td><strong>Días utilizados</strong></td>
 								<td>{{ teacher.get_used_days }}</td>
@@ -66,17 +65,17 @@
 								<td><strong>Semanas docentes utilizadas</strong></td>
 								<td>(-1)</td>
 							</tr>
-							</tbody>
 						</table>
 					</div>
 				</div>
 				<br>
 
 				<!-- Calendario -->
-
 				<div class="row">
 					<h3>Calendario</h3>
-					{{ calendar }}
+					<div id="calendar-div">
+						{{ calendar }}
+					</div>
 				</div>
 			</div>
 		</div>

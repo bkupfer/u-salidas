@@ -334,8 +334,6 @@ def my_calendar(request, year, month):
     print(valid_apps)
 
     return WorkoutCalendar(valid_apps).formatmonth(year, month)
-    #cal =  WorkoutCalendar(valid_apps).formatmonth(year, month)
-    #return render_to_response('my_template.html', {'calendar': mark_safe(cal),})
 
 
 # testing how to calendars
