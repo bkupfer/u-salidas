@@ -409,9 +409,10 @@ def edit_application(request):
     for finance_type in finance_types:
         try:
             finance=Finance.objects.get(id_application=last_app,id_finance_type=finance_type)
-            fins.append({'checkbox':True,'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type})
+            fins.append({'financed_by_dcc':finance.financed_by_dcc,'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type})
         except:
             fins.append({'id_finance_type':finance_type})
+        print(fins)
     financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
 
     last_dests = Destination.objects.filter(application = last_app.id)
