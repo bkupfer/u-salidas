@@ -240,6 +240,7 @@ def new_application(request):
                 #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
                 if len(dict) == 1:
                     valid_finance = False
+                    break
 
         if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
 
@@ -298,15 +299,15 @@ def new_application(request):
             # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
-                err = err + '\nInformación del viaje incompleta'
+                err = err + '\nInformación del viaje incompleta.'
             if not valid_finance:
-                err = err + '\nInformación de montos solicitados incompleta'
+                err = err + '\nInformación de montos solicitados incompleta, cada monto debe estar asociado a un tipo de moneda.'
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
             if not valid_dest:
-                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
+                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
             messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
