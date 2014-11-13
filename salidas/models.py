@@ -271,6 +271,16 @@ class Replacement(models.Model):
         return self.id_Application.id_Teacher
     def get_state(self):
         return self.id_state
+    def get_start_date(self):
+        return self.id_Application.get_start_date()
+    def get_end_date(self):
+        return self.id_Application.get_end_date()
+    def get_courses(self):
+        #reemplazo academico
+        if self.type == ReplacementType.objects.get(pk=2):
+            return {'Ninguno. Solicitud de reemplazo académico'}
+        else:
+            return self.id_Application.id_Teacher.get_courses()
 
 
 class State(models.Model):
