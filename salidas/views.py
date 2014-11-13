@@ -205,8 +205,12 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
-    user=request.user
-    teacher=Teacher.objects.get(user=user)
+    user = request.user
+    id_teacher = Teacher.objects.get(user = request.user)
+    if id_teacher.mail == "" or id_teacher.signature == "":
+        messages.error(request, 'Debe ingresar sus datos antes de enviar una solicitud.')
+        return redirect(my_information)
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
@@ -216,8 +220,13 @@ def new_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                if dest.cleaned_data['start_date']<=dest.cleaned_data['end_date']:
-                    valid_dest=True
+                start_date = dest.cleaned_data.get('start_date')
+                end_date = dest.cleaned_data.get('end_date')
+                if start_date != None or end_date != None:
+                    if start_date<=end_date and start_date.year == end_date.year:
+                        valid_dest=True
+                else:
+                    break
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
 
             # Applications instance
@@ -255,7 +264,7 @@ def new_application(request):
             # destinations
             for destination in destinations:
                 destinationForm(destination, newApp)
-            used_days = newApp.get_used_days()
+            used_days = newApp.compute_used_days()
             newApp.used_days=used_days
             newApp.save()
 
@@ -538,7 +547,7 @@ def application_review(request):
             send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_ANGELICA, EMAIL_ALEJANDRO }, fail_silently = False)
             messages = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
             for replacement in replacements:
-                if replacement.rut_teacher.mail != None:
+                if replacement.rut_teacher.mail != "":
                     send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = False)
         if 'reject_button' in request.POST:
             id_state = 5    # rechazado
@@ -549,7 +558,6 @@ def application_review(request):
             subject = "Nueva solicitud de salida aprobada"
             message = "Su solicitud de salida ha sido aprobada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = False)
-
 
         state = ApplicationState.objects.get(pk = id_state)
         stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
