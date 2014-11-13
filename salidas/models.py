@@ -327,6 +327,6 @@ class ReplacementType(models.Model):
     def __str__(self):
         return self.type
 
-class Salidas_admin(models.Model):
+class admi(models.Model):
     user = models.CharField(max_length=20)
     hash =models.CharField(max_length=100)
