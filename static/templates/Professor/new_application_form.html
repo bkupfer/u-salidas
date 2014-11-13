@@ -118,7 +118,6 @@
                                             <div class="finance_item">
                                                 <div class="col-sm-12">
                                                     <label class="col-sm-2 control-label" align="left">
-                                                        {% cycle "I" "P" "V" as row_cycle_id %}
                                                         {% cycle "Inscripción" "Pasaje" "Viático" as row_cycle%}
                                                     </label>
                                                     <label class="col-sm-2 control-label" align="right">¿Financia DCC?</label>
@@ -132,7 +131,7 @@
                                                     <div class="col-sm-2">
                                                         {{ form.id_currency }}
                                                     </div>
-                                                    <div class="col-sm-2" style="color:red;display: none;" id="alarma_{{row_cycle_id }}">
+                                                    <div class="col-sm-2" style="color:red;display: none;" id="alarma_{% cycle "I" "P" "V" %}">
                                                         <p>*Debe ingresar monto y tipo de moneda</p>
                                                     </div>
                                                     {% if row_cycle != 'Viático' %}
