@@ -22,7 +22,7 @@ class NewApplicationForm(forms.ModelForm):
 class FinanceForm(forms.ModelForm):
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Tipo de Moneda")
     amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': u'  Ingrese un Monto...'}))
-    financed_by_dcc = forms.BooleanField(widget=forms.CheckboxInput())
+    financed_by_dcc = forms.BooleanField(required=False,widget=forms.CheckboxInput())
     #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
         model = Finance

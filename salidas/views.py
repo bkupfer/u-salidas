@@ -160,6 +160,10 @@ def financeForm(finance, newApp, id_finance_type):
     if finance.is_valid():
         try:
             financed_by_dcc = finance.cleaned_data['financed_by_dcc']
+            if financed_by_dcc:
+                financed_by_dcc = True
+            else:
+                financed_by_dcc = False
             currency = finance.cleaned_data['id_currency']
             amount = finance.cleaned_data['amount']
             type = FinanceType.objects.get(pk=id_finance_type)
@@ -217,7 +221,8 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
 
     if request.method == 'POST':
-        valid_dest=False
+        valid_dest= False
+        valid_finance= True
         if destinations.is_valid():
             for dest in destinations:
                 start_date = dest.cleaned_data.get('start_date')
@@ -227,7 +232,16 @@ def new_application(request):
                         valid_dest=True
                 else:
                     break
-        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
+        for finance in financeFormSet:
+            if finance.is_valid():
+                valid_finance = True
+            else:
+                dict = finance.errors.as_data()
+                #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
+                if len(dict) == 1:
+                    valid_finance = False
+
+        if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
 
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
@@ -285,7 +299,7 @@ def new_application(request):
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta'
-            if not financeFormSet.is_valid():
+            if not valid_finance:
                 err = err + '\nInformación de montos solicitados incompleta'
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
