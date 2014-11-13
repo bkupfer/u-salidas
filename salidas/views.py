@@ -321,7 +321,7 @@ def new_application(request):
 @login_required
 def teacher_calendar(request):
     teacher = Teacher.objects.get(user = request.user)
-    year, month = 2014, 10
+    year, month = date.today().year, date.today().month
     if request.method == 'POST':
         year = int(request.POST['year'])
         month = int(request.POST['month'])
@@ -346,7 +346,6 @@ def my_calendar(request, year, month):
     for mw in my_workouts:
         if mw.creation_date.year == year and mw.creation_date.month == month:
             valid_apps.append(mw)
-    print(valid_apps)
 
     return WorkoutCalendar(valid_apps).formatmonth(year, month)
 
