@@ -93,11 +93,13 @@ class Application(models.Model):
         dests = Destination.objects.filter(application=self)
         return dests
     def get_used_days(self):
+        return self.used_days
+    def compute_used_days(self):
         dests=self.get_destinations()
-        used_days=0
+        computed_days=0
         for dest in dests:
-            used_days+=dest.get_used_days()
-        return used_days
+            computed_days+=dest.get_used_days()
+        return computed_days
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
         files =[]
@@ -210,7 +212,7 @@ class Teacher(models.Model):
         his_apps = self.get_applications()
         used_days=0
         for app in his_apps:
-            if app.discount_days():
+            if app.discount_days() and app.get_used_days() != None:
                 used_days+=app.get_used_days()
         return used_days
     def get_avaliable_days(self):

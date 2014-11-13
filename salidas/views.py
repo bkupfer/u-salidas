@@ -228,7 +228,7 @@ def new_application(request):
                 start_date = dest.cleaned_data.get('start_date')
                 end_date = dest.cleaned_data.get('end_date')
                 if start_date != None or end_date != None:
-                    if dest.cleaned_data.get('start_date')<=dest.cleaned_data.get('end_date'):
+                    if start_date<=end_date and start_date.year == end_date.year:
                         valid_dest=True
                 else:
                     break
@@ -270,9 +270,7 @@ def new_application(request):
             # destinations
             for destination in destinations:
                 destinationForm(destination, newApp)
-
             used_days = newApp.get_used_days()
-
             newApp.used_days=used_days
             newApp.save()
 
