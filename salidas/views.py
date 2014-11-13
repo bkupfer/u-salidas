@@ -221,8 +221,13 @@ def new_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                if dest.cleaned_data['start_date']<=dest.cleaned_data['end_date']:
-                    valid_dest=True
+                start_date = dest.cleaned_data.get('start_date')
+                end_date = dest.cleaned_data.get('end_date')
+                if start_date != None or end_date != None:
+                    if dest.cleaned_data.get('start_date')<=dest.cleaned_data.get('end_date'):
+                        valid_dest=True
+                else:
+                    break
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
 
             # Applications instance
