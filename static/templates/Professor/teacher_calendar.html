@@ -44,10 +44,8 @@
 				<br>
 
 				<div class="row">
-					<div class="col-md-6">
-						Acá colocar calendario y simbología
-					</div>
-					<div class="col-md-6">
+					<!-- Situacion actual -->
+					<div class="col-md-10 col-md-offset-1">
 						<table class="table table-bordered table-hover table-condensed table-striped">
 							<thead>
 							<tr>
@@ -64,30 +62,21 @@
 								<td><strong>Días disponibles</strong></td>
 								<td>{{ teacher.get_avaliable_days }}</td>
 							</tr>
-							</tbody>
-						</table>
-
-						<table class="table table-bordered table-hover table-condensed table-striped">
-							<thead>
 							<tr>
-								<th>Semanas docentes utilizadas <br/> (hasta ahora)</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>0</td>
+								<td><strong>Semanas docentes utilizadas</strong></td>
+								<td>(-1)</td>
 							</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<br>
+
+				<!-- Calendario -->
 
 				<div class="row">
-					<div class="col-md-12">
-						Acá colocar horario
-					</div>
-
-
+					<h3>Calendario</h3>
+					{{ calendar }}
 				</div>
 			</div>
 		</div>

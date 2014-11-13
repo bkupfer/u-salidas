@@ -44,7 +44,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # Debuging pages
-
+    url(r'^calendar', 'salidas.views.calendar', name='calendar')
 )
 
 if settings.DEBUG:

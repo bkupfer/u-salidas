@@ -281,7 +281,7 @@ class State(models.Model):
 
 class InactivePeriod(models.Model):
     start_date = models.DateField()
-    end_date = models.DateField()  # blank=True, null=True
+    end_date   = models.DateField()  # blank=True, null=True
     description = models.TextField(blank=True, null=True)
 
 
@@ -329,4 +329,4 @@ class ReplacementType(models.Model):
 
 class admi(models.Model):
     user = models.CharField(max_length=20)
-    hash =models.CharField(max_length=100)
+    hash = models.CharField(max_length=100)

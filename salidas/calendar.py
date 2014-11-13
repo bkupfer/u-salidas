@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#import comentado por asuntos de compatibilidad
-#from calendar import HTMLCalendar
+from calendar import HTMLCalendar
 from datetime import date
 from itertools import groupby
+
 from django.utils.html import conditional_escape as esc
 
 # Got this from :
@@ -24,8 +24,8 @@ class WorkoutCalendar(HTMLCalendar):
                 body = ['<ul>']
                 for workout in self.workouts[day]:
                     body.append('<li>')
-                    body.append('<a href="%s">' % workout.get_absolute_url())
-                    body.append(esc(workout.title))
+                    body.append('<a href="%s">' % workout.motive)
+                    body.append(esc(workout.motive))
                     body.append('</a></li>')
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
@@ -37,7 +37,7 @@ class WorkoutCalendar(HTMLCalendar):
         return super(WorkoutCalendar, self).formatmonth(year, month)
 
     def group_by_day(self, workouts):
-        field = lambda workout: workout.performed_at.day
+        field = lambda workout: workout.creation_date.day
         return dict(
             [(day, list(items)) for day, items in groupby(workouts, field)]
         )

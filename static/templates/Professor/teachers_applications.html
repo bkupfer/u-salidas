@@ -25,31 +25,31 @@
 <body>
 <div class="container-fluid">
 
-   {%  include "Navbar/navbar_teacher.html" %}
+	{%  include "Navbar/navbar_teacher.html" %}
 
-     <div class="row">
-        <div class="col-md-1 col-md-offset-0">
-            <table class="table table-bordered table-hover table-condensed table-striped">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Situación actual</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="info">
-                    <td><strong>Días utilizados</strong></td>
-                    <td>{{ teacher.get_used_days }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Días disponibles</strong></td>
-                    <td>{{ teacher.get_avaliable_days }}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-1 contenido">
-          	<div class="pannel panel-primary panel-body">
+	<div class="row">
+		<div class="col-md-1 col-md-offset-0">
+			<table class="table table-bordered table-hover table-condensed table-striped">
+				<thead>
+				<tr>
+					<th></th>
+					<th>Situación actual</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="info">
+					<td><strong>Días utilizados</strong></td>
+					<td>{{ teacher.get_used_days }}</td>
+				</tr>
+				<tr>
+					<td><strong>Días disponibles</strong></td>
+					<td>{{ teacher.get_avaliable_days }}</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-1 contenido">
+			<div class="pannel panel-primary panel-body">
 
 				<h2>Listado de solicitudes</h2>
 				<br>
@@ -65,10 +65,9 @@
 					</div>
 				{% endif %}
 
-
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#PA" role="tab" data-toggle="tab">Pendiente Aprobación</a></li>
-                    <li><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+					<li><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
 					<li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
 					<li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
 					<li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
@@ -87,7 +86,7 @@
 										<th>Tipo de Comisión</th>
 										<th>Fecha de Creación</th>
 										<th>Fecha de Envío a Facultad</th>
-                                        <th>Días Utilizados</th>
+										<th>Días Utilizados</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -98,7 +97,7 @@
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
-                                                <td>{{ app.used_days }}</td>
+												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
 									{% endfor %}
@@ -119,7 +118,7 @@
 										<th>Tipo de Comisión</th>
 										<th>Fecha de Creación</th>
 										<th>Fecha de Envío a Facultad</th>
-                                        <th>Días Utilizados</th>
+										<th>Días Utilizados</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -130,7 +129,7 @@
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
-                                                <td>{{ app.used_days }}</td>
+												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
 									{% endfor %}
@@ -151,7 +150,7 @@
 										<th>Tipo de Comisión</th>
 										<th>Fecha de Creación</th>
 										<th>Fecha de Envío a Facultad</th>
-                                        <th>Días Utilizados</th>
+										<th>Días Utilizados</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -162,7 +161,7 @@
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
-                                                <td>{{ app.used_days }}</td>
+												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
 									{% endfor %}
@@ -183,7 +182,7 @@
 										<th>Tipo de Comisión</th>
 										<th>Fecha de Creación</th>
 										<th>Fecha de Envío a Facultad</th>
-                                        <th>Días Utilizados</th>
+										<th>Días Utilizados</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -194,7 +193,7 @@
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
-                                                <td>{{ app.used_days }}</td>
+												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
 									{% endfor %}
@@ -216,7 +215,7 @@
 										<th>Fecha de Creación</th>
 										<th>Fecha de Envío a Facultad</th>
 										<th>Estado</th>
-                                        <th>Días Utilizados</th>
+										<th>Días Utilizados</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -227,7 +226,7 @@
 											<td>{{ app.creation_date }}</td>
 											<td>{{ app.sent_date }}</td>
 											<td>{{ app.get_state }}</td>
-                                            <td>{{ app.used_days }}</td>
+											<td>{{ app.used_days }}</td>
 										</tr>
 									{% endfor %}
 									</tbody>
@@ -238,10 +237,10 @@
 
 				</div>
 
-            </div>
-        </div>
-
+			</div>
+		</div>
     </div>
+
 </div>
 </body>
 </html>

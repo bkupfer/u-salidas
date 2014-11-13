@@ -5,15 +5,15 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.contrib import auth
-from django.shortcuts import render,render_to_response,redirect,get_object_or_404
+from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.contrib.auth import  authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.sessions.backends.db import SessionStore
-
 from django.contrib.auth.models import User, Group
+from django.utils.safestring import mark_safe
 
 from salidas.forms import *
 from salidas.models import *
@@ -21,6 +21,7 @@ from salidas.models import Document as DocumentModel
 
 from usalidas.email_contat_list import *
 from django.views.generic.edit import UpdateView
+
 # For externo
 from OpenSSL.crypto import * # verify, load_certificate, load_privatekey, Error,FILETYPE_PEM
 import base64
@@ -30,6 +31,7 @@ from io import StringIO
 from docx import * # to generate Docs
 import os, os.path
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from salidas.calendar import *
 
 # Views for all users
 def home(request):
@@ -315,15 +317,37 @@ def new_application(request):
 
     return render_to_response("Professor/new_application_form.html", locals(), context_instance=RequestContext(request))
 
+
 @login_required
 def teacher_calendar(request):
-    teacher = Teacher.objects.filter(user=request.user.id)  # me huele que es mejor usar 'get(rut=rut)', lo dejaré como 'filter' por ahora, para que no falle con bd vacía. idem para teachers_applications
-    return render_to_response("Professor/teacher_calendar.html", locals(), context_instance=RequestContext(request))
+    teacher = Teacher.objects.get(user = request.user)
+    calendar = my_calendar(request, 2014, 11)
+    return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'calendar': mark_safe(calendar)}, context_instance=RequestContext(request))
+
+
+def my_calendar(request, year, month):
+    my_workouts = Application.objects.order_by('creation_date')
+    valid_apps = []
+    for mw in my_workouts:
+        if mw.creation_date.year == year and mw.creation_date.month == month:
+            valid_apps.append(mw)
+    print(valid_apps)
+
+    return WorkoutCalendar(valid_apps).formatmonth(year, month)
+    #cal =  WorkoutCalendar(valid_apps).formatmonth(year, month)
+    #return render_to_response('my_template.html', {'calendar': mark_safe(cal),})
+
+
+# testing how to calendars
+def calendar(request):
+    mycalendar = my_calendar(request, 2014, 11)
+    return render_to_response('my_template.html', {'calendar': mark_safe(mycalendar)}, context_instance=RequestContext(request))
+
 
 #@csrf_protect
 @login_required
 def teachers_applications(request):
-    teacher = Teacher.objects.get(user=request.user)
+    teacher = Teacher.objects.get(user = request.user)
     apps = Application.objects.filter(id_Teacher=teacher).order_by('creation_date').reverse()
     return render_to_response("Professor/teachers_applications.html", locals(), context_instance=RequestContext(request))
 
@@ -439,7 +463,6 @@ def edit_application(request):
     for reps in last_replacements:
         if str(reps.type)=="Docente":
             docrep=reps.rut_teacher
-
         else:
             acrep=reps.rut_teacher
     try:
@@ -466,7 +489,6 @@ def edit_application(request):
             print(destinations.errors)
 
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():
-
             last_dests.delete()
 
             # Applications instance
@@ -602,7 +624,7 @@ def detail_alejandro(request):
     application = Application.objects.get(pk = id_app)
     destinations = Destination.objects.filter(application = id_app)
     teacher = application.id_Teacher
-    finances=Finance.objects.filter(id_application=id_app)
+    finances = Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
 
 
@@ -613,21 +635,3 @@ def finance_validation(request):
 # Angelica
 def days_validation(request):
     return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
-
-
-# Aditional views
-def calendar(request, year, month):
-    # primero debemos obtenemos los datos de la base de datos, luego le damos la query a WorkoutCalendar
-    # un ejemplo de cómo hacer esto es el que se muestra a continuación.
-
-    # para ver el resultado o mas detalles de como se supone funciona esto, revisar el siguiente link
-    #   http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
-
-    '''
-    my_workouts = Workouts.objects.order_by('my_date').filter(
-        my_date__year=year, my_date__month=month
-    )
-
-    cal = WorkoutCalendar(my_workouts).formatmonth(year, month)
-    return render_to_response('my_template.html', {'calendar': mark_safe(cal),})  # para nuestro caso, no sé bien qué deberíamos retornar.
-    '''
