@@ -210,8 +210,12 @@ def documentForm(doc, newApp):
 
 @login_required
 def new_application(request):
-    user=request.user
-    teacher=Teacher.objects.get(user=user)
+    user = request.user
+    id_teacher = Teacher.objects.get(user = request.user)
+    if id_teacher.mail == "" or id_teacher.signature == "":
+        messages.error(request, 'Debe ingresar sus datos antes de enviar una solicitud.')
+        return redirect(my_information)
+
     application = NewApplicationForm(request.POST or None,prefix="application")
     destinations = DestinationFormSet(request.POST or None,prefix="destinations")
     financeFormSet = FinanceFormSet(request.POST or None,prefix="finance")
@@ -540,7 +544,7 @@ def application_review(request):
             send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_ANGELICA, EMAIL_ALEJANDRO }, fail_silently = False)
             messages = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
             for replacement in replacements:
-                if replacement.rut_teacher.mail != None:
+                if replacement.rut_teacher.mail != "":
                     send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = False)
         if 'reject_button' in request.POST:
             id_state = 5    # rechazado
@@ -551,7 +555,6 @@ def application_review(request):
             subject = "Nueva solicitud de salida aprobada"
             message = "Su solicitud de salida ha sido aprobada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = False)
-
 
         state = ApplicationState.objects.get(pk = id_state)
         stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
