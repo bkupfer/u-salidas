@@ -270,7 +270,7 @@ def new_application(request):
             # destinations
             for destination in destinations:
                 destinationForm(destination, newApp)
-            used_days = newApp.get_used_days()
+            used_days = newApp.compute_used_days()
             newApp.used_days=used_days
             newApp.save()
 
