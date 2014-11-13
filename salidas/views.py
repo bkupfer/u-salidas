@@ -321,8 +321,23 @@ def new_application(request):
 @login_required
 def teacher_calendar(request):
     teacher = Teacher.objects.get(user = request.user)
-    calendar = my_calendar(request, 2014, 11)
-    return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'calendar': mark_safe(calendar)}, context_instance=RequestContext(request))
+    year, month = 2014, 10
+    if request.method == 'POST':
+        year = int(request.POST['year'])
+        month = int(request.POST['month'])
+        if 'prev' in request.POST:
+            month = (month - 1)
+            if month == 0:
+                month = 12
+                year -= 1
+        if 'next' in request.POST:
+            month = (month + 1) % 13
+            if month == 0:
+                month += 1
+                year += 1
+
+    calendar = my_calendar(request, year, month)
+    return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'calendar': mark_safe(calendar), 'year': year, 'month':month}, context_instance=RequestContext(request))
 
 
 def my_calendar(request, year, month):

@@ -34,6 +34,7 @@
 		});
 	</script>
 
+
 </head>
 <body>
 
@@ -73,6 +74,12 @@
 				<!-- Calendario -->
 				<div class="row">
 					<h3>Calendario</h3>
+					<form method="POST"> {% csrf_token %}
+						<input type="hidden" name="year" value={{ year }}>
+						<input type="hidden" name="month" value={{ month }}>
+						<button type="submit" class="btn btn-default" name="prev" >Anterior</button>
+						<button type="submit" class="btn btn-default" name="next">Siguiente</button>
+					</form>
 					<div id="calendar-div">
 						{{ calendar }}
 					</div>
