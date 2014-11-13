@@ -91,12 +91,18 @@
 							<td>
 								<table class="table">
 									<tr>
+                                        <th>¿Financia DCC?</th>
 										<th>Montos</th>
 										<th>Cantidad</th>
 										<th>Moneda</th>
 									</tr>
 									{% for fin in finances %}
 									<tr>
+                                        {% if fin.financed_by_dcc %}
+                                            <td><span style="left:20%;color:rgba(26, 206, 26, 1)" class="glyphicon glyphicon-ok"></span></td>
+                                        {% else %}
+                                             <td><span style="color:red;left:20%" class="glyphicon glyphicon-remove"></span></td>
+                                        {% endif %}
 										<td>{{ fin.get_finance_type }}</td>
 										<td>{{ fin.amount }}</td>
 										<td>{{ fin.id_currency }}</td>

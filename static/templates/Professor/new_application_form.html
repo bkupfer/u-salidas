@@ -131,6 +131,9 @@
                                                     <div class="col-sm-2">
                                                         {{ form.id_currency }}
                                                     </div>
+                                                    <div class="col-sm-2" style="color:red;display: none;" id="alarma_{{ row_cycle }}">
+                                                        <p>*Debe ingresar monto y tipo de moneda</p>
+                                                    </div>
                                                     {% if row_cycle != 'Viático' %}
                                                        <br/><hr>
                                                     {% endif %}
