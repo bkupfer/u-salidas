@@ -93,11 +93,11 @@ class Application(models.Model):
         dests = Destination.objects.filter(application=self)
         return dests
     def get_used_days(self):
-        dests=self.get_destinations()
-        used_days=0
-        for dest in dests:
-            used_days+=dest.get_used_days()
-        return used_days
+        #dests=self.get_destinations()
+        #used_days=0
+        #for dest in dests:
+        #    used_days+=dest.get_used_days()
+        return self.used_days
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
         files =[]
