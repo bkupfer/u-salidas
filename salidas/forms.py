@@ -33,7 +33,7 @@ class FinanceForm(forms.ModelForm):
 #     checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
 
 FinanceFormSet = formset_factory(FinanceForm, max_num=3, extra=3)
-#FinanceFormSet_Edit= formset_factory(FinanceDccForm,extra=0)
+FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
 
 class DestinationForm(forms.ModelForm):
