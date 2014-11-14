@@ -72,7 +72,7 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Pendiente DCC" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
@@ -110,7 +110,7 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Pendiente Facultad" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
@@ -144,7 +144,7 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Terminada" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
@@ -179,7 +179,7 @@
 										{% for app in apps %}
                                             {% if app.get_state.state != "Pendiente DCC" %}
 											<tr>
-												<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+												<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                 <td>{{ app.id_Teacher }}</td>
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>

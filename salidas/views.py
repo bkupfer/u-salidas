@@ -89,7 +89,7 @@ def success(request):
         else:
             return redirect('teachers_applications')
     elif is_in_group(user, 'angelica'):
-        return redirect('days_validation')
+        return redirect('list_angelica')
     elif is_in_group(user, 'magna'):
         return redirect('list_of_applications')
     elif is_in_group(user, 'alejandro'):
@@ -122,7 +122,7 @@ def login(request):
                     else:
                         return redirect('teachers_applications')
                 elif is_in_group(user, 'angelica'):
-                    return redirect('days_validation')
+                    return redirect('list_angelica')
                 elif is_in_group(user, 'magna'):
                     return redirect('list_of_applications')
                 elif is_in_group(user, 'alejandro'):
@@ -623,6 +623,7 @@ def historic_calendar(request):
 
 
 # Views Alejandro
+@csrf_protect
 @login_required
 def list_alejandro(request):
     apps = Application.objects.all()
@@ -639,11 +640,19 @@ def detail_alejandro(request):
     finances = Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
 
-
+@csrf_protect
+@login_required
 def finance_validation(request):
     return render_to_response("Alejandro/finance_validation.html", locals(), content_type=RequestContext(request))
 
 
 # Angelica
+@csrf_protect
+@login_required
 def days_validation(request):
     return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
+
+@csrf_protect
+@login_required
+def list_angelica(request):
+    return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))

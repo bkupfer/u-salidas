@@ -36,6 +36,7 @@ urlpatterns = patterns('',
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
     url(r'^finance_validation', 'salidas.views.finance_validation', name='finance_validation'),
     url(r'^days_validation', 'salidas.views.days_validation', name='days_validation'),
+    url(r'^list_angelica', 'salidas.views.list_angelica', name='list_angelica'),
 
     # Documents
     url(r'^getfiles', 'salidas.documentViews.getfiles',name='exportar_doc'),

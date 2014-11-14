@@ -58,6 +58,7 @@
 										<thead>
 										<tr>
 											<th>Nº</th>
+                                            <th>Profesor solicitante</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -69,6 +70,7 @@
 											{% if app.get_state.state == "Pendiente aprobacion" %}
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
+                                                    <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
 													<td>{{ app.sent_date }}</td>
@@ -90,6 +92,7 @@
 										<thead>
 										<tr>
 											<th>Nº</th>
+                                            <th>Profesor solicitante</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -105,6 +108,7 @@
 											{% if app.get_state.state == "Pendiente DCC" %}
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
+                                                    <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
 													<td>{{ app.sent_date }}</td>
@@ -130,6 +134,7 @@
 										<thead>
 										<tr>
 											<th>Nº</th>
+                                            <th>Profesor solicitante</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -141,6 +146,7 @@
 											{% if app.get_state.state == "Pendiente Facultad" %}
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
+                                                    <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
 													<td>{{ app.sent_date }}</td>
@@ -162,6 +168,7 @@
 										<thead>
 										<tr>
 											<th>Nº</th>
+                                            <th>Profesor solicitante</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -173,6 +180,7 @@
 											{% if app.get_state.state == "Terminada" %}
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
+                                                    <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date }}</td>
 													<td>{{ app.sent_date }}</td>
@@ -194,6 +202,7 @@
 										<thead>
 										<tr>
 											<th>Nº</th>
+                                            <th>Profesor solicitante</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -205,6 +214,7 @@
 										{% for app in apps %}
 											<tr>
 												<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
+                                                <td>{{ app.id_Teacher }}</td>
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date }}</td>
 												<td>{{ app.sent_date }}</td>
