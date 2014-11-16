@@ -89,12 +89,19 @@ class ReplacementApplicationForm(forms.Form):
             teacher1=Teacher.objects.get(user=user)
             y_modules=teacher1.get_modules()
             my_modules=set(y_modules)
+            y_courses=teacher1.get_courses()
+            my_courses=set(y_courses)
             teachers = Teacher.objects.all().exclude(user=user)
             query=teachers
             for teacher in teachers:
-                their_modules=set(teacher.get_modules())
+                their_courses=set(teacher.get_courses())
+                diff_courses= their_courses.difference(my_courses)
+                #su horario sin contar los ramos comunes
+                their_modules = []
+                for course in diff_courses:
+                    their_modules+=(course.get_modules())
+                #si tienen topes lo saco de la lista
                 if not my_modules.isdisjoint(their_modules):
-                    #print(query)
                     query=query.exclude(id=teacher.id)
         except TeacherHasCourse.DoesNotExist:
             query=Teacher.objects.all()
@@ -130,3 +137,9 @@ class TeacherSignature(forms.ModelForm):
 
 class stateForm(forms.Form):
     state=forms.ModelChoiceField(queryset=ApplicationState.objects.all())
+
+class contactoForm(forms.Form):
+    nombre = forms.CharField(40)
+    email = forms.EmailField()
+    asunto = forms.CharField(20)
+    mensaje = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Comentarios, sugerencias o errores...'}))

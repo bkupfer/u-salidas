@@ -99,7 +99,7 @@ def success(request):
         return redirect('nothing_to_do_here')
 
 
-@csrf_protect
+@csrf_exempt
 def login2(request):
     return render_to_response("General/login2.html", locals(), context_instance=RequestContext(request))
 
@@ -656,3 +656,16 @@ def days_validation(request):
 @login_required
 def list_angelica(request):
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
+
+@csrf_exempt
+def contacto(request):
+    form = contactoForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            nombre=form.cleaned_data['nombre']
+            mail=form.cleaned_data['email']
+            asunto=form.cleaned_data['asunto']
+            mensaje=form.cleaned_data['mensaje']
+            send_mail(asunto, mensaje, settings.EMAIL_HOST,{mail,settings.EMAIL_HOST}, fail_silently = False)
+            return redirect("login2")
+    return  render_to_response("General/contacto.html", locals(), content_type=RequestContext(request))

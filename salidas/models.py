@@ -193,7 +193,7 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name + " " + self.last_name
     def get_courses(self):
-        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)
+        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)#todo:falta filtrar por semestre
         #if len(his_courses)==1:
         #    his_courses=[his_courses]
         courses = []

@@ -22,31 +22,49 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
 
 <body>
-<div class="row">
+<div class="row-fluid show-grid">
     <div class="col-sm-6"><img src="{% static "images/logo-departamento.jpg" %}"></div>
     <div class="col-sm-6" ><li><img style="position:relative;left:50%"  src="{% static "images/logo-facultad.png" %}"></div>
 
     <div class="col-sm-12">
-        <a  style="position:relative;left:60%" href="contacto" class="btn-lg" title="">        <span class="glyphicon glyphicon-envelope"></span>
-Contacto</a>
     </div>
 </div>
-<div class="row" style="color:grey">
-    <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
-        <div class="row">
-            <div class="col-sm-12 contenido">
-            <h2 style="color:#428BCA">Sistema de Salidas DCC</h2>
-            <h4>Para ingresar debes acceder con tu cuenta u-pasaporte</h4>
-            </div>
-            <div class="col-sm-12">
-                <script language="JavaScript" src="https://www.u-cursos.cl/upasaporte/javascript?servicio=dcc_salidas"></script>
-            </div>
+<div class="container" style="color:grey">
+    <div class="col-sm-12">
+        <div class="col-sm-12 contenido">
+        <h2 style="color:#428BCA">Contacto</h2>
+        <h4>Si tienes comentarios, sugerencias o quieres reportar un error, escríbenos!</h4>
+        </div>
+
+        <div class="col-sm-12">
+            <form class="form" role="form" method="post"> {% csrf_token %}
+                <div class="row">
+                    <br>
+                    <label class="col-sm-2">Nombre: </label>
+                    {{ form.nombre }}
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-sm-2">Email: </label>
+                    {{ form.email}}
+                </div><br>
+                <div class="row">
+                    <label class="col-sm-2">Asunto: </label>
+                    {{ form.asunto }}
+                </div><br>
+                <div class="row">
+                    <label class="col-sm-2">Mensaje: </label>
+                    {{ form.mensaje }}
+                </div><br>
+                <button class="btn btn-lg btn-primary" type="submit">Enviar Mensaje</button>
+            </form>
         </div>
     </div>
-</div> <!-- /row -->
+</div> <!-- /container -->
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
