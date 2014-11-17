@@ -60,7 +60,7 @@ def externo(request):
             #verify(certificado,firma,"holahola", 'sha1')
             #retorna un request con el usuario
             username=request.POST['rut']
-            user = auth.authenticate(username=username, password="1")
+            user = auth.authenticate(username=username, password="ing")
             auth.login(request,user)
             s=SessionStore()
             s['user_id']=request.user.username
@@ -80,11 +80,11 @@ def externo(request):
 def success(request):
     session = request.GET['s']
     s= Session.objects.get(session_key=session)
-    user = auth.authenticate(username=s.get_decoded().get('user_id'), password="1")
+    user = auth.authenticate(username=s.get_decoded().get('user_id'), password="ing")
     auth.login(request,user)
     if is_in_group(user, 'professor'):
-        prof = Teacher.objects.get(user = user.id)
-        if prof.mail == None or prof.signature == "":
+        teacher = Teacher.objects.get(user = user.id)
+        if teacher.mail == None or teacher.mail == "" or teacher.signature == None or teacher.signature == "":
             return redirect('my_information')
         else:
             return redirect('teachers_applications')
@@ -117,7 +117,7 @@ def login(request):
                 session_id = request.user.id
                 if is_in_group(user, 'professor'):
                     prof = Teacher.objects.get(user = user.id)
-                    if prof.mail == None or prof.signature == "":
+                    if prof.mail == None or prof.mail == "" or prof.signature == None or prof.signature == "":
                         return redirect('my_information')
                     else:
                         return redirect('teachers_applications')
@@ -362,18 +362,15 @@ def replacement_list(request):
 #todo: bloquear obtencion de id que no pertenece a usuario
 @login_required
 def replacement_requests(request):
-    replacement = Replacement.objects.get( pk = request.GET['id'] )
-
+    replacement = Replacement.objects.get(pk=request.GET['id'])
     if 'accept_button' in request.POST:
         replacement.id_state = State.objects.get(pk=2)
         replacement.save()
         return redirect('replacement_list')
-
     if 'reject_button' in request.POST:
         replacement.id_state = State.objects.get(pk=3)
         replacement.save()
         return redirect('replacement_list')
-
     return render_to_response("Professor/replacement_requests.html", locals(), context_instance=RequestContext(request))
 
 
