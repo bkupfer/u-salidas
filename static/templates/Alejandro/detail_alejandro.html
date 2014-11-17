@@ -42,10 +42,6 @@
                             <td>{{ teacher.rut }}</td>
                         </tr>
                         <tr>
-                            <th>Financiamiento</th>
-                            <td>{{ application.financed_by }}</td>
-                        </tr>
-                        <tr>
                             <th>Destino(s)</th>
                             <td>
                                 <table class="table">
@@ -53,12 +49,14 @@
                                                 <th> Ciudad, País </th>
                                                 <th> Fecha Inicio </th>
                                                 <th> Fecha Término </th>
+                                                <th> Actividad a realizar</th>
                                             </tr>
                                         {% for d in destinations %}
                                             <tr>
                                                 <td> {{ d.city }}, {{ d.country }}</td>
                                                 <td> {{ d.start_date }}</td>
-                                                <td>{{ d.end_date }}</td>
+                                                <td> {{ d.end_date }}</td>
+                                                <td> {{ d.motive  }}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -72,12 +70,14 @@
                             <th>Montos</th>
                             <th>Cantidad</th>
                             <th>Moneda</th>
+                            <th>Financiado por</th>
                         </tr>
                         {% for fin in finances %}
                         <tr>
                             <td>{{ fin.get_finance_type }}</td>
                             <td>{{ fin.amount }}</td>
                             <td>{{ fin.id_currency }}</td>
+                            <td>{{ fin.financed_by }}</td>
                         </tr>
                         {% endfor %}
                     </table>
