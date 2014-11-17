@@ -22,9 +22,10 @@ class FinanceType(models.Model):
 class Finance(models.Model):
     id_application = models.ForeignKey('Application')
     id_finance_type = models.ForeignKey('FinanceType')
-    financed_by_dcc = models.BooleanField(default=False)
+    #financed_by_dcc = models.BooleanField(default=False)
     id_currency = models.ForeignKey('Currency')
     amount = models.PositiveIntegerField()
+    financed_by = models.TextField()
     def get_finance_type(self):
         return self.id_finance_type.type
 
@@ -48,6 +49,7 @@ class Destination(models.Model):
     city    = models.CharField(max_length=55)
     start_date = models.DateField()
     end_date   = models.DateField()
+    motive = models.TextField()
     def get_used_days(self):
         dt=self.end_date - self.start_date
         return dt.days
@@ -62,8 +64,6 @@ class CommissionType(models.Model):
 class Application(models.Model):
     id_Teacher = models.ForeignKey('Teacher')
     id_commission_type = models.ForeignKey('CommissionType')
-    motive = models.TextField()
-    financed_by = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
     id_funds_validation_state = models.ForeignKey('State')

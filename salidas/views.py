@@ -161,15 +161,12 @@ def financeForm(finance, newApp, id_finance_type):
     type = FinanceType.objects.get(pk=id_finance_type)
     if finance.is_valid():
         try:
-            financed_by_dcc = finance.cleaned_data['financed_by_dcc']
-            if financed_by_dcc:
-                financed_by_dcc = True
-            else:
-                financed_by_dcc = False
             currency = finance.cleaned_data['id_currency']
             amount = finance.cleaned_data['amount']
+            fb = finance.cleaned_data['financed_by']
             type = FinanceType.objects.get(pk=id_finance_type)
-            newFinance = Finance(id_application=newApp,id_finance_type=type, financed_by_dcc=financed_by_dcc, id_currency=currency, amount=amount)
+            newFinance = Finance(id_application=newApp,id_finance_type=type,financed_by=fb, id_currency=currency,
+                                 amount=amount)
             newFinance.save()
         except Exception as e:
             print(e)
@@ -184,20 +181,17 @@ def destinationForm(destination, newApp):
         try:
             country = destination.cleaned_data['country']
             city    = destination.cleaned_data['city']
-            print("date")
             start_date = destination.cleaned_data['start_date']
-            print("start_date")
-            print(start_date)
             end_date= destination.cleaned_data['end_date']
-            print(end_date)
-            destiny = Destination(application=newApp,country=country, city=city, start_date=start_date, end_date=end_date)
+            motive = destination.cleaned_data['motive']
+            destiny = Destination(application=newApp,country=country, city=city, start_date=start_date,
+                                  end_date=end_date,motive=motive)
             destiny.save()
         except:
             print("error en destinationForm method. view.py")
     else:
         print("error en destinationForm method. view.py 2")
         print(destination.errors)
-
 
 def documentForm(doc, newApp):
     if doc.is_valid():
@@ -207,7 +201,6 @@ def documentForm(doc, newApp):
             newDocument.save()
         except:
             file = None
-
 
 @login_required
 def new_application(request):
@@ -234,33 +227,27 @@ def new_application(request):
                         valid_dest=True
                 else:
                     break
-        for finance in financeFormSet:
-            if finance.is_valid():
-                valid_finance = True
-            else:
-                dict = finance.errors.as_data()
-                #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
-                if len(dict) == 1:
-                    valid_finance = False
-                    break
-
+        # for finance in financeFormSet:
+        #     if finance.is_valid():
+        #         valid_finance = True
+        #     else:
+        #         dict = finance.errors.as_data()
+        #         #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
+        #         if len(dict) == 1:
+        #             valid_finance = False
+        #             break
         if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
-
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
-            motive = application.cleaned_data['motive']
-            fb = application.cleaned_data['financed_by']
             daysv = State.objects.get(pk=1)     # pendiente
             fundsv = State.objects.get(pk=1)    # pendiente
 
-            newApp = Application(id_Teacher = id_teacher, id_commission_type = ct, motive = motive, financed_by = fb,
-                                 id_days_validation_state = daysv, id_funds_validation_state = fundsv)
+            newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,id_days_validation_state = daysv,
+                                 id_funds_validation_state = fundsv)
             newApp.save()
-
-            #agregarle estado a la App
-            #estado pendiente dcc
-            state = ApplicationState.objects.get(pk=1)  # pendiente aprobacion
+            # Application state: Pendiente Aprobacion
+            state = ApplicationState.objects.get(pk=1)
             stateApp = ApplicationHasApplicationState(id_application=newApp, id_application_state=state)
             stateApp.save()
 
@@ -281,6 +268,7 @@ def new_application(request):
             # destinations
             for destination in destinations:
                 destinationForm(destination, newApp)
+
             used_days = newApp.compute_used_days()
             newApp.used_days=used_days
             newApp.save()
@@ -453,14 +441,14 @@ def edit_application(request):
     last_app = Application.objects.get(pk=id_app)
     user=request.user
     teacher=last_app.id_Teacher
-    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'motive':last_app.motive,'financed_by':last_app.financed_by,'used_days':last_app.used_days})
+    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'used_days':last_app.used_days})
     last_finances = last_app.get_finances()
     fins=[]
     finance_types=FinanceType.objects.all()
     for finance_type in finance_types:
         try:
             finance=Finance.objects.get(id_application=last_app,id_finance_type=finance_type)
-            fins.append({'financed_by_dcc':finance.financed_by_dcc,'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type})
+            fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type,'financed_by':finance.financed_by})
         except:
             fins.append({'id_finance_type':finance_type})
         print(fins)
@@ -469,7 +457,8 @@ def edit_application(request):
     last_dests = Destination.objects.filter(application = last_app.id)
     dess=[]
     for dest in last_dests:
-        dess.append({'country':dest.country,'city':dest.city,'start_date':dest.start_date,'end_date':dest.end_date})
+        dess.append({'country':dest.country,'city':dest.city,'start_date':dest.start_date,'end_date':dest.end_date,
+                     'motive':dest.motive})
     destinations = DestinationFormSet_Edit(request.POST or None,prefix="destinations",initial=dess)
     last_replacements = last_app.get_replacements()
     for reps in last_replacements:
@@ -506,15 +495,9 @@ def edit_application(request):
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
-            motive = application.cleaned_data['motive']
-            fb = application.cleaned_data['financed_by']
             used_days = application.cleaned_data['used_days']
-            daysv = State.objects.get(pk=1)     # pendiente
-            fundsv = State.objects.get(pk=1)    # pendiente
 
             last_app.id_commission_type=ct
-            last_app.motive=motive
-            last_app.financed_by=fb
             last_app.used_days=used_days
             last_app.save()
 

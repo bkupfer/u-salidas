@@ -57,14 +57,6 @@
 							<td>Tipo de comisi&oacute;n</td>
 							<td>{{ comm_type }}</td>
 						</tr>
-						<tr>
-							<td>Motivo</td>
-							<td>{{ app.motive }}<td>
-						</tr>
-						<tr>
-							<td>Financiamiento</td>
-							<td>{{ app.financed_by }}</td>
-						</tr>
 
 						<tr>
 							<td>Destino(s)</td>
@@ -74,12 +66,14 @@
 										<th> Ciudad, País</th>
 										<th> Fecha Inicio</th>
 										<th> Fecha Término</th>
+                                        <th> Actividad a Realizar</th>
 									</tr>
 									{% for d in dest %}
 										<tr>
-											<td>{{ d.city }}, {{ d.country }}</td>
-											<td>{{ d.start_date }}</td>
-											<td>{{ d.end_date }}</td>
+											<td class="col-sm-3">{{ d.city }}, {{ d.country }}</td>
+											<td class="col-sm-3">{{ d.start_date }}</td>
+											<td class="col-sm-3">{{ d.end_date }}</td>
+                                            <td class="col-sm-3">{{ d.motive }}</td>
 										</tr>
 									{% endfor %}
 								</table>
@@ -91,21 +85,17 @@
 							<td>
 								<table class="table">
 									<tr>
-                                        <th>¿Financia DCC?</th>
 										<th>Montos</th>
 										<th>Cantidad</th>
 										<th>Moneda</th>
+                                        <th>Financiado Por</th>
 									</tr>
 									{% for fin in finances %}
 									<tr>
-                                        {% if fin.financed_by_dcc %}
-                                            <td><span style="left:20%;color:rgba(26, 206, 26, 1)" class="glyphicon glyphicon-ok"></span></td>
-                                        {% else %}
-                                             <td><span style="color:red;left:20%" class="glyphicon glyphicon-remove"></span></td>
-                                        {% endif %}
 										<td>{{ fin.get_finance_type }}</td>
 										<td>{{ fin.amount }}</td>
 										<td>{{ fin.id_currency }}</td>
+                                        <td>{{ fin.financed_by }}</td>
 									</tr>
 									{% endfor %}
 								</table>

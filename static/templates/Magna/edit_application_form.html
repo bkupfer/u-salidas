@@ -41,7 +41,8 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-7">
-                        <a href="application_review?id={{ id_app }}" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-eye-open"></span> Ir a modo vista</a>
+                        <a href="application_review?id={{ id_app }}" class="btn btn-sm btn-info">
+                            <span class="glyphicon glyphicon-eye-open"></span> Ir a Modo Lectura</a>
                     </div>
 				</div>
                 <br>
@@ -63,44 +64,17 @@
 
                 <!-- Informacion del viaje (tipo de comision, motivo y financiamiento) -->
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-								<span class="glyphicon glyphicon-leaf"></span> Información de viaje
-								<p style="float: right; cursor: pointer;" class="col-sm-2" onclick="alert('- Tipo de comisión: Seleccione el tipo de comisión.\n- Motivo: Ingrese el motivo del viaje. Ejemplo: Competencia ACM. \n- Financiamiento: Indique el tipo de financiamiento. Ejemplo: Financiado mediante crédito CORFO.');"><b>Ayuda</b></p>
-							</div>
-							<div class="panel-body">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="col-sm-8">
-                                            <div class="col-sm-12">
-                                                <label class="control-label col-sm-5" for="nombre">Tipo de comisión <label style="color:red">*</label></label>
-                                                <div class="col-sm-5">
-                                                    {{ application.id_commission_type }}
-                                                </div>
-                                            </div>
-											<br>
-
-                                            <div class="col-sm-12">
-
-                                                <label class="control-label col-sm-5" for="nombre">Motivo  <label  style="color:red">* </label></label>
-
-                                                <div class="col-sm-5">
-                                                    {{ application.motive }}
-                                                </div>
-                                            </div>
-											<br>
-
-                                            <div class="col-sm-12">
-
-                                                <label class="control-label col-sm-5" for="nombre">Financiamiento  <label  style="color:red">* </label></label>
-                                                <div class="col-sm-5">
-                                                    {{ application.financed_by }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <div class="col-sm-12">
+                                <label class="control-label col-sm-4" style="top:6px" for="nombre">Tipo de comisión <label style="color:red">*</label></label>
+                                <div class="col-sm-6">
+                                    {{ application.id_commission_type }}
                                 </div>
+                                <div class="btn-group btn-group-sm col-sm-2" role="group">
+                                    <button style="cursor: pointer;" onclick="alert(' Tipo de comisión: Seleccione el tipo de comisión.\n -Académica: \n -Estudio: \n -Servicio:  ');" type="button" class="btn btn-default">Ayuda</button>
+                                </div>
+                                <p ></p>
                             </div>
                         </div>
                     </div>
@@ -126,23 +100,23 @@
                                                     <label class="col-sm-2 control-label" align="left">
                                                         {% cycle "Inscripción" "Pasaje" "Viático" as row_cycle%}
                                                     </label>
-                                                    <label class="col-sm-2 control-label" align="right">¿Financia DCC?</label>
-
-                                                    <div class="col-sm-1" align="left">
-                                                        {{ form.financed_by_dcc }}
-                                                    </div>
                                                     <div class="col-sm-3">
                                                         {{ form.amount }}
                                                     </div>
                                                     <div class="col-sm-2">
                                                         {{ form.id_currency }}
                                                     </div>
+                                                    <div class="col-sm-2" style="top: 6px;">
+                                                        <label class="control-label" align="right" >Financiado con:</label>
+                                                    </div>
+                                                    <div class="col-sm-3 input-group">
+                                                        {{ form.financed_by }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 {% endfor %}
-                                <br/><hr>
                             </div>
                         </div>
                     </div>
@@ -169,12 +143,16 @@
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label">Destino</label>
                                                             <p class="col-sm-2">País <label style="color:red">*</label></p>
-                                                            {{ destination.country }}
+                                                             <div class="col-sm-6">
+                                                                {{ destination.country }}
+                                                            </div>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label"></label>
                                                             <p class="col-sm-2">Ciudad <label style="color:red">*</label> </p>
-                                                            {{ destination.city }}
+                                                            <div class="col-sm-6">
+                                                                {{ destination.city }}
+                                                            </div>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
@@ -185,6 +163,11 @@
                                                             <br>
                                                             <label class="control-label col-sm-4" for="nombre">Fecha de Término <label style="color:red">*</label></label>
                                                             {{ destination.end_date }}
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <br>
+                                                            <label class="control-label col-sm-4" for="nombre">Actividad a realizar:  <label  style="color:red">* </label></label>
+                                                                {{ destination.motive }}
                                                         </div>
                                                         <div align="right"><a class="delete" href="#">Borrar</a></div>
                                                         <hr>

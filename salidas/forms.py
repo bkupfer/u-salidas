@@ -8,21 +8,21 @@ from django.contrib.auth.models import User
 # New application form
 class NewApplicationForm(forms.ModelForm):
     id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),
-                                                empty_label="Seleccione Tipo de Comisión")
-    motive = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Fundamentos'}))
-    financed_by = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Indique quien financia...'}))
-
+                                                empty_label="Seleccione Tipo de Comisión",
+                                                widget=forms.Select(attrs={'class':'form-control input-sm'}))
     class Meta:
         model = Application
         exclude = (
             'id_Teacher', 'directors_name', 'directors_rut', 'id_days_validation_state', 'id_funds_validation_state')
         # fields = ('motive','financed_by')
 
-
 class FinanceForm(forms.ModelForm):
-    id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Tipo de Moneda")
-    amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': u'  Ingrese un Monto...'}))
-    financed_by_dcc = forms.BooleanField(required=False,widget=forms.CheckboxInput())
+    id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Moneda",
+                                         widget=forms.Select(attrs={'class':'form-control input-sm'}))
+    amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'class':'form-control input-sm','placeholder': u'  Ingrese un Monto...'}))
+    financed_by = forms.CharField(required=False,widget=forms.TextInput(attrs={'class':"form-control",
+                                                                'placeholder': u'Indique quien financia...'}))
+    #financed_by_dcc = forms.BooleanField(required=False,widget=forms.CheckboxInput())
     #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
         model = Finance
@@ -38,14 +38,14 @@ FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(
-        attrs={'onchange': "print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'class': 'city', 'onchange': "updateStateTxt(this);"},
+        attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
+    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm', 'onchange': "updateStateTxt(this);"},
                                                choices=([("", "Seleccione Ciudad")])))
     start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
     end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
-
+    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Fundamentos...'}))
     class Meta:
         model = Destination
         exclude = {'application'}

@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^contacto', 'salidas.views.contacto', name='contacto'),
 
     # Teacher view pages
+    # Teacher view pages
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
     url(r'^teachers_applications', 'salidas.views.teachers_applications', name='teachers_applications'),
@@ -31,7 +32,6 @@ urlpatterns = patterns('',
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_review', 'salidas.views.application_review', name='application_review'),
 #    url(r'^changeState', 'salidas.views.changeState', name='changeState'),
-#    url(r'^editApplication', 'salidas.views.editModeView', name='editApplication'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
