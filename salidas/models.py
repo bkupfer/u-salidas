@@ -72,6 +72,7 @@ class Application(models.Model):
     used_days = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return "Application "+str(self.id)
+
     #Obtiene el ultimo estado asociado a la solicitud
     def get_state(self):
         try:
@@ -80,6 +81,7 @@ class Application(models.Model):
             print("Error in method get_state(). (models.py, Application)")
             ret = "Estado vacío, revisar"
         return ret
+
     #Obtiene la fecha del envio a facultad
     def sent_date(self):
         state = ApplicationState.objects.get(pk=2)
@@ -90,34 +92,42 @@ class Application(models.Model):
         except:
             ret = "No enviada"
         return ret
+
     def get_destinations(self):
         dests = Destination.objects.filter(application=self)
         return dests
+
     def get_used_days(self):
         return self.used_days
+
     def compute_used_days(self):
         dests=self.get_destinations()
         computed_days=0
         for dest in dests:
             computed_days+=dest.get_used_days()
         return computed_days
+
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
         files =[]
         for doc in docs:
             files+=doc.file
         return files
+
     def get_replacements(self):
         replacements = Replacement.objects.filter(id_Application = self)
         return replacements
+
     def discount_days(self):
-        #TODO estados que no se cuentan: rechazado pk=3? algún otro estado?
+        # TODO estados que no se cuentan: rechazado pk=3? algún otro estado?
         if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state()!=State.objects.get(pk=3):
             return True
         return False
+
     def get_finances(self):
         finances=Finance.objects.filter(id_application=self)
         return finances
+
     def get_start_date(self):
         dests=self.get_destinations()
         start_date=date.max
@@ -125,6 +135,7 @@ class Application(models.Model):
             if dest.start_date<start_date:
                 start_date=dest.start_date
         return start_date
+
     def get_end_date(self):
         dests=self.get_destinations()
         end_date=date.min
@@ -132,6 +143,7 @@ class Application(models.Model):
             if dest.end_date>end_date:
                 end_date=dest.end_date
         return end_date
+
     def get_week_days_missed(self):
         destinations=self.get_destinations()
         week_days_missed=dict()
@@ -150,6 +162,7 @@ class Application(models.Model):
     def get_academic_replacement_state(self):
         replacements = Replacement.objects.get(id_Application=self,type=2)
         return replacements.get_state()
+
 
 class ApplicationState(models.Model):
     state = models.CharField(max_length=20)
@@ -188,10 +201,11 @@ class Teacher(models.Model):
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
     mail = models.EmailField() # todo: refactor to 'email'
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
-    #full_teaching_time = models.BooleanField(default=True)      # jornada docente: True -> completa, False -> Media, el default es para que tenga algo y django no reclame
-    working_day=models.ForeignKey('WorkingDay') #Jornada docente: Completa(1) Media (2)
+    working_day=models.ForeignKey('WorkingDay')     # jornada docente: Completa(1) Media (2)
+
     def __str__(self):
         return self.name + " " + self.last_name
+
     def get_courses(self):
         his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)#todo:falta filtrar por semestre
         #if len(his_courses)==1:
@@ -200,15 +214,18 @@ class Teacher(models.Model):
         for course in his_courses:
             courses=courses+[course.id_Course]
         return courses
+
     def get_modules(self):
         courses = self.get_courses()
         modules = []
         for course in courses:
             modules+=(course.get_modules())
         return modules
+
     def get_applications(self):
         his_applications = Application.objects.filter(id_Teacher=self)
         return his_applications
+
     def get_used_days(self):
         his_apps = self.get_applications()
         used_days=0
@@ -216,12 +233,10 @@ class Teacher(models.Model):
             if app.discount_days() and app.get_used_days() != None:
                 used_days+=app.get_used_days()
         return used_days
+
     def get_avaliable_days(self):
         used_days=self.get_used_days()
-        #if used_days<14:
-        return self.hierarchy.avaliable_days-used_days
-        #else:
-        #    return "ha superado la cantidad máxima de semanas docentes que puede ausentarse, contáctese con jefa de estudios."
+        return self.hierarchy.avaliable_days - used_days
 
     def get_possible_replacement_teachers(self):
         y_modules=self.get_modules()
@@ -235,6 +250,7 @@ class Teacher(models.Model):
                 replacement.append((teacher.pk,teacher))
                 i+=1
         return replacement
+
     def get_teaching_weeks_by_course(self):
         his_applications=Application.objects.filter(id_Teacher=self)
         week_days_missed=dict()
@@ -256,7 +272,6 @@ class Teacher(models.Model):
                     else:
                         print("curso de uds raras")
         return weeks_by_course
-
 
 
 #rut_teacher es un Teacher no un rut!!!

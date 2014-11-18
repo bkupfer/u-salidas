@@ -328,14 +328,15 @@ def teacher_calendar(request):
     return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'calendar': mark_safe(calendar), 'year': year, 'month':month}, context_instance=RequestContext(request))
 
 
+# teachers calendar creation
 def my_calendar(request, year, month):
-    my_workouts = Application.objects.order_by('creation_date')
-    valid_apps = []
-    for mw in my_workouts:
-        if mw.get_start_date().year == year and mw.get_end_date().month == month:
-            print(valid_apps)
-            valid_apps.append(mw)
-    return WorkoutCalendar(valid_apps).formatmonth(year, month)
+    my_apps = Application.objects.order_by('creation_date')
+    valid_dests = []
+    for my_app in my_apps:
+        for dest in my_app.get_destinations():
+            if dest.start_date.year == year and dest.start_date.month == month:
+                valid_dests.append(dest)
+    return ApplicationCalendar(valid_dests).formatmonth(year, month)
 
 
 # testing how to calendars

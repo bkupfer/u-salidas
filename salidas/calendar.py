@@ -6,12 +6,9 @@ from itertools import groupby
 
 from django.utils.html import conditional_escape as esc
 
-# Got this from :
-#  http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
-
-class WorkoutCalendar(HTMLCalendar):
+class ApplicationCalendar(HTMLCalendar):
     def __init__(self, workouts):
-        super(WorkoutCalendar, self).__init__()
+        super(ApplicationCalendar, self).__init__()
         self.workouts = self.group_by_day(workouts)
 
     def formatday(self, day, weekday):
@@ -22,9 +19,11 @@ class WorkoutCalendar(HTMLCalendar):
             if day in self.workouts:
                 cssclass += ' filled'
                 body = ['<ul>']
-                for workout in self.workouts[day]:
-                    body.append('<a href="application_detail?id=%s">' % workout.id)
-                    body.append(esc(workout.id_Teacher))
+                for dest in self.workouts[day]:
+                    body.append('<a href="application_detail?id=%s">' % dest.application_id)
+                    body.append(esc(dest.city))
+                    body.append('<br>')
+                    body.append(esc(dest.country))
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
             return self.day_cell(cssclass, day)
@@ -32,10 +31,10 @@ class WorkoutCalendar(HTMLCalendar):
 
     def formatmonth(self, year, month):
         self.year, self.month = year, month
-        return super(WorkoutCalendar, self).formatmonth(year, month)
+        return super(ApplicationCalendar, self).formatmonth(year, month)
 
     def group_by_day(self, workouts):
-        field = lambda workout: workout.creation_date.day
+        field = lambda workout: workout.start_date.day
         return dict(
             [(day, list(items)) for day, items in groupby(workouts, field)]
         )
