@@ -684,3 +684,7 @@ def contacto(request):
             send_mail(asunto, mensaje, settings.EMAIL_HOST,{mail,settings.EMAIL_HOST}, fail_silently = True)
             return redirect("login2")
     return  render_to_response("General/contacto.html", locals(), content_type=RequestContext(request))
+
+@csrf_exempt
+def acerca(request):
+    return  render_to_response("General/acerca_de.html", locals(), content_type=RequestContext(request))
