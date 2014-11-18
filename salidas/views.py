@@ -330,19 +330,13 @@ def teacher_calendar(request):
 
 # teachers calendar creation
 def my_calendar(request, year, month):
-    my_apps = Application.objects.order_by('creation_date')
+    my_apps = Application.objects.filter(id_teacher = request.user).order_by('creation_date')
     valid_dests = []
     for my_app in my_apps:
         for dest in my_app.get_destinations():
             if dest.start_date.year == year and dest.start_date.month == month:
                 valid_dests.append(dest)
     return ApplicationCalendar(valid_dests).formatmonth(year, month)
-
-
-# testing how to calendars
-def calendar(request):
-    mycalendar = my_calendar(request, 2014, 11)
-    return render_to_response('my_template.html', {'calendar': mark_safe(mycalendar)}, context_instance=RequestContext(request))
 
 
 #@csrf_protect
@@ -613,7 +607,34 @@ def application_review(request):
 
 @login_required
 def historic_calendar(request):
-    return render_to_response("Magna/historic_calendar.html", locals(), content_type=RequestContext(request))
+    year, month = date.today().year, date.today().month
+    if request.method == 'POST':
+        year = int(request.POST['year'])
+        month = int(request.POST['month'])
+        if 'prev' in request.POST:
+            month = (month - 1)
+            if month == 0:
+                month = 12
+                year -= 1
+        if 'next' in request.POST:
+            month = (month + 1) % 13
+            if month == 0:
+                month += 1
+                year += 1
+
+    calendar = my_historic_calendar(request, year, month)
+    return render_to_response("Magna/historic_calendar.html", {'calendar': mark_safe(calendar), 'year': year, 'month':month}, context_instance=RequestContext(request))
+
+
+#  historic calendar -- calendar showing all applications
+def my_historic_calendar(request, year, month):
+    my_apps = Application.objects.order_by('creation_date')
+    valid_dests = []
+    for my_app in my_apps:
+        for dest in my_app.get_destinations():
+            if dest.start_date.year == year and dest.start_date.month == month:
+                valid_dests.append(dest)
+    return HistoricCalendar(valid_dests).formatmonth(year, month)
 
 
 # Views Alejandro
