@@ -15,6 +15,9 @@
 	<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
 	<script src="{% static "js/jquery-ui.min.js" %}"></script>
 
+	<script src="{% static "public/js/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+
 	<title>Salidas DCC</title>
 </head>
 <body>
@@ -150,7 +153,7 @@
                            		{% elif actual_state.state == 'Pendiente DCC' %}
 									<button type="submit" class="btn btn-lg btn-primary" name="report_sent_button"> Reportar envio de documentos a facultad</button>
 								{% elif actual_state.state == 'Pendiente Facultad' %}
-									<button type="submit" class="btn btn-lg btn-primary" name="report_receive_button"> Reportar recibo de respuesta facultad</button>
+									<button href="#myModal" type="button" data-toggle="modal" class="btn btn-lg btn-primary">Reportar recibo de documentos a facultad</button>
 								{% endif %}
                             </div>
                         </div>
@@ -170,6 +173,35 @@
 </div>
 
 </body>
+
+<!-- Modal - pop-up for reporting retreive of documents -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>Reportar recibo de documentos a facultad</h3>
+            </div>
+            <form method="POST">  {% csrf_token %}
+				<div class="modal-body col-sm-12">
+					<div class="col-sm-12">
+						<label class="col-sm-4" align="right" style="margin-top: 3px;">Fecha de recibo:</label>
+						{{ report_receive_form.send_date }}
+					</div><div class="col-sm-12">
+						<label class="col-sm-4" align="right" style="margin-top: 3px;">Observaciones:</label>
+						{{ report_receive_form.obs }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button href="#" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary" name="report_receive_button_accepted"> Aceptado</button>
+					<button type="submit" class="btn btn-danger" name="report_receive_button_rejected"> Rechazado</button>
+				</div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function(){
         $('#generateDoc').click(function(){

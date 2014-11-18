@@ -295,7 +295,7 @@ def new_application(request):
             if not destinations.is_valid():
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
-                err = err + '\nDebe escojer sus profesores reemplazantes.'
+                err = err + '\nDebe seleccionar sus profesores reemplazantes.'
             if not valid_dest:
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
             messages.error(request, err)
@@ -332,9 +332,9 @@ def my_calendar(request, year, month):
     my_workouts = Application.objects.order_by('creation_date')
     valid_apps = []
     for mw in my_workouts:
-        if mw.creation_date.year == year and mw.creation_date.month == month:
+        if mw.get_start_date().year == year and mw.get_end_date().month == month:
+            print(valid_apps)
             valid_apps.append(mw)
-
     return WorkoutCalendar(valid_apps).formatmonth(year, month)
 
 
@@ -533,7 +533,7 @@ def edit_application(request):
             # sending notification mail
             subject = "Solicitud de salida modificada"
             message = "La solicitud de salida realizada el " + last_app.creation_date + " ha sido modificada.\n\n-- Este correo fue generado automaticamente."
-            send_mail(subject, message, settings.EMAIL_HOST_USER, { id_teacher.mail }, fail_silently = False)
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { id_teacher.mail }, fail_silently = True)
 
            # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
@@ -568,26 +568,39 @@ def application_review(request):
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements()
     finances = app.get_finances()
+    report_receive_form = ReportReceiveForm(request.POST or None)
 
     if len(request.POST) != 0:
         if 'accept_button' in request.POST:
             id_state = 2    # pendiente dcc
             subject = "Nueva solicitud de salida"
             message = "Se ha enviado una nueva solicitud de salida.\n\n-- Este correo fue generado automaticamente."
-            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_ANGELICA, EMAIL_ALEJANDRO }, fail_silently = False)
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_ANGELICA, EMAIL_ALEJANDRO }, fail_silently = True)
             messages = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
             for replacement in replacements:
                 if replacement.rut_teacher.mail != "":
-                    send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = False)
+                    send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = True)
         if 'reject_button' in request.POST:
             id_state = 5    # rechazado
         if 'report_sent_button' in request.POST:
             id_state = 3    # pendiente facultad
-        if 'report_receive_button' in request.POST:
+        if 'report_receive_button_accepted' in request.POST:
             id_state = 4    # terminado
             subject = "Nueva solicitud de salida aprobada"
             message = "Su solicitud de salida ha sido aprobada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = False)
+        if 'report_receive_button_rejected' in request.POST:
+            id_state = 1    # pendiente aprobacion
+            if report_receive_form.is_valid():
+                obs = report_receive_form.cleaned_data['obs']
+                subject = "Nueva solicitud de salida rechazada por facultad"
+                message = "Su solicitud de salida ha sido rechazada por la facultad, y está volviendo a ser revisada por el departamento."
+                if obs != "":
+                    message += "\n\nSe agregó la siguiente observación:\n" + obs
+                message += "\n\n-- Este correo fue generado automaticamente."
+                send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = True)
+            else:
+                print("report_receive_form invalid")
 
         state = ApplicationState.objects.get(pk = id_state)
         stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
@@ -646,6 +659,6 @@ def contacto(request):
             mail=form.cleaned_data['email']
             asunto=form.cleaned_data['asunto']
             mensaje=form.cleaned_data['mensaje']
-            send_mail(asunto, mensaje, settings.EMAIL_HOST,{mail,settings.EMAIL_HOST}, fail_silently = False)
+            send_mail(asunto, mensaje, settings.EMAIL_HOST,{mail,settings.EMAIL_HOST}, fail_silently = True)
             return redirect("login2")
     return  render_to_response("General/contacto.html", locals(), content_type=RequestContext(request))

@@ -23,10 +23,8 @@ class WorkoutCalendar(HTMLCalendar):
                 cssclass += ' filled'
                 body = ['<ul>']
                 for workout in self.workouts[day]:
-                    body.append('<li>')
-                    body.append('<a href="%s">' % workout.motive)
-                    body.append(esc(workout.motive))
-                    body.append('</a></li>')
+                    body.append('<a href="application_detail?id=%s">' % workout.id)
+                    body.append(esc(workout.id_Teacher))
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
             return self.day_cell(cssclass, day)

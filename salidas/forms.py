@@ -135,11 +135,19 @@ class TeacherSignature(forms.ModelForm):
         model = Teacher
         exclude = {'rut', 'name', 'last_name', 'profile_picture = models.URLField()', 'mail'}
 
+
 class stateForm(forms.Form):
     state=forms.ModelChoiceField(queryset=ApplicationState.objects.all())
+
 
 class contactoForm(forms.Form):
     nombre = forms.CharField(40)
     email = forms.EmailField()
     asunto = forms.CharField(20)
     mensaje = forms.CharField(widget=forms.Textarea(attrs={'placeholder': u'Comentarios, sugerencias o errores...'}))
+
+
+class ReportReceiveForm(forms.Form):
+    send_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], required=False, widget=forms.DateInput(
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy"}))
+    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observacioens'}))
