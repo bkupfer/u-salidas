@@ -59,6 +59,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -71,9 +72,14 @@
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -93,6 +99,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -109,9 +116,14 @@
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
                                                     <td class="state" align="center">{{ app.get_replacement_state }}</td>
                                                     <td class="state" align="center">{{ app.get_academic_replacement_state }}</td>
                                                     <td class="state" align="center">{{ app.id_days_validation_state }}</td>
@@ -135,6 +147,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -147,9 +160,14 @@
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -169,6 +187,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -181,9 +200,14 @@
 												<tr>
 													<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
-													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.id_Teacher.rut }}</td>
+                                                    <td>{{ app.id_commission_type }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													{% if app.sent_date.date == None %}
+                                                      <td>No enviada</td>
+                                                    {% else %}
+                                                       <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -203,6 +227,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -215,9 +240,14 @@
 											<tr>
 												<td><a href="application_review?id={{ app.id }}">{{ app.id }}</a></td>
                                                 <td>{{ app.id_Teacher }}</td>
+                                                <td>{{ app.id_Teacher.rut }}</td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												{% if app.sent_date.date == None %}
+                                                  <td>No enviada</td>
+                                                {% else %}
+                                                   <td>{{ app.sent_date.date }}</td>
+                                                {% endif %}
 												<td>{{ app.get_state }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>
