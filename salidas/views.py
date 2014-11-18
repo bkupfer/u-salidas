@@ -443,7 +443,6 @@ def edit_application(request):
             fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type,'financed_by':finance.financed_by})
         except:
             fins.append({'id_finance_type':finance_type})
-        print(fins)
     financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
 
     last_dests = Destination.objects.filter(application = last_app.id)
@@ -472,10 +471,12 @@ def edit_application(request):
         valid_dest=False
         if destinations.is_valid():
             for dest in destinations:
-                if dest.cleaned_data['start_date'] <= dest.cleaned_data['end_date']:
-                    valid_dest=True
+                start_date = dest.cleaned_data.get('start_date')
+                end_date = dest.cleaned_data.get('end_date')
+                if start_date != None or end_date != None:
+                    if start_date<=end_date and start_date.year == end_date.year:
+                        valid_dest=True
                 else:
-                    valid_dest=False
                     break
         else:
             print("error")

@@ -105,6 +105,8 @@ class Application(models.Model):
         computed_days=0
         for dest in dests:
             computed_days+=dest.get_used_days()
+        if computed_days < 0:
+            return 0
         return computed_days
 
     def get_documents(self):
@@ -293,7 +295,7 @@ class Replacement(models.Model):
     def get_courses(self):
         #reemplazo academico
         if self.type == ReplacementType.objects.get(pk=2):
-            return {'Ninguno. Solicitud de reemplazo académico'}
+            return None
         else:
             return self.id_Application.id_Teacher.get_courses()
 

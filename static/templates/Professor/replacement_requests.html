@@ -72,23 +72,31 @@
 
                             <div class="col-sm-8">
                                 <table class="table table-bordered table-hover table-condensed table-striped">
+                                {% if replacement.get_courses %}
                                     {% for course in replacement.get_courses %}
                                     <tr>
                                         <td>{{ course }}</td>
                                     </tr>
                                     {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        No hay cursos para reemplazar
+                                    </tr>
+                                {% endif %}
                                 </table>
                             </div>
                         </div>
                         <div class="row">
                         </div>
                         <hr/>
+                    {% if replacement.id_state.state == "Pendiente" %}
                         <div class="row form-group">
                             <div class="col-sm-12">
 	  						    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
                                 <button href="#myModal" type="button" data-toggle="modal" class="btn btn-lg btn-danger">Rechazar</button>
                             </div>
                         </div>
+                    {% endif %}
                     </form>
 
                 </div>

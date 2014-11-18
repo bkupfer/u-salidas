@@ -50,6 +50,19 @@ class DestinationForm(forms.ModelForm):
         model = Destination
         exclude = {'application'}
 
+class DestinationFormEdit(forms.ModelForm):
+    country = forms.CharField(widget=forms.Select(
+        attrs={'class': 'form-control input-sm'}))
+    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'},
+                                               choices=([("", "Seleccione Ciudad")])))
+    start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
+    end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
+        attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
+    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Fundamentos...'}))
+    class Meta:
+        model = Destination
+        exclude = {'application'}
 
 DestinationFormSet = formset_factory(DestinationForm, extra=1)
 DestinationFormSet_Edit = formset_factory(DestinationForm, extra=0)
@@ -64,7 +77,6 @@ class AcademicReplacementApplicationForm(forms.Form):
         super(AcademicReplacementApplicationForm,self).__init__()
         try:
             initial=kwargs['initial']
-            print(initial)
         except:
             initial=None
         self.fields['acteachers'].queryset =Teacher.objects.exclude(user=user)
@@ -81,7 +93,6 @@ class ReplacementApplicationForm(forms.Form):
         print(kwargs)
         try:
             initial=kwargs['initial']
-            print(initial)
         except:
             initial=None
         user=args[1].id
