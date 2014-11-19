@@ -52,7 +52,7 @@ class Destination(models.Model):
     motive = models.TextField()
 
     def get_used_days(self):
-        dt=self.end_date - self.start_date  # todo: al parecer solo se descuentan los dias de comisiones Academicas
+        dt = self.end_date - self.start_date 
         return dt.days
 
 
@@ -103,7 +103,7 @@ class Application(models.Model):
 
     def compute_used_days(self):
         dests = self.get_destinations()
-        computed_days=0
+        computed_days = 0
         for dest in dests:
             computed_days += dest.get_used_days()
         if computed_days < 0:
@@ -122,8 +122,7 @@ class Application(models.Model):
         return replacements
 
     def discount_days(self):
-        # TODO estados que no se cuentan: rechazado pk=3? algún otro estado?
-        if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state()!=State.objects.get(pk=3):
+        if self.id_commission_type == CommissionType.objects.get(type="Academica") and self.get_state() != State.objects.get(pk=3):
             return True
         return False
 
@@ -148,14 +147,14 @@ class Application(models.Model):
         return end_date
 
     def get_week_days_missed(self):
-        destinations=self.get_destinations()
-        week_days_missed=dict()
+        destinations = self.get_destinations()
+        week_days_missed = dict()
         for destination in destinations:
             start_date=destination.start_date
             end_date=destination.end_date
             for date in range(start_date,end_date):
                 #TODO inactive days
-                week_days_missed[str(datetime.weekday(date))]+=1
+                week_days_missed[str(datetime.weekday(date))] += 1
         return week_days_missed
 
     def get_replacement_state(self):
@@ -191,18 +190,20 @@ class Hierarchy(models.Model):
     def __str__(self):
         return self.hierarchy
 
+
 class WorkingDay(models.Model):
     working_day=models.CharField(max_length=30)
     def __str__(self):
         return self.working_day
 
+
 class Teacher(models.Model):
     user = models.OneToOneField(User)
     rut = models.CharField(max_length=10,unique=True)
-    name = models.CharField(max_length=100)#TODO
-    last_name = models.CharField(max_length=100)#TODO
+    name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     signature = models.ImageField(max_length=255, blank=True, null=True, upload_to='signatures')
-    mail = models.EmailField() # todo: refactor to 'email'
+    mail = models.EmailField() # todo: refactor to 'email' instead of 'mail'
     hierarchy = models.ForeignKey('Hierarchy')      # jerarquia docente; Asistente(1), Asociado(2), Instructor(3)
     working_day=models.ForeignKey('WorkingDay')     # jornada docente: Completa(1) Media (2)
 
@@ -210,7 +211,7 @@ class Teacher(models.Model):
         return self.name + " " + self.last_name
 
     def get_courses(self):
-        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self)#todo:falta filtrar por semestre
+        his_courses = TeacherHasCourse.objects.filter(id_Teacher=self) # todo: falta filtrar por semestre
         #if len(his_courses)==1:
         #    his_courses=[his_courses]
         courses = []
@@ -231,20 +232,40 @@ class Teacher(models.Model):
 
     def get_used_days(self):
         his_apps = self.get_applications()
-        used_days=0
+        used_days = 0
         for app in his_apps:
             if app.discount_days() and app.get_used_days() != None:
-                used_days+=app.get_used_days()
+                tmonth = date.today().month  # todo: contar desde marzo a marzo
+                tyear = date.today().year
+                if app.get_start_date().year == tyear:
+                    used_days += app.get_used_days()
         return used_days
 
     def get_avaliable_days(self):
-        used_days=self.get_used_days()
+        used_days = self.get_used_days()
         return self.hierarchy.avaliable_days - used_days
 
+    def get_used_academic_days(self):
+        his_apps = self.get_applications()
+        used_days = 0
+        for app in his_apps:
+            if app.discount_days() and app.get_used_days() != None:
+                second_semester_month = 8 # april
+                if date.today().month < second_semester_month: # primer semestre
+                    if app.get_start_date().year == date.today().year and app.get_start_date().month < second_semester_month:
+                        used_days += app.get_used_days()
+                else:
+                    if app.get_start_date().year == date.today().year and app.get_start_date().month >= second_semester_month:
+                        used_days += app.get_used_days()
+        return used_days
+
+    def get_used_academic_weeks(self):
+        return int(self.get_used_academic_days() / 7)
+
     def get_possible_replacement_teachers(self):
-        y_modules=self.get_modules()
-        my_modules=set(y_modules)
-        replacement=[('','---------')]
+        y_modules = self.get_modules()
+        my_modules = set(y_modules)
+        replacement = [('','---------')]
         teachers = Teacher.objects.all().exclude(pk=self.pk)
         i=1
         for teacher in teachers:
@@ -277,7 +298,6 @@ class Teacher(models.Model):
         return weeks_by_course
 
 
-#rut_teacher es un Teacher no un rut!!!
 class Replacement(models.Model):
     rut_teacher = models.ForeignKey('Teacher')
     id_Application = models.ForeignKey('Application')
@@ -335,7 +355,7 @@ class Module(models.Model):
         return self.block
     def get_week_day(self):
         #TODO retorna un string con el día de la semana
-        return 'lunes'
+        return 'lunes'  #todo: que posiblemente no debe ser siempre lunes (?)
 
 
 class CourseHasModule(models.Model):
