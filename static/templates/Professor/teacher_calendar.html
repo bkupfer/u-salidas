@@ -62,11 +62,14 @@
 								<td><strong>Días disponibles</strong></td>
 								<td>{{ teacher.get_avaliable_days }}</td>
 							</tr>
-							<tr {% if teacher.get_used_days > 14 %}class="danger"{% endif %}>
+							<tr {% if teacher.get_used_academic_days > 14 %}class="danger"{% endif %}>
 								<td><strong>Semanas docentes utilizadas</strong></td>
-								<td >{{ used_weeks }} de 2</td>
+								<td >{{ teacher.get_used_academic_weeks }} de 2</td>
 							</tr>
 						</table>
+						{% if teacher.get_used_academic_days > 14 %}
+						<label style="color:red">Usted ha superado el número máximo de semanas docentes perdidas (2). Podría requerir declarar docencia compartida. Comuníquese con el Jefe de Estudios.</label>
+						{% endif %}
 					</div>
 				</div>
 				<br>
