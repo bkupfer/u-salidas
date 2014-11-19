@@ -16,6 +16,16 @@ class NewApplicationForm(forms.ModelForm):
             'id_Teacher', 'directors_name', 'directors_rut', 'id_days_validation_state', 'id_funds_validation_state')
         # fields = ('motive','financed_by')
 
+class NewApplicationFormEdit(forms.ModelForm):
+    id_commission_type = forms.ModelChoiceField(queryset=CommissionType.objects.all(),
+                                                empty_label="Seleccione Tipo de Comisión",
+                                                widget=forms.Select(attrs={'class':'form-control input-sm'}))
+    directors_name = forms.CharField()
+    class Meta:
+        model = Application
+        exclude = (
+            'id_Teacher', 'directors_rut', 'id_days_validation_state', 'id_funds_validation_state')
+        # fields = ('motive','financed_by')
 class FinanceForm(forms.ModelForm):
     id_currency = forms.ModelChoiceField(queryset=Currency.objects.all(), empty_label="Moneda",
                                          widget=forms.Select(attrs={'class':'form-control input-sm'}))

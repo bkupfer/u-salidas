@@ -242,9 +242,11 @@ def new_application(request):
             ct = application.cleaned_data['id_commission_type']
             daysv = State.objects.get(pk=1)     # pendiente
             fundsv = State.objects.get(pk=1)    # pendiente
-
+            systemInformation = SystemInformation.objects.get(pk=1)
+            director=systemInformation.director
+            print("director es:" + director)
             newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,id_days_validation_state = daysv,
-                                 id_funds_validation_state = fundsv)
+                                 id_funds_validation_state = fundsv, directors_name = director)
             newApp.save()
             # Application state: Pendiente Aprobacion
             state = ApplicationState.objects.get(pk=1)
@@ -436,7 +438,7 @@ def edit_application(request):
     last_app = Application.objects.get(pk=id_app)
     user=request.user
     teacher=last_app.id_Teacher
-    application = NewApplicationForm(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'used_days':last_app.used_days})
+    application = NewApplicationFormEdit(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'used_days':last_app.used_days, 'directors_name':last_app.directors_name})
     last_finances = last_app.get_finances()
     fins=[]
     finance_types=FinanceType.objects.all()
@@ -489,7 +491,8 @@ def edit_application(request):
             last_dests.delete()
 
             # Applications instance
-            id_teacher = Teacher.objects.get(user=request.user)
+            print(request.POST)
+            id_teacher = teacher #Teacher.objects.get(teacher=teacher)
             ct = application.cleaned_data['id_commission_type']
             used_days = application.cleaned_data['used_days']
 
@@ -531,7 +534,7 @@ def edit_application(request):
 
             # sending notification mail
             subject = "Solicitud de salida modificada"
-            message = "La solicitud de salida realizada el " + last_app.creation_date + " ha sido modificada.\n\n-- Este correo fue generado automaticamente."
+            message = "La solicitud de salida realizada el " + str(last_app.creation_date) + " ha sido modificada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { id_teacher.mail }, fail_silently = True)
 
            # messages.success(request, 'Solicitud modificada exitosamente!')

@@ -68,7 +68,7 @@ class Application(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     id_days_validation_state = models.ForeignKey('State', related_name='+')  # (?) related name because related name
     id_funds_validation_state = models.ForeignKey('State')
-    directors_name = models.CharField(max_length=30)
+    directors_name = models.CharField(max_length=50)
     directors_rut = models.CharField(max_length=10)
     used_days = models.IntegerField(null=True, blank=True)
     def __str__(self):
@@ -358,3 +358,7 @@ class ReplacementType(models.Model):
 class admi(models.Model):
     user = models.CharField(max_length=20)
     hash = models.CharField(max_length=100)
+
+class SystemInformation(models.Model):
+    director = models.CharField(max_length=50)
+    actual_semester = models.IntegerField(max_length=1)
