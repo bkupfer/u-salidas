@@ -381,4 +381,5 @@ class admi(models.Model):
 
 class SystemInformation(models.Model):
     director = models.CharField(max_length=50)
-    actual_semester = models.IntegerField(max_length=1)
+    current_semester = models.IntegerField(max_length=1)
+    current_year = models.IntegerField(max_length=4)
