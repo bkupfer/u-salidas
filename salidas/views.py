@@ -704,6 +704,7 @@ def days_validation(request):
 @csrf_protect
 @login_required
 def list_angelica(request):
+    apps = Application.objects.all()
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
 
 
