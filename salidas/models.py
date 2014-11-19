@@ -376,10 +376,10 @@ class ReplacementType(models.Model):
         return self.type
 
 class admi(models.Model):
-    user = models.CharField(max_length=20)
+    user = models.CharField(max_length=20,)
     hash = models.CharField(max_length=100)
 
 class SystemInformation(models.Model):
-    director = models.CharField(max_length=50)
-    current_semester = models.IntegerField(max_length=1)
-    current_year = models.IntegerField(max_length=4)
+    director = models.CharField(max_length=50,default='')
+    current_semester = models.IntegerField(max_length=1,default=0)
+    current_year = models.IntegerField(max_length=4,default=0)
