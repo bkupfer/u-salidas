@@ -244,7 +244,6 @@ def new_application(request):
             fundsv = State.objects.get(pk=1)    # pendiente
             systemInformation = SystemInformation.objects.get(pk=1)
             director=systemInformation.director
-            print("director es:" + director)
             newApp = Application(id_Teacher = id_teacher, id_commission_type = ct,id_days_validation_state = daysv,
                                  id_funds_validation_state = fundsv, directors_name = director)
             newApp.save()
