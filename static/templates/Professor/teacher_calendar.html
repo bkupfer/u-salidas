@@ -62,11 +62,10 @@
 								<td><strong>Días disponibles</strong></td>
 								<td>{{ teacher.get_avaliable_days }}</td>
 							</tr>
-							<!-- todo: add the following field ;;
-							<tr>
+							<tr {% if teacher.get_used_days > 14 %}class="danger"{% endif %}>
 								<td><strong>Semanas docentes utilizadas</strong></td>
-								<td> -- </td>
-							</tr> -->
+								<td >{{ used_weeks }} de 2</td>
+							</tr>
 						</table>
 					</div>
 				</div>

@@ -324,13 +324,16 @@ def teacher_calendar(request):
                 month += 1
                 year += 1
 
+    used_weeks = int(teacher.get_used_days() / 7)
+
     calendar = my_calendar(request, year, month)
-    return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'calendar': mark_safe(calendar), 'year': year, 'month':month}, context_instance=RequestContext(request))
+    return render_to_response("Professor/teacher_calendar.html", {'teacher': teacher, 'used_weeks': used_weeks,'calendar': mark_safe(calendar), 'year': year, 'month':month}, context_instance=RequestContext(request))
 
 
 # teachers calendar creation
 def my_calendar(request, year, month):
-    my_apps = Application.objects.filter(id_teacher = request.user).order_by('creation_date')
+    teacher = Teacher.objects.get(user = request.user)
+    my_apps = Application.objects.filter(id_Teacher = teacher).order_by('creation_date')
     valid_dests = []
     for my_app in my_apps:
         for dest in my_app.get_destinations():
@@ -656,6 +659,7 @@ def detail_alejandro(request):
     finances = Finance.objects.filter(id_application=id_app)
     return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
 
+
 @csrf_protect
 @login_required
 def finance_validation(request):
@@ -668,10 +672,12 @@ def finance_validation(request):
 def days_validation(request):
     return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
+
 @csrf_protect
 @login_required
 def list_angelica(request):
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
+
 
 @csrf_exempt
 def contacto(request):
@@ -685,6 +691,7 @@ def contacto(request):
             send_mail(asunto, mensaje, settings.EMAIL_HOST,{mail,settings.EMAIL_HOST}, fail_silently = True)
             return redirect("login2")
     return  render_to_response("General/contacto.html", locals(), content_type=RequestContext(request))
+
 
 @csrf_exempt
 def acerca(request):

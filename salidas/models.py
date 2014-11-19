@@ -50,8 +50,9 @@ class Destination(models.Model):
     start_date = models.DateField()
     end_date   = models.DateField()
     motive = models.TextField()
+
     def get_used_days(self):
-        dt=self.end_date - self.start_date
+        dt=self.end_date - self.start_date  # todo: al parecer solo se descuentan los dias de comisiones Academicas
         return dt.days
 
 
@@ -101,10 +102,10 @@ class Application(models.Model):
         return self.used_days
 
     def compute_used_days(self):
-        dests=self.get_destinations()
+        dests = self.get_destinations()
         computed_days=0
         for dest in dests:
-            computed_days+=dest.get_used_days()
+            computed_days += dest.get_used_days()
         if computed_days < 0:
             return 0
         return computed_days
