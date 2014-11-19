@@ -153,11 +153,11 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><strong>Firma digital del <br />Reemplazante Docente</strong></td>
+							<td><strong>Firma digital del <br />Reemplazo Docente</strong></td>
                              <td class="state" style="vertical-align: middle;" align="center">{{ app.get_replacement_state }}</td>
 						</tr>
 						<tr>
-							<td><strong>Firma digital del <br />Reemplazante Academico</strong></td>
+							<td><strong>Firma digital del <br />Reemplazo Academico</strong></td>
                              <td class="state" style="vertical-align: middle;" align="center">{{ app.get_academic_replacement_state }}</td>
 						</tr>
 						<tr>
@@ -181,15 +181,21 @@
 					</thead>
 					<tbody>
 						<tr class="success">
-							<td style="vertical-align: middle;" align="center"><span class="glyphicon glyphicon-ok"></span></td>
+							<td style="vertical-align: middle;" align="center">
+                                <label style="color:green"><span class="glyphicon glyphicon-ok"></span></label>
+                            </td>
 							<td>Aceptado</td>
 						</tr>
 						<tr>
-							<td style="vertical-align: middle;" align="center"><span class="glyphicon glyphicon-random"></span></td>
+							<td style="vertical-align: middle;" align="center">
+                                <label style="color:gray"><span class="glyphicon glyphicon-random"></span></label>
+                            </td>
 							<td>En proceso</td>
 						</tr>
 						<tr  class="danger">
-							<td style="vertical-align: middle;" align="center"><span class="glyphicon glyphicon-remove"></span></td>
+							<td style="vertical-align: middle" align="center">
+                                <label style="color:red"><span class="glyphicon glyphicon-remove"></span></label>
+                            </td>
 							<td>Rechazado</td>
 						</tr>
 					</tbody>
@@ -273,7 +279,7 @@
                 $(".state").first().addClass("success");
             }
             if(state=="Rechazado"){
-                $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span>');
+                $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span></label>');
                 $(".state").first().addClass("danger");
             }
             $(".state").first().removeClass("state");
