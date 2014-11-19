@@ -2,15 +2,15 @@
 <div class="row hidden-print">
     <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
         <ul class="nav nav-tabs">
-            <li class="active" id="1"><a href="teachers_applications">Mis solicitudes</a></li>
-            <li id="2"><a href="new_application">Crear nueva solicitud</a></li>
-            <li id="3"><a href="replacement_list">Mis solicitudes de reemplazo</a></li>
-            <li id="4"><a href="teacher_calendar">Calendario</a></li>
-			<li id="5"><a href="my_information">Mis datos</a></li>
+            <li class="active" id="1"><a href=="{% url 'teachers_applications' %}">Mis solicitudes</a></li>
+            <li id="2"><a href="{% url 'new_application' %}">Crear nueva solicitud</a></li>
+            <li id="3"><a href="{% url 'replacement_list' %}">Mis solicitudes de reemplazo</a></li>
+            <li id="4"><a href="{% url 'teacher_calendar' %}">Calendario</a></li>
+			<li id="5"><a href="{% url 'my_information' %}">Mis datos</a></li>
             {% if user.username%}
             <li style="float:right;top:13px">{{user.first_name}} {{user.last_name}} <span class="glyphicon glyphicon-user"></span></li>
             {% endif %}
-            <li style="float:right;"><a href="logout" title="">Logout</a></li>
+            <li style="float:right;"><a href="{% url 'logout' %}" title="">Logout</a></li>
         </ul>
         </div>
 

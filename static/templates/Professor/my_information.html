@@ -86,7 +86,7 @@
 															{% if teacher.signature == "" or teacher.signature == None %}
 																No ha subido ninguna firma.
 															{% else %}
-																<img src="{{ teacher.signature.url }}" alt="Firma digitalizada actual del profesor {{ teacher }}.">
+																<img src="\static\media\{{ teacher.signature }}" alt="Firma digitalizada actual del profesor {{ teacher }}.">
 															{% endif %}
 														</td>
 													</tr>
