@@ -52,7 +52,7 @@ class Destination(models.Model):
     motive = models.TextField()
 
     def get_used_days(self):
-        dt = self.end_date - self.start_date 
+        dt = self.end_date - self.start_date
         return dt.days
 
 
