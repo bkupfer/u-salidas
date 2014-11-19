@@ -688,4 +688,4 @@ def contacto(request):
 
 @csrf_exempt
 def acerca(request):
-    return  render_to_response("General/acerca_de.html", locals(), content_type=RequestContext(request))
+    return  render_to_response("General/about_us.html", locals(), content_type=RequestContext(request))
