@@ -70,7 +70,7 @@ class Application(models.Model):
     id_funds_validation_state = models.ForeignKey('State')
     directors_name = models.CharField(max_length=50)
     directors_rut = models.CharField(max_length=10)
-    used_days = models.IntegerField(null=True, blank=True)
+    used_days = models.FloatField(null=True, blank=True)
     def __str__(self):
         return "Application "+str(self.id)
 
