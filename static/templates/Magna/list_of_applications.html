@@ -124,10 +124,10 @@
                                                     {% else %}
                                                         <td>{{ app.sent_date.date }}</td>
                                                     {% endif %}
-                                                    <td class="state" align="center">{{ app.get_replacement_state }}</td>
-                                                    <td class="state" align="center">{{ app.get_academic_replacement_state }}</td>
-                                                    <td class="state" align="center">{{ app.id_days_validation_state }}</td>
-                                                    <td class="state" align="center">{{ app.id_funds_validation_state }}</td>
+                                                    <td class="state" style="vertical-align: middle;" align="center">{{ app.get_replacement_state }}</td>
+                                                    <td class="state" style="vertical-align: middle;" align="center">{{ app.get_academic_replacement_state }}</td>
+                                                    <td class="state" style="vertical-align: middle;" align="center">{{ app.id_days_validation_state }}</td>
+                                                    <td class="state" style="vertical-align: middle;" align="center">{{ app.id_funds_validation_state }}</td>
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -279,6 +279,7 @@
             }
             if(state=="Rechazado"){
                 $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span>');
+                $(".state").first().addClass("danger");
             }
             $(".state").first().removeClass("state");
         }
