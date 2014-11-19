@@ -46,8 +46,8 @@
 					<h2>Detalle de solicitud</h2>
 					<br>
 
-					{% if actual_state.state == 'Pendiente aprobacion' or actual_state.state == 'Pendiente DCC' %}
-                     <div class="form-group">
+					{% if actual_state.state != 'Terminada' %}
+                     <div id="toEdit" class="form-group">
                         <div class="col-sm-7 col-lg-offset-9">
                             <a href="edit_application_form?id={{ id_app }}" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-pencil"></span> Ir a Modo Edición</a>
                         </div>
@@ -139,10 +139,63 @@
 						</tr>
 						<tr>
 							<td>Director a cargo</td>
-							<td>{{ query.directors_name }}</td>
+							<td>{{ app.directors_name }}</td>
 						</tr>
 					</table>
-
+                    <div class="row">
+				<div class="col-sm-7">
+				<table class="table table-bordered table-hover table-condensed">
+					<thead>
+						<tr>
+							<th>Requisitos</th>
+							<th>Estado</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong>Firma digital del <br />Reemplazante Docente</strong></td>
+                             <td class="state">{{ app.get_replacement_state }}</td>
+						</tr>
+						<tr>
+							<td><strong>Firma digital del <br />Reemplazante Academico</strong></td>
+                             <td class="state">{{ app.get_academic_replacement_state }}</td>
+						</tr>
+						<tr>
+							<td><strong>Validación de fondos</strong></td>
+                            <td class="state" >{{ app.id_days_validation_state }}</td>
+						</tr>
+						<tr>
+							<td><strong>Validación de días</strong></td>
+                            <td class="state">{{ app.id_funds_validation_state }}</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div class="col-sm-5">
+				<table class="table table-bordered table-hover table-condensed table-striped">
+					<thead>
+						<tr>
+							<th>Simbología</th>
+							<th>Significado</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="success">
+							<td><span class="glyphicon glyphicon-ok"></span></td>
+							<td>Aceptado</td>
+						</tr>
+						<tr>
+							<td><span class="glyphicon glyphicon-random"></span></td>
+							<td>En proceso</td>
+						</tr>
+						<tr  class="danger">
+							<td><span class="glyphicon glyphicon-remove"></span></td>
+							<td>Rechazado</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
 					<hr><br><br>
 					<form method="POST"> {% csrf_token %}
                         <div class="row form-group">
@@ -209,6 +262,22 @@
             var url=base+'getfiles/?id={{ app.id }}';
             window.location.href = url;
         });
+        var length = $(".state").length;
+        for (i = 0; i <length; i++) {
+            var state = $(".state").first().html();
+            if(state=="Pendiente"){
+                $(".state").first().html('<label style="color:gray"><span class="glyphicon glyphicon-random"></span></label>');
+            }
+            if(state=="Aceptado"){
+                $(".state").first().html('<label style="color:green"><span class="glyphicon glyphicon-ok"></span></label>');
+                $(".state").first().addClass("success");
+            }
+            if(state=="Rechazado"){
+                $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span>');
+                $(".state").first().addClass("danger");
+            }
+            $(".state").first().removeClass("state");
+        }
 	});
 </script>
 </html>

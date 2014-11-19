@@ -91,6 +91,7 @@ def success(request):
     elif is_in_group(user, 'angelica'):
         return redirect('list_angelica')
     elif is_in_group(user, 'magna'):
+        request.session['tabactive']= 'liPA'
         return redirect('list_of_applications')
     elif is_in_group(user, 'alejandro'):
         return redirect('list_alejandro')
@@ -124,6 +125,7 @@ def login(request):
                 elif is_in_group(user, 'angelica'):
                     return redirect('list_angelica')
                 elif is_in_group(user, 'magna'):
+                    request.session['tabactive']= 'liPA'
                     return redirect('list_of_applications')
                 elif is_in_group(user, 'alejandro'):
                     return redirect('list_alejandro')
@@ -427,8 +429,16 @@ def my_information(request):
 # Magna
 @login_required
 def list_of_applications(request):
+    if request.GET.get('t') == None:
+        try:
+            tabActive = request.session['tabactive']
+        except:
+            tabActive = "liPA"
+    else:
+        tabActive = "liPA"
+
     apps = Application.objects.all()
-    return render_to_response("Magna/list_of_applications.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("Magna/list_of_applications.html",locals(),context_instance=RequestContext(request))
 
 @login_required
 def edit_application(request):
@@ -557,6 +567,12 @@ def edit_application(request):
     return render_to_response("Magna/edit_application_form.html", locals(), context_instance=RequestContext(request))
 
 
+def saveState(app, id_state):
+    state = ApplicationState.objects.get(pk=id_state)
+    stateApp = ApplicationHasApplicationState(id_application=app, id_application_state=state)
+    stateApp.save()
+
+
 @login_required
 def application_review(request):
     id_app = request.GET['id']
@@ -579,15 +595,27 @@ def application_review(request):
             for replacement in replacements:
                 if replacement.rut_teacher.mail != "":
                     send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.rut_teacher.mail }, fail_silently = True)
+            saveState(app, id_state)
+            request.session['tabactive'] = 'liPDCC'
+            return redirect('list_of_applications')
         if 'reject_button' in request.POST:
             id_state = 5    # rechazado
+            saveState(app, id_state)
+            request.session['tabactive'] = 'liTdo'
+            return redirect('list_of_applications')
         if 'report_sent_button' in request.POST:
             id_state = 3    # pendiente facultad
+            saveState(app, id_state)
+            request.session['tabactive'] = 'liPF'
+            return redirect('list_of_applications')
         if 'report_receive_button_accepted' in request.POST:
             id_state = 4    # terminado
             subject = "Nueva solicitud de salida aprobada"
             message = "Su solicitud de salida ha sido aprobada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = False)
+            saveState(app, id_state)
+            request.session['tabactive'] = 'liTda'
+            return redirect('list_of_applications')
         if 'report_receive_button_rejected' in request.POST:
             id_state = 1    # pendiente aprobacion
             if report_receive_form.is_valid():
@@ -598,13 +626,11 @@ def application_review(request):
                     message += "\n\nSe agregó la siguiente observación:\n" + obs
                 message += "\n\n-- Este correo fue generado automaticamente."
                 send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail }, fail_silently = True)
+                saveState(app, id_state)
+                request.session['tabactive'] = 'liPA'
+                return redirect('list_of_applications')
             else:
                 print("report_receive_form invalid")
-
-        state = ApplicationState.objects.get(pk = id_state)
-        stateApp = ApplicationHasApplicationState(id_application = app, id_application_state=state)
-        stateApp.save()
-        return redirect("list_of_applications")
 
     return render_to_response("Magna/application_review.html", locals(), context_instance=RequestContext(request))
 

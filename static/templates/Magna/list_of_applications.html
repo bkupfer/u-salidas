@@ -41,11 +41,11 @@
                     <br>
 
 					<ul class="nav nav-tabs" role="tablist">
-						<li class="active"><a href="#PA" role="tab" data-toggle="tab">Pendiente Aprobación</a></li>
-						<li><a href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
-						<li><a href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
-						<li><a href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
-						<li><a href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
+						<li class="active"><a id="liPA" href="#PA" role="tab" data-toggle="tab">Pendiente Aprobación</a></li>
+						<li><a id="liPDCC" href="#PDCC" role="tab" data-toggle="tab">Pendiente DCC</a></li>
+						<li><a id="liPF" href="#PF" role="tab" data-toggle="tab">Pendiente Facultad</a></li>
+						<li><a id="liTda" href="#Tda" role="tab" data-toggle="tab">Terminada</a></li>
+						<li><a id="liTdo" href="#Tdo" role="tab" data-toggle="tab">Todos</a></li>
 					</ul>
 					<br>
 
@@ -271,16 +271,19 @@
         for (i = 0; i <length; i++) {
             var state = $(".state").first().html();
             if(state=="Pendiente"){
-                $(".state").first().html('<label style="color:gray"><span class="glyphicon glyphicon-minus"></span></label>');
+                $(".state").first().html('<label style="color:gray"><span class="glyphicon glyphicon-random"></span></label>');
             }
             if(state=="Aceptado"){
                 $(".state").first().html('<label style="color:green"><span class="glyphicon glyphicon-ok"></span></label>');
+                $(".state").first().addClass("success");
             }
             if(state=="Rechazado"){
                 $(".state").first().html('<label style="color:red"><span class="glyphicon glyphicon-remove"></span>');
             }
             $(".state").first().removeClass("state");
         }
+        var tabactive = '{{ tabActive }}';
+        $("#"+tabactive).click();
 	});
 </script>
 </html>
