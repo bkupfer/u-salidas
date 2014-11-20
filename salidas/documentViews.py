@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 from django.core.urlresolvers import reverse
 # from salidas.forms import *
-from salidas.models import Application, Replacement
+from salidas.models import *
 from datetime import date
 import locale
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -18,6 +18,7 @@ from docx.shared import Inches
 from io import StringIO
 from docx import * #to generate Docs
 import io,os,os.path,tempfile, zipfile
+import traceback
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -37,7 +38,7 @@ def getfiles(request):
     for replacement in replacements:
         replacement_teachers.add(replacement.rut_teacher)
     if len(replacement_teachers)==1:
-        filenames.append(carta_reemplazo_ac_doc(app,replacement))
+        filenames.append(carta_reemplazo_ac_doc(app,replacement.rut_teacher))
     else:
         for replacement in replacements:
             filenames.append(carta_reemplazo_any(app,replacement))
@@ -77,13 +78,31 @@ def peticion_docente_doc(app,replacement_teachers):
     print("peticion docente")
     path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
     tipo_comision=str(app.id_commission_type)
-    con_o_sin_remuneracion="sin" #TODO cuando es con? cuando es sin?
-    motivo=str(app.motive)
-    fecha_inicio=str(app.get_start_date())
-    fecha_fin=str(app.get_end_date())
+    con_o_sin_remuneracion="con" #TODO cuando es con? cuando es sin?
+    destinos = app.get_destinations()
+    fecha_inicio=app.get_start_date().strftime("%d del %m de %Y")
+    fecha_fin=app.get_end_date().strftime("%d del %m de %Y")
+    director = str(app.directors_name)
+    nombre_solicitante = str(app.id_Teacher.name)
+    email_solicitante = str(app.id_Teacher.mail)
+    director = ""
+    try:
+        systemInformation = SystemInformation.objects.get(pk=1)
+        director = str(systemInformation.director)
+    except:
+        pass
 
-    intro="Por la presente ruego a usted tenga a bien autorizar una Comisión "+tipo_comision +""+ con_o_sin_remuneracion+" con goce de remuneraciones, del "+fecha_inicio+" al "+fecha_fin+". El motivo de esta solicitud es "+motivo+". Se adjuntan los documentos pertinentes."
-    financiamiento=str(app.financed_by)
+    intro="Por la presente ruego a usted tenga a bien autorizar una Comisión "+tipo_comision \
+          +" "+ con_o_sin_remuneracion+" goce de remuneraciones, del "\
+          +fecha_inicio+" al "+fecha_fin+"."
+    if len(destinos) > 1:
+        intro = intro + "Los motivos son viajar: "
+        for destination in destinos:
+            intro = intro + "A "+str(destination.city)+", "+str(destination.country)+" con objeto de "+ str(destination.motive)+". "
+    else:
+        intro = intro + "El motivo del viaje a "+str(destinos[0].city)+", "+str(destinos[0].country)
+        intro = intro + " es " + str(destinos[0].motive)+". "
+    intro = intro+"Se adjuntan los documentos pertinentes."
 
     if len(replacement_teachers)==1:
         replacement_type="En mis actividades académicas y docentes seré reemplazado por "+str(replacement_teachers.pop())+"."
@@ -100,6 +119,7 @@ def peticion_docente_doc(app,replacement_teachers):
         replacement_type="En mis actividades " +replace[0]+ " seré reemplazado por " +replace[1]+ " y en mis actividades "+ replace[2]+ " seré reemplazado por " +replace[3]+"."
 
     signature_file = app.id_Teacher.signature
+    print(str(signature_file))
     try:
         signature_path = str(signature_file)
         # print('firma')
@@ -113,14 +133,14 @@ def peticion_docente_doc(app,replacement_teachers):
 
     # user = request.user.id
     document = Document()
-    document.add_paragraph("Eric Tanter").alignment = 2 #
+    document.add_paragraph(nombre_solicitante).alignment = 2 #
     document.add_paragraph("DCC - UChile").alignment = 2
-    document.add_paragraph("etanter@dcc.uchile.cl").alignment = 2
+    document.add_paragraph(email_solicitante).alignment = 2
     p = document.add_paragraph()
     p.add_run().add_break()
     p.add_run('Señor ').bold = True
     p.add_run().add_break()
-    p.add_run('Sergio Ochoa').bold = True
+    p.add_run(director).bold = True
     p.add_run().add_break()
     p.add_run('Director DCC').bold = True
     p.add_run().add_break()
@@ -129,8 +149,18 @@ def peticion_docente_doc(app,replacement_teachers):
 
     intro=document.add_paragraph(intro)
     intro.add_run().add_break()
-    financiamiento=document.add_paragraph(financiamiento)
-    financiamiento.add_run().add_break()
+    finances= app.get_finances()
+    prefix_financiamiento = "El financiamiento consistirá: "
+    financiamiento = ""
+    for finance in finances:
+        if finance.financed_by != None:
+            financiamiento = financiamiento+"Los gastos de "+str(finance.id_finance_type.type)
+            if finance.amount != None:
+                financiamiento = financiamiento + " de "+str(finance.amount)+" "+str(finance.id_currency.currency)+" "
+            financiamiento = financiamiento + "serán financiados por " + str(finance.financed_by)+". "
+    if len(financiamiento) > 0:
+        financiamiento=document.add_paragraph(prefix_financiamiento+financiamiento)
+        financiamiento.add_run().add_break()
     reemplazo=document.add_paragraph(replacement_type)
     saludo = "Sin otro particular, le saluda atentamente,"
     saludo=document.add_paragraph(saludo)
@@ -142,14 +172,14 @@ def peticion_docente_doc(app,replacement_teachers):
         p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT, "signatures", signature_path),
                                 width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT  # signature_file.path)
     except:
-        print("no hay firma")
+        print(traceback.format_exc())
 
     saludo.add_run().add_break()
     saludo.add_run().add_break()
     saludo.add_run().add_break()
     saludo.add_run().add_break()
-    profe=str(app.id_Teacher)
-    profe=document.add_paragraph(profe)
+    #profe=str(app.id_Teacher)
+    profe=document.add_paragraph(nombre_solicitante)
     profe.alignment = WD_ALIGN_PARAGRAPH.CENTER
     document.save(path)
     return path
@@ -191,54 +221,72 @@ def solicitud_facultad_doc(app):
     p.add_run('TIPO DE MOVIMIENTO     ').bold = True
     p.add_run('COMISION '+str(app.id_commission_type).upper())#TODO remuneraciones
     p.add_run().add_break()
-    p.add_run('PERIODO                                ').bold = True
-    p.add_run('DEL     ').bold = True
-    p.add_run(app.get_start_date().strftime("%d.%m.%Y"))
-    p.add_run('    AL    ').bold = True
-    p.add_run(app.get_end_date().strftime("%d.%m.%Y"))
-    p.add_run().add_break()
-    p.add_run('LUGAR                                   ').bold = True
-    p.add_run()#TODO destinos?
-    p.add_run().add_break()
-    p.add_run('OBJETIVO ').bold = True
-    p.add_run().add_break()
-    p.add_run(str(app.motive))
+    for destination in app.get_destinations():
+        p.add_run().add_break()
+        p.add_run('PERIODO                                ').bold = True
+        p.add_run('DEL     ').bold = True
+        p.add_run(destination.start_date.strftime("%d del %m de %Y"))
+        p.add_run('    AL    ').bold = True
+        p.add_run(destination.end_date.strftime("%d del %m de %Y"))
+        p.add_run().add_break()
+        p.add_run('LUGAR                                     ').bold = True
+        lugar = str(destination.city)+", "+str(destination.country)
+        p.add_run(lugar.upper())
+        p.add_run().add_break()
+        p.add_run().add_break()
+        objectivo = str(destination.motive)
+        p.add_run('OBJETIVO                              ').bold = True
+        p.add_run(objectivo.upper())
+        #p.add_run(str(app.motive))
+        p.add_run().add_break()
     p.add_run().add_break()
     p.add_run('FUENTES DE FINANCIAMIENTO (INDICAR MONTO Y ORIGEN)').bold = True
     p.add_run().add_break()
 
 
-    p.add_run('PASAJES                        ').bold = True
+    p.add_run('INCRIPCIÓN                         ').bold = True
     try:
         finance=Finance.objects.get(id_application=app,id_finance_type=1)
-        p.add_run(str(finance))
+        if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
+            financiamiento = str(finance.amount)+" "+str(finance.id_currency.currency)+", "+str(finance.financed_by)
+            p.add_run(financiamiento.upper())
+        else:
+            p.add_run(str("NO SOLICITA"))
     except:
-        p.add_run(str("No solicita"))
+        p.add_run(str("NO SOLICITA"))
     p.add_run().add_break()
-    p.add_run('AYUDA DE VIAJE       ').bold = True
+    p.add_run('PASAJE                                   ').bold = True
     try:
-        finance = Finance.objects.get(id_application=app, id_finance_type=2)
-        p.add_run(str(finance))
+        finance=Finance.objects.get(id_application=app,id_finance_type=1)
+        if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
+            financiamiento = str(finance.amount)+" "+str(finance.id_currency.currency)+", "+str(finance.financed_by)
+            p.add_run(financiamiento.upper())
+        else:
+            p.add_run(str("NO SOLICITA"))
     except:
-        p.add_run(str("No solicita"))
+        p.add_run(str("NO SOLICITA"))
     p.add_run().add_break()
-    p.add_run('INSCRIPCION              ').bold = True
+    p.add_run('AYUDA DE VIAJE                ').bold = True
     try:
-        finance = Finance.objects.get(id_application=app, id_finance_type=3)
-        p.add_run(str(finance))
+        finance=Finance.objects.get(id_application=app,id_finance_type=1)
+        if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
+            financiamiento = str(finance.amount)+" "+str(finance.id_currency.currency)+", "+str(finance.financed_by)
+            p.add_run(financiamiento.upper())
+        else:
+            p.add_run(str("NO SOLICITA"))
     except:
-        p.add_run(str("No solicita"))
+        p.add_run(str("NO SOLICITA"))
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run('OBSERVACIONES ').bold = True
     #TODO obs? no recibe remuneracion?
     p.add_run().add_break()
     p.add_run().add_break()
-    p.add_run('REEMPLAZANTE DE CATEDRAS     ').bold = True #TODO revisar reemplazo orden academico y docente
-    p.add_run(str(Replacement.objects.get(id_Application=app,type=1).rut_teacher))#1?
+    p.add_run('REEMPLAZANTE DE CATEDRAS     ').bold = True
+    p.add_run(str(Replacement.objects.get(id_Application=app,type=1).rut_teacher).upper())
     p.add_run().add_break()
     p.add_run('REEMPLAZANTE DE CARGO             ').bold = True
-    p.add_run(str(Replacement.objects.get(id_Application=app, type=2).rut_teacher))  # 2?
+    p.add_run(str(Replacement.objects.get(id_Application=app, type=2).rut_teacher).upper())
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run().add_break()
@@ -246,7 +294,13 @@ def solicitud_facultad_doc(app):
     p.add_run().add_break()
     p.add_run().add_break()
     firmadir=document.add_paragraph()
-    firmadir.add_run('             SERGIO OCHOA                ').bold = True
+    director = ""
+    try:
+        systemInformation = SystemInformation.objects.get(pk=1)
+        director = str(systemInformation.director)
+    except:
+        pass
+    firmadir.add_run('             '+director.upper()+'                ').bold = True
     firmadir.add_run().add_break()
     firmadir.add_run('                DIRECTOR                  ')
     firmadir.add_run().add_break()
@@ -271,8 +325,9 @@ def carta_reemplazo_ac_doc(app,replacement_teacher):
 
 def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
 
-    signature_file=replacement_teacher.signature
+    signature_file=""
     try:
+        signature_file=replacement_teacher.rut_teacher.signature
         signature_path=str(signature_file)
         #print('firma')
         #print(signature_path)
@@ -282,15 +337,15 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
         #print(signature_path)
     except:
         print('no hay firma')
-    fecha_inicio=app.get_start_date().strftime("%d.%m.%Y")
-    fecha_fin=app.get_end_date().strftime("%d.%m.%Y")
+    fecha_inicio=app.get_start_date().strftime("%d del %m de %Y")
+    fecha_fin=app.get_end_date().strftime("%d del %m de %Y")
 
     print("carta de reemplazo")
     filename= 'compromiso_reemplazo'+str(replacement_type)+'.doc'
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
 
-    today=date.today().strftime("%d.%m.%Y")
+    today=date.today().strftime("%d del %m de %Y")
     today_date=document.add_paragraph(str(today))
     today_date.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     today_date.add_run().add_break()
@@ -300,9 +355,9 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     title.add_run().add_break()
     title.add_run().add_break()
     title.add_run().add_break()
-    cuerpo='Yo, '+str(replacement_teacher)+', me comprometo a reemplazar al señor académico '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
-    jerarquia=replacement_teacher.hierarchy
-    jornada=replacement_teacher.working_day
+    cuerpo='Yo, '+str(replacement_teacher.name)+', me comprometo a reemplazar a '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
+    #jerarquia=replacement_teacher.hierarchy
+    #jornada=replacement_teacher.working_day
 
     paragraph = document.add_paragraph(cuerpo)
     paragraph.add_run().add_break()
@@ -312,14 +367,14 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     p = document.add_paragraph()
     p.add_run().add_break()
     p.add_run('Nombre: ').bold = True
-    p.add_run(str(replacement_teacher))
+    p.add_run(str(replacement_teacher.name))
     p.add_run().add_break()
     p.add_run('Jerarquía: ').bold = True
-    p.add_run(str(jerarquia))
+    p.add_run(str(replacement_teacher.hierarchy))
     p.add_run().add_break()
     p.add_run('Cargo: ').bold = True
     p.add_run('Académico Jornada ')
-    p.add_run(str(jornada))
+    #p.add_run(str(jornada))
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run().add_break()
@@ -331,7 +386,7 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
         print("no hay firma")
 
     signature=document.add_paragraph()
-    signature.add_run('                                                                  '+str(replacement_teacher)).bold=True
+    signature.add_run('                                                                  '+str(replacement_teacher.name)).bold=True
     signature.alignment = WD_ALIGN_PARAGRAPH.CENTER
     signature.add_run().add_break()
     signature.add_run().add_break()
