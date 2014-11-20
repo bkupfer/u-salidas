@@ -469,7 +469,10 @@ def edit_application(request):
     for finance_type in finance_types:
         try:
             finance=Finance.objects.get(id_application=last_app,id_finance_type=finance_type)
-            fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'financed_by':finance.financed_by})
+            if finance.amount != None and finance.id_currency !=None and finance.financed_by != None:
+                fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'financed_by':finance.financed_by})
+            else:
+                fins.append({'amount':'','id_currency':'','financed_by':''})
         except:
             print(traceback.format_exc())
             fins.append({'id_finance_type':finance_type})
@@ -513,10 +516,10 @@ def edit_application(request):
         else:
             print("error")
             print(destinations.errors)
-
+        #TODO: validar financeFormSet.is_valid() y hacer que no pasen cosas raras
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():
             last_dests.delete()
-
+            print("y tu mama tambien")
             # Applications instance
             print(request.POST)
             id_teacher = teacher #Teacher.objects.get(teacher=teacher)
