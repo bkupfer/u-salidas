@@ -32,6 +32,7 @@ from docx import * # to generate Docs
 import os, os.path
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from salidas.calendar import *
+import traceback
 
 # Views for all users
 def home(request):
@@ -160,19 +161,33 @@ def access_denied(request):
 #Este es el formulario prototipo de financia
 def financeForm(finance, newApp, id_finance_type):
 
-    type = FinanceType.objects.get(pk=id_finance_type)
     if finance.is_valid():
+        type = FinanceType.objects.get(pk=id_finance_type)
+        currency_exist = False
+        amount_exist = False
+        fb_exist = False
         try:
             currency = finance.cleaned_data['id_currency']
+            currency_exist = True
+        except Exception:
+            pass
+        try:
             amount = finance.cleaned_data['amount']
+            amount_exist = True
+        except Exception:
+            pass
+        try:
             fb = finance.cleaned_data['financed_by']
-            type = FinanceType.objects.get(pk=id_finance_type)
+            fb_exist = True
+        except Exception:
+            pass
+        if currency_exist and amount_exist and fb_exist:
             newFinance = Finance(id_application=newApp,id_finance_type=type,financed_by=fb, id_currency=currency,
                                  amount=amount)
             newFinance.save()
-        except Exception as e:
-            print(e)
-            print("error en financeForm method. view.py")
+        else:
+            newFinance = Finance(id_application=newApp,id_finance_type=type)
+            newFinance.save()
     else:
         print("finance not valid")
 
@@ -454,11 +469,14 @@ def edit_application(request):
     for finance_type in finance_types:
         try:
             finance=Finance.objects.get(id_application=last_app,id_finance_type=finance_type)
-            fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'id_finance_type':finance_type,'financed_by':finance.financed_by})
+            fins.append({'amount':finance.amount,'id_currency':finance.id_currency,'financed_by':finance.financed_by})
         except:
+            print(traceback.format_exc())
             fins.append({'id_finance_type':finance_type})
     financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
-
+    print("asd")
+    print(financeFormSet.is_valid())
+    print(fins)
     last_dests = Destination.objects.filter(application = last_app.id)
     dess=[]
     for dest in last_dests:

@@ -23,9 +23,9 @@ class Finance(models.Model):
     id_application = models.ForeignKey('Application')
     id_finance_type = models.ForeignKey('FinanceType')
     #financed_by_dcc = models.BooleanField(default=False)
-    id_currency = models.ForeignKey('Currency')
-    amount = models.PositiveIntegerField()
-    financed_by = models.TextField()
+    id_currency = models.ForeignKey('Currency',blank=True, null=True)
+    amount = models.PositiveIntegerField(blank=True, null=True)
+    financed_by = models.TextField(blank=True, null=True)
     def get_finance_type(self):
         return self.id_finance_type.type
 
