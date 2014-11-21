@@ -243,6 +243,8 @@ class Teacher(models.Model):
 
     def get_avaliable_days(self):
         used_days = self.get_used_days()
+        print(used_days)
+        print(self.hierarchy.avaliable_days)
         return self.hierarchy.avaliable_days - used_days
 
     def get_used_academic_days(self):
