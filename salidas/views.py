@@ -182,8 +182,7 @@ def financeForm(finance, newApp, id_finance_type):
         except Exception:
             pass
         if currency_exist and amount_exist and fb_exist:
-            newFinance = Finance(id_application=newApp,id_finance_type=type,financed_by=fb, id_currency=currency,
-                                 amount=amount)
+            newFinance = Finance(id_application=newApp,id_finance_type=type,financed_by=fb, id_currency=currency, amount=amount)
             newFinance.save()
         else:
             newFinance = Finance(id_application=newApp,id_finance_type=type)
@@ -514,7 +513,6 @@ def edit_application(request):
                 else:
                     break
         else:
-            print("error")
             print(destinations.errors)
         #TODO: validar financeFormSet.is_valid() y hacer que no pasen cosas raras
         if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():

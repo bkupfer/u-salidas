@@ -31,7 +31,8 @@ class FinanceForm(forms.ModelForm):
                                          widget=forms.Select(attrs={'class':'form-control input-sm'}))
     amount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'class':'form-control input-sm','placeholder': u'  Ingrese un Monto...'}))
     financed_by = forms.CharField(required=False,widget=forms.TextInput(attrs={'class':"form-control",
-                                                                'placeholder': u'Indique quien financia...'}))
+                                                                'placeholder': u'Ej: "Conicyt - Fondecyt #1120207"'}))
+
     #financed_by_dcc = forms.BooleanField(required=False,widget=forms.CheckboxInput())
     #id_finance_type = forms.ModelChoiceField(queryset=FinanceType.objects.all(),empty_label="tipo de financiamiento")
     class Meta:
@@ -48,14 +49,14 @@ FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(
-        attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm', 'onchange': "updateStateTxt(this);"},
+        attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);"}))
+    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'},
                                                choices=([("", "Seleccione Ciudad")])))
     start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
     end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
-    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Fundamentos...'}))
+    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Ej: "Participaré en las actividades del proyecto PRADESC, a través del cual nuestro departamento está colaborando con diversas organizaciones alemanas, en particular participaré en actividades que se refieren al desarrollo de soluciones inteligentes para apoyar sistemas urbanos."'}))
     class Meta:
         model = Destination
         exclude = {'application'}
@@ -69,7 +70,7 @@ class DestinationFormEdit(forms.ModelForm):
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
     end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  # widget=SelectDateWidget()
-    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Fundamentos...'}))
+    motive = forms.CharField( max_length = 500,widget=forms.Textarea(attrs={'placeholder': u'Ej: "Participaré en las actividades del proyecto PRADESC, a través del cual nuestro departamento está colaborando con diversas organizaciones alemanas, en particular participaré en actividades que se refieren al desarrollo de soluciones inteligentes para apoyar sistemas urbanos."'}))
     class Meta:
         model = Destination
         exclude = {'application'}
