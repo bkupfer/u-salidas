@@ -85,11 +85,11 @@ class Application(models.Model):
 
     #Obtiene la fecha del envio a facultad
     def sent_date(self):
-        state = ApplicationState.objects.get(pk=2)
+        state = ApplicationState.objects.get(pk=3)
         applicationState = ApplicationHasApplicationState.objects.filter(id_application=self.pk,id_application_state=state)
         try:
-            ret = applicationState[0].date
-          #  ret = applicationState.order_by("date").reverse()[0].date
+            #ret = applicationState[1].date
+            ret = applicationState.order_by("date").reverse()[0].date
         except:
             ret = "No enviada"
         return ret
