@@ -7,7 +7,7 @@
 			{% if user.username%}
             <li style="float:right;top:13px">{{user.first_name}} {{user.last_name}}<span class="glyphicon glyphicon-user"></span></li>
             {% endif %}
-            <li style="float:right;"><a href"{% url 'logout' %}" title="">Logout</a></li>
+            <li style="float:right;"><a href="{% url 'logout' %}" title="">Logout</a></li>
 		</ul>
     </div>
 </div>
