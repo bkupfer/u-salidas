@@ -2,9 +2,9 @@
 <div class="row hidden-print">
 	<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="{% url 'list_angelica' %}"  title="">Solicitudes</a></li>
-			<li><a href="{% url 'historic_calendar' %}"  title="">Calendario Histórico</a></li>
-			{% if user.username%}
+			<li id="1" class="active"><a href="{% url 'list_angelica' %}"  title="">Solicitudes</a></li>
+			<li id="2"><a href="{% url 'historic_calendar' %}"  title="">Calendario Histórico</a></li>
+			{% if user%}
             <li style="float:right;top:13px">{{user.first_name}} {{user.last_name}}<span class="glyphicon glyphicon-user"></span></li>
             {% endif %}
             <li style="float:right;"><a href="{% url 'logout' %}" title="">Logout</a></li>

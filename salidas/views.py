@@ -90,6 +90,7 @@ def success(request):
         else:
             return redirect('teachers_applications')
     elif is_in_group(user, 'angelica'):
+        request.session['tabactive']= 'liPA'
         return redirect('list_angelica')
     elif is_in_group(user, 'magna'):
         request.session['tabactive']= 'liPA'
@@ -717,12 +718,14 @@ def finance_validation(request):
 @csrf_protect
 @login_required
 def days_validation(request):
+    user = request.user
     return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
 
-@csrf_protect
+
 @login_required
 def list_angelica(request):
+    user = request.user
     apps = Application.objects.all()
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
 
