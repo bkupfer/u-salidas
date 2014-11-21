@@ -34,8 +34,11 @@
 </head>
 <body>
 <div class="container-fluid">
-
-	{% include "Navbar/navbar_magna.html" %}
+    {% if user.username == "magna" %}
+	    {% include "Navbar/navbar_magna.html" %}
+    {% elif  user.username == "angelica" %}
+         {% include "Navbar/navbar_angelica.html" %}
+    {% endif %}
 
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
