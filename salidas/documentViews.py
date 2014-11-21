@@ -23,7 +23,7 @@ import traceback
 locale.setlocale(locale.LC_ALL, '')
 
 def getfiles(request):
-    print("get files")
+
     # Files (local path) to put in the .zip
     filenames=[]
     id_app = request.GET['id']
@@ -75,7 +75,6 @@ def getfiles(request):
 
 def peticion_docente_doc(app,replacement_teachers):
     replacements=app.get_replacements()
-    print("peticion docente")
     path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
     tipo_comision=str(app.id_commission_type)
     con_o_sin_remuneracion="con" #TODO cuando es con? cuando es sin?
@@ -118,15 +117,14 @@ def peticion_docente_doc(app,replacement_teachers):
             replace.append(str(rep.rut_teacher))
         replacement_type="En mis actividades " +replace[0]+ " seré reemplazado por " +replace[1]+ " y en mis actividades "+ replace[2]+ " seré reemplazado por " +replace[3]+"."
 
-    signature_file = app.id_Teacher.signature
-    print(str(signature_file))
     try:
+        signature_file = app.id_Teacher.signature
         signature_path = str(signature_file)
         # print('firma')
         #print(signature_path)
-        signature_path = signature_path.split("/")
+        #signature_path = signature_path.split("/")
         #print(signature_path)
-        signature_path = signature_path[1]
+        #signature_path = signature_path[1]
         #print(signature_path)
     except:
         print('no hay firma')
@@ -168,25 +166,22 @@ def peticion_docente_doc(app,replacement_teachers):
     saludo.add_run().add_break()
     saludo.add_run().add_break()
     saludo.add_run().add_break()
+    espacio='                                                                                                                                                  '
+    saludo.add_run(espacio)
     try:
-        p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT, "signatures", signature_path),
-                                width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT  # signature_file.path)
+        saludo.add_run().add_picture(os.path.join(settings.MEDIA_ROOT,signature_path.split('/')[0],signature_path.split('/')[1]),width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT#signature_file.path)
     except:
-        print(traceback.format_exc())
-
-    saludo.add_run().add_break()
-    saludo.add_run().add_break()
+        print("error al agregar la firma")
     saludo.add_run().add_break()
     saludo.add_run().add_break()
     #profe=str(app.id_Teacher)
     profe=document.add_paragraph(nombre_solicitante)
-    profe.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    profe.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     document.save(path)
     return path
 
 def solicitud_facultad_doc(app):
     teacher=app.id_Teacher
-    print("solicitud fac")
     document = Document()
     pretitle=document.add_paragraph()
     pretitle.add_run("OFICIO N°")
@@ -257,7 +252,7 @@ def solicitud_facultad_doc(app):
     p.add_run().add_break()
     p.add_run('PASAJE                                   ').bold = True
     try:
-        finance=Finance.objects.get(id_application=app,id_finance_type=1)
+        finance=Finance.objects.get(id_application=app,id_finance_type=2)
         if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
             financiamiento = str(finance.amount)+" "+str(finance.id_currency.currency)+", "+str(finance.financed_by)
             p.add_run(financiamiento.upper())
@@ -268,7 +263,7 @@ def solicitud_facultad_doc(app):
     p.add_run().add_break()
     p.add_run('AYUDA DE VIAJE                ').bold = True
     try:
-        finance=Finance.objects.get(id_application=app,id_finance_type=1)
+        finance=Finance.objects.get(id_application=app,id_finance_type=3)
         if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
             financiamiento = str(finance.amount)+" "+str(finance.id_currency.currency)+", "+str(finance.financed_by)
             p.add_run(financiamiento.upper())
@@ -279,7 +274,6 @@ def solicitud_facultad_doc(app):
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run('OBSERVACIONES ').bold = True
-    #TODO obs? no recibe remuneracion?
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run('REEMPLAZANTE DE CATEDRAS     ').bold = True
@@ -327,20 +321,20 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
 
     signature_file=""
     try:
-        signature_file=replacement_teacher.rut_teacher.signature
+        signature_file=replacement_teacher.signature
         signature_path=str(signature_file)
         #print('firma')
         #print(signature_path)
-        signature_path=signature_path.split("/")
+        #signature_path=signature_path.split("/")
         #print(signature_path)
-        signature_path=signature_path[1]
+        #signature_path=signature_path[1]
         #print(signature_path)
     except:
-        print('no hay firma')
+        print('error obteniendo la firma')
+        print(traceback.format_exc())
     fecha_inicio=app.get_start_date().strftime("%d del %m de %Y")
     fecha_fin=app.get_end_date().strftime("%d del %m de %Y")
 
-    print("carta de reemplazo")
     filename= 'compromiso_reemplazo'+str(replacement_type)+'.doc'
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
@@ -380,10 +374,11 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     p.add_run().add_break()
     p.add_run().add_break()
     p.add_run('                                                                                                               ')
+
     try:
-        p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT,"signatures",signature_path),width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT#signature_file.path)
+        p.add_run().add_picture(os.path.join(settings.MEDIA_ROOT,signature_path.split('/')[0],signature_path.split('/')[1]),width=Inches(1.0)).alignment = WD_ALIGN_PARAGRAPH.RIGHT#signature_file.path)
     except:
-        print("no hay firma")
+        print("error al agregar la firma")
 
     signature=document.add_paragraph()
     signature.add_run('                                                                  '+str(replacement_teacher.name)).bold=True

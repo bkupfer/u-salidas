@@ -96,6 +96,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'static',  'templates'),
 )
 
+#nota, estos archivos estan solamente disponible si el modo debug esta en True
 if DEBUG:
     MEDIA_URL = '/media/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'static',  'static-only')

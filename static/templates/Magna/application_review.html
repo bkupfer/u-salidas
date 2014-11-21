@@ -105,12 +105,14 @@
                                     <th>Financiado Por</th>
                                 </tr>
                                 {% for fin in finances %}
-                                    <tr>
-                                        <td>{{ fin.get_finance_type }}</td>
-                                        <td>{{ fin.amount }}</td>
-                                        <td>{{ fin.id_currency}}</td>
-                                        <td>{{ fin.financed_by }}</td>
-                                    </tr>
+                                    {% if fin.amount and fin.get_finance_type and fin.id_currency and fin.financed_by %}
+                                        <tr>
+                                            <td>{{ fin.get_finance_type }}</td>
+                                            <td>{{ fin.amount }}</td>
+                                            <td>{{ fin.id_currency}}</td>
+                                            <td>{{ fin.financed_by }}</td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                             </table>
 							{% else %}
