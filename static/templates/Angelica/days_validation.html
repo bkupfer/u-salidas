@@ -7,11 +7,16 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
 <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
 <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
-<script src="{% static 'public/js/jquery-1.11.0.min.js' %}"></script>
+    <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
+    <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "external/jquery/jquery.js" %}"></script>
+    <script src="{% static "public/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+    <script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
+
 
 <title>Salidas DCC</title>
 
@@ -27,104 +32,151 @@
     <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 contenido">
         	
    		<!-- Aca colocar el contenido correspondiente -->
-   		<h2>Calendario tentativo de Pedro PÃ©rez</h2>
-   		<form>
-		<div class="row">
-			<div class="col-md-6">
-			
-				<h3>Profesor Pedro pÃ©rez</h3>
-				<br />
-				<div class="col-md-12">
-				<br />
-				Acá colocar calendario y simbología
-				</div>
-			</div>
-			<div class="col-md-6">
-				<table class="table table-bordered table-hover table-condensed table-striped">
-					<tbody>
-						<tr class="info">
-							<td><strong>DÃ­as utilizados</strong></td>
-							<td>3</td>
+   		<h2>Validación de Días y Horarios </h2>
+        <h3> Solicitud N° {{ app.id }}</h3>
+		<div class="row col-sm-10"  >
+            <label align="left" style="font-size:large" class="col-sm-12">Resumen Solicitud</label>
+			<table class="table col-sm-8  table-bordered table-hover table-condensed table-striped">
+						<tr>
+							<td>Profesor</td>
+							<td>{{ teacher }}</td>
 						</tr>
 						<tr>
-							<td><strong>DÃ­as comprometidos</strong></td>
-							<td>7</td>
+							<td>Rut</td>
+							<td>{{ teacher.rut }}</td>
 						</tr>
 						<tr>
-							<td><strong>DÃ­as disponibles</strong></td>
-							<td>27</td>
+                            <td>Jerarquía</td>
+                            <td>{{ teacher.hierarchy }}</td>
 						</tr>
-					</tbody>
-				</table>
+                        <tr>
+                            <td>Jornada</td>
+                            <td>{{ teacher.working_day }}</td>
+                        </tr>
+						<tr>
+							<td>Tipo de comisi&oacute;n</td>
+							<td>{{ comm_type }}</td>
+						</tr>
 				
-				<table class="table table-bordered table-hover table-condensed table-striped">
-					<thead>
 						<tr>
-							<th>Curso</th>
-							<th>Semanas docentes utilizadas <br /> (hasta ahora)</th>
+							<td>Destino(s)</td>
+							<td>
+								<table class="table">
+									<tr>
+										<th> Ciudad, País</th>
+										<th> Fecha Inicio</th>
+										<th> Fecha Término</th>
+                                        <th> Actividad a Realizar</th>
 						</tr>
-					</thead>
-					<tbody>
+									{% for d in dest %}
 						<tr>
-							<td><strong>CC3001</strong></td>
-							<td>0</td>
+											<td class="col-sm-3">{{ d.city }}, {{ d.country }}</td>
+											<td class="col-sm-3">{{ d.start_date }}</td>
+											<td class="col-sm-3">{{ d.end_date }}</td>
+                                            <td class="col-sm-3">{{ d.motive }}</td>
+						</tr>
+									{% endfor %}
+								</table>
+							</td>
 						</tr>
 						<tr>
-							<td><strong>CC3201</strong></td>
-							<td>0</td>
+							<td>Profesor reemplazante</td>
+							<td>
+								<table class="table">
+									<tr>
+										<th> Tipo de Reemplazo</th>
+										<th> Profesor</th>
+										<th> Choque de Horario</th>
 						</tr>
+									{% for replacement in replacements %}
 						<tr>
-							<td><strong>CC1001</strong></td>
-							<td>1</td>
+											<td>{{ replacement.type }}</td>
+											<td>{{ replacement.rut_teacher }}</td>
+											<td> No hecho todavia, se debiese indicar docencia compartida</td>
 						</tr>
-					</tbody>
+									{% endfor %}
 				</table>
+							</td>
+						</tr>
+					</table>
 			</div>
-		</div>
-		
 		<div class="row">
-			<div class="col-md-12">
+        <label align="left" style="font-size:large" class="col-sm-12">Estado de días utilizados por el docente</label>
+            <div class="col-md-6">
+            <br>
 			<table class="table table-bordered table-hover table-condensed table-striped">
-					<thead>
-						<tr>
-							<th>Curso</th>
-							<th>Profesor Reemplazante</th>
-							<th>Choque de Horario</th>
-						</tr>
-					</thead>
 					<tbody>
-						<tr  class="warning">
-							<td><strong>CC3001</strong></td>
-							<td>Profe 1</td>
-							<td>1 choque de Salida</td>
+                        <tr class="info">
+                            <td><strong>Días utilizados</strong></td>
+                            <td>{{ teacher.get_used_days }}</td>
 						</tr>
 						<tr>
-							<td><strong>CC3201</strong></td>
-							<td>Docencia Compartida</td>
-							<td>sin choque</td>
+                            <td><strong>Días disponibles</strong></td>
+                            <td>{{ teacher.get_avaliable_days }}</td>
 						</tr>
-						<tr  class="danger">
-							<td><strong>CC1002</strong></td>
-							<td>Profe 3</td>
-							<td>1 choque (MÃ³dulos: 5.1)</td>
+                        <tr {% if teacher.get_used_academic_days > 14 %}class="danger"{% endif %}>
+								<td><strong>Semanas docentes utilizadas</strong></td>
+								<td >{{ teacher.get_used_academic_weeks }} de 2</td>
 						</tr>
 					</tbody>
 				</table>
+
 			</div>
+        <div class="col-sm-12">
+            {% if teacher.get_used_academic_days > 14 %}
+                <label style="color:red">El docente ha superado el número máximo de semanas docentes perdidas (2).</label>
+            {% endif %}
+
 		</div>
-		
-		<input type="submit" class="btn btn-lg btn-primary" value="Aceptar solicitud" />
-		
-		<input type="submit" class="btn btn-lg btn-danger" value="Rechazar solicitud" />
-		
+		<br>
+        </div>
+		<form method="POST"> {% csrf_token %}
+            <div class="row form-group">
+                <div class="col-sm-8">
+                    <br>
+                    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar </button>
+                    <button href="#myModal" type="button" class="btn btn-lg btn-danger" data-toggle="modal" name="1"> Rechazar</button>
+                </div>
+            </div>
 		</form>
 		
 		<!-- fin contenido -->
     </div><!-- end contenido-->
     </div><!-- end row-->
 </div><!--end container-->
-<script src="{% static "public/js/bootstrap.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/filestyle.js" %}"> </script>
+<!-- Modal - pop-up for reporting retreive of documents -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>Reportar recibo de documentos a facultad</h3>
+            </div>
+            <form method="POST">  {% csrf_token %}
+				<div class="modal-body col-sm-12">
+					<div class="col-sm-12">
+						<label class="col-sm-4" align="right" style="margin-top: 3px;">Fecha de recibo:</label>
+						{{ report_receive_form.send_date }}
+					</div><div class="col-sm-12">
+                    <br>
+						<label class="col-sm-4" align="right" style="margin-top: 3px;">Observaciones:</label>
+						{{ report_receive_form.obs }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button href="#" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-danger" name="reject_button"> Rechazado</button>
+				</div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+
+<script>
+    $(document).ready(function() {
+        $( ".datepicker" ).datepicker();
+	});
+</script>
 </html>
  
