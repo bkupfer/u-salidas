@@ -48,8 +48,8 @@ FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
 class DestinationForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(
-        attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);updateCountryTxt(this);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm', 'onchange': "updateStateTxt(this);"},
+        attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);"}))
+    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'},
                                                choices=([("", "Seleccione Ciudad")])))
     start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #

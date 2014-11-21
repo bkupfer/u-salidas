@@ -95,9 +95,9 @@
 									{% for fin in finances %}
 									<tr>
 										<td>{{ fin.get_finance_type }}</td>
-										<td>{{ fin.amount }}</td>
-										<td>{{ fin.id_currency }}</td>
-                                        <td>{{ fin.financed_by }}</td>
+										<td>{% if fin.amount != None %}{{ fin.amount }}{% else %}-----{% endif %}</td>
+										<td>{% if fin.id_currency != None %}{{ fin.id_currency }}{% else %}-----{% endif %}</td>
+                                        <td>{% if fin.financed_by != None %}{{ fin.financed_by }}{% else %}-----{% endif %}</td>
 									</tr>
 									{% endfor %}
 								</table>

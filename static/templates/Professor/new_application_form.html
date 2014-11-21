@@ -155,17 +155,17 @@
                                                         <div class="col-sm-12">
                                                             <label class="col-sm-2 control-label">Destino</label>
                                                             <p class="col-sm-2">País <label style="color:red">*</label></p>
-                                                            <div class="col-sm-6">
-                                                                {{ destination.country }}
-                                                            </div>
+															<div class="col-sm-6">
+															{{ destination.country }}
+															</div>
                                                         </div>
                                                         <div class="col-sm-12">
-                                                             <br/>
+                                                            <br>
                                                             <label class="col-sm-2 control-label"></label>
-                                                            <p class="col-sm-2">Ciudad <label style="color:red">*</label> </p>
-                                                            <div class="col-sm-6">
-                                                                {{ destination.city }}
-                                                            </div>
+                                                            <p class="col-sm-2">Ciudad <label style="color:red">*</label></p>
+															<div class="col-sm-6">
+															{{ destination.city }}
+															</div>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
@@ -180,7 +180,7 @@
                                                         <div class="col-sm-12">
                                                             <br>
                                                             <label class="control-label col-sm-3" for="nombre">Actividad a realizar:  <label  style="color:red">* </label></label>
-                                                                {{ destination.motive }}
+															{{ destination.motive }}
                                                         </div>
                                                         <div align="right"><a class="delete" href="#">Borrar</a></div>
                                                         <hr>
@@ -336,9 +336,7 @@
             if (formCount > 1) {
                 // Delete the item/form
                 $(btn).parents('.item').remove();
-
                 var forms = $('.item'); // Get all the forms
-
                 // Update the total number of forms (1 less than before)
                 $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
 
@@ -365,6 +363,7 @@
             if (formCount < 20) {
                 // Clone a form (without event handlers) from the first form
                 var row = $(".item:first").clone(false).get(0);
+
                 // Insert it after the last form
                 $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
 
@@ -373,6 +372,11 @@
                 $(".errorlist", row).remove();
                 $(row).children().removeClass('error');
                 // Relabel/rename all the relevant bits
+				$(row).children().children().children().each(function () {
+                    updateElementIndex(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
                 $(row).children().children().each(function () {
                     updateElementIndex(this, prefix, formCount);
                     if ($(this).attr('type') == 'text')
