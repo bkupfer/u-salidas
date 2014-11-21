@@ -408,6 +408,11 @@
                     if ($(this).attr('type') == 'text')
                         $(this).val('');
                 });
+				$(row).children().children().children().each(function () {
+                    updateElementIndex(this, prefix, formCount);
+                    if ($(this).attr('type') == 'text')
+                        $(this).val('');
+                });
 
                 // Add an event handler for the delete item/form link
                 $(row).find('.delete').click(function () {
@@ -526,6 +531,7 @@
 <script language="javascript">
 	print_country("id_destinations-0-country");
 </script>
+
 <script type="text/javascript">
         function  count_avaliable_days(date) {
 
@@ -546,7 +552,7 @@
                 return;
             }
             else{
-                var one_day=1000*60*60*24
+                var one_day=1000*60*60*24;
                 count_days+=Math.ceil((end_date-start_date)/one_day);
                 if (count_days>avaliable_days)
                     alert_msg += "Usted tiene "+avaliable_days+" días disponibles y está pidiendo "+count_days+" días.<br>";

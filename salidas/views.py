@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.files.images import get_image_dimensions
 from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -418,14 +419,20 @@ def my_information(request):
     signature = TeachersSignature2(request.FILES or None)
 
     if request.method == 'POST':
+
         if form.is_valid() and len(request.FILES) != 0:
             email = form.cleaned_data['email']
             jornada = form.cleaned_data['jornada']
+
             sign = request.FILES['sign']
+            dimentions = get_image_dimensions(sign)
+            correct_dimentions = False
+            if (250 <= dimentions[0] and dimentions[0] <= 500) and (250 <= dimentions[1] and dimentions[1] <= 500):
+                correct_dimentions = True
 
             sign_extention =  sign.__str__().split(".")[1]
             size_of_sign = 1 * 1024 * 1024 + 1024 # 1K for error
-            if (sign_extention == "jpg" or sign_extention == "jpeg" or sign_extention == "png") and sign._size <= size_of_sign:
+            if (sign_extention == "jpg" or sign_extention == "jpeg" or sign_extention == "png") and sign._size <= size_of_sign and correct_dimentions:
                 teacher.mail = email
                 teacher.working_day = jornada
                 teacher.signature.delete()
@@ -433,7 +440,10 @@ def my_information(request):
                 teacher.save()
                 messages.success(request, 'Datos actualizados exitosamente!')
             else:
-                err = 'La firma debe estar en formato .jpg o .png, y pesar menos de 1MB.'
+                if not correct_dimentions:
+                    err = 'La firma debe tener dimensiones entre (250x250) y (500x500).'
+                else:
+                    err = 'La firma debe estar en formato .jpg o .png, y pesar menos de 1MB.'
                 messages.error(request, err)
         else:
             messages.error(request, 'Debe ingresar todos los campos obligatorios.')
