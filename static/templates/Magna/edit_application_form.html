@@ -379,6 +379,8 @@
                         updateElementIndex(this, prefix, i);
                     });
                 }
+                // Validate dates
+                count_avaliable_days(0);
             }
             else {
                 alert("Debes agregar al menos un destino!");
@@ -409,8 +411,10 @@
 
                 // Add an event handler for the delete item/form link
                 $(row).find('.delete').click(function () {
+                    count_avaliable_days(0);
                     return deleteForm(this, prefix);
                 });
+
                 citySelector = $(row).find('.city')[0];
                 citySelector.options.length = 0;
                 citySelector.options[0] = new Option("Seleccione Ciudad", "");
@@ -524,36 +528,43 @@
 </script>
 <script type="text/javascript">
         function  count_avaliable_days(date) {
-            var avaliable_days=parseInt(document.getElementById("avaliable_days").innerHTML)
 
+            var avaliable_days=parseInt(document.getElementById("avaliable_days").innerHTML);
             var destCount = parseInt($('#id_destinations-TOTAL_FORMS').val());
-            var count_days=0
-            for (var i = 0; i < destCount; i++) {
-                var sd=document.getElementById('id_destinations-' + i + '-start_date').value.split('/');
+            var count_days = 0;
+            var sd = document.getElementById('id_destinations-' + 0 + '-start_date').value.split('/');
+            var ed = document.getElementById('id_destinations-' + (destCount - 1) + '-end_date').value.split('/');
+             //for (var i = 0; i < destCount; i++) {
+
+                //var sd=document.getElementById('id_destinations-' + i + '-start_date').value.split('/');
                 //console.log(sd[1]+'/'+sd[0]+'/'+sd[2])
-                var ed=document.getElementById('id_destinations-' + i + '-end_date').value.split('/');
+                //var ed=document.getElementById('id_destinations-' + i + '-end_date').value.split('/');
                 var start_date = new Date(sd[1]+'/'+sd[0]+'/'+sd[2]);
                 var end_date = new Date(ed[1]+'/'+ed[0]+'/'+ed[2]);
 
                 //console.log(end_date);
                 //console.log(start_date);
                 if (end_date!="Invalid Date" &&  start_date!="Invalid Date" && end_date < start_date) {
-                    document.getElementById("warning_used_days").innerHTML="La fecha de fin no puede ser menor a la fecha de inicio"
+                    document.getElementById("warning_used_days").innerHTML="La fecha de fin no puede ser menor a la fecha de inicio";
                 }
                 else{
+                    var alert_msg = "";
                     //console.log("good date");
                     var one_day=1000*60*60*24
                     count_days+=Math.ceil((end_date-start_date)/one_day);
                     //console.log('count_days '+count_days)
                     if (count_days>avaliable_days)
-                        document.getElementById("warning_used_days").innerHTML="Usted tiene "+avaliable_days+" días disponibles y está pidiendo "+count_days+" días."
-                    else
-                        document.getElementById("warning_used_days").innerHTML=""
+                        alert_msg += "Usted tiene "+avaliable_days+" días disponibles y está pidiendo "+count_days+" días.<br>";
+
+                    if(end_date!="Invalid Date" &&  start_date!="Invalid Date" && start_date.getFullYear() != end_date.getFullYear())
+                        alert_msg += "Las fechas de salida y llegada deben pertenecer al mismo año.";
+
+                    document.getElementById("warning_used_days").innerHTML=alert_msg;
                 }
 
 
 
-            }
+            //}
 
 
         }
