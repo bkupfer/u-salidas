@@ -75,8 +75,8 @@
 													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													<td>{{ app.sent_date.date }}</td>
                                                     <td class="state" align="center">{{ app.get_replacement_state }}</td>
                                                     <td class="state" align="center">{{ app.get_academic_replacement_state }}</td>
                                                     <td class="state" align="center">{{ app.id_days_validation_state }}</td>
@@ -113,8 +113,8 @@
 													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													<td>{{ app.sent_date.date }}</td>
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -147,8 +147,8 @@
 													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
 													<td>{{ app.id_commission_type }}</td>
-													<td>{{ app.creation_date }}</td>
-													<td>{{ app.sent_date }}</td>
+													<td>{{ app.creation_date.date }}</td>
+													<td>{{ app.sent_date.date }}</td>
 													<td>{{ app.used_days }}</td>
 												</tr>
 											{% endif %}
@@ -182,8 +182,8 @@
 												<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                 <td>{{ app.id_Teacher }}</td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												<td>{{ app.sent_date.date }}</td>
 												<td>{{ app.get_state }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>

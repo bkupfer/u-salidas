@@ -95,8 +95,8 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												<td>{{ app.sent_date.date }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -127,8 +127,8 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												<td>{{ app.sent_date.date }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -159,8 +159,8 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												<td>{{ app.sent_date.date }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -191,8 +191,8 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												<td>{{ app.sent_date.date }}</td>
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -224,8 +224,8 @@
 											<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 											<td>{{ app.id_commission_type }}</td>
 											<td>{{ app.creation_date }}</td>
-											<td>{{ app.sent_date }}</td>
-											<td>{{ app.get_state }}</td>
+											<td>{{ app.sent_date.date }}</td>
+											<td>{{ app.get_state.date }}</td>
 											<td>{{ app.used_days }}</td>
 										</tr>
 									{% endfor %}
