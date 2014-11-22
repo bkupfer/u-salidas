@@ -95,8 +95,12 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -127,8 +131,12 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -159,8 +167,12 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -191,8 +203,12 @@
 											<tr>
 												<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 												<td>{{ app.id_commission_type }}</td>
-												<td>{{ app.creation_date }}</td>
-												<td>{{ app.sent_date }}</td>
+												<td>{{ app.creation_date.date }}</td>
+												{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 												<td>{{ app.used_days }}</td>
 											</tr>
 										{% endif %}
@@ -224,8 +240,12 @@
 											<td><a href="application_detail?id={{ app.id }}">{{ app.id }}</a></td>
 											<td>{{ app.id_commission_type }}</td>
 											<td>{{ app.creation_date }}</td>
-											<td>{{ app.sent_date }}</td>
-											<td>{{ app.get_state }}</td>
+											<td>{{ app.sent_date.date }}</td>
+											{% if app.sent_date.date == None %}
+                                                       <td>No enviada</td>
+                                                    {% else %}
+                                                        <td>{{ app.sent_date.date }}</td>
+                                                    {% endif %}
 											<td>{{ app.used_days }}</td>
 										</tr>
 									{% endfor %}
