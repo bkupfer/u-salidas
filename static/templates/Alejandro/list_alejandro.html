@@ -28,7 +28,7 @@
 <body>
 <div class="container-fluid">
 
-	{%  include "Navbar/navbar_angelica.html" %}
+	{%  include "Navbar/navbar_alejandro.html" %}
 
     <!-- page content -->
     <div class="row">
@@ -58,6 +58,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -72,8 +73,9 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Pendiente DCC" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date.date }}</td>
 													<td>{{ app.sent_date.date }}</td>
@@ -100,6 +102,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -110,8 +113,9 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Pendiente Facultad" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date.date }}</td>
 													<td>{{ app.sent_date.date }}</td>
@@ -134,6 +138,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -144,8 +149,9 @@
 										{% for app in apps %}
 											{% if app.get_state.state == "Terminada" %}
 												<tr>
-													<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+													<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                     <td>{{ app.id_Teacher }}</td>
+                                                    <td>{{ app.id_Teacher.rut }}</td>
 													<td>{{ app.id_commission_type }}</td>
 													<td>{{ app.creation_date.date }}</td>
 													<td>{{ app.sent_date.date }}</td>
@@ -168,6 +174,7 @@
 										<tr>
 											<th>Nº</th>
                                             <th>Profesor solicitante</th>
+                                            <th>Rut</th>
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
@@ -179,8 +186,9 @@
 										{% for app in apps %}
                                             {% if app.get_state.state != "Pendiente DCC" %}
 											<tr>
-												<td><a href="detail_alejandro?id={{ app.id }}">{{ app.id }}</a></td>
+												<td><a href="days_validation?id={{ app.id }}">{{ app.id }}</a></td>
                                                 <td>{{ app.id_Teacher }}</td>
+                                                <td>{{ app.id_Teacher.rut }}</td>
 												<td>{{ app.id_commission_type }}</td>
 												<td>{{ app.creation_date.date }}</td>
 												<td>{{ app.sent_date.date }}</td>
