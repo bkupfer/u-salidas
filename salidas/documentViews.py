@@ -22,6 +22,14 @@ import traceback
 
 locale.setlocale(locale.LC_ALL, '')
 
+def datetimeToString(datetime):
+    monthDict={1:'Enero', 2:'Febrero', 3:'Marzo', 4:'Abril', 5:'Mayo', 6:'Junio', 7:'Julio', 8:'Agosto', 9:'Septiembre', 10:'Octubre', 11:'Noviembre', 12:'Diciembre'}
+    day = int(datetime.day)
+    month = monthDict[int(datetime.month)]
+    year = int(datetime.year)
+    return str(day)+" de "+str(month)+" del año "+str(year)
+
+
 def getfiles(request):
 
     # Files (local path) to put in the .zip
@@ -77,12 +85,15 @@ def peticion_docente_doc(app,replacement_teachers):
     replacements=app.get_replacements()
     path = os.path.join(settings.MEDIA_ROOT, 'carta_peticion_docente.docx') #todo:path para cada profe (?)
     tipo_comision=str(app.id_commission_type)
+    if tipo_comision == 'Academica':
+        tipo_comision = 'Académica'
     con_o_sin_remuneracion="con" #TODO cuando es con? cuando es sin?
     destinos = app.get_destinations()
-    fecha_inicio=app.get_start_date().strftime("%d del %m de %Y")
-    fecha_fin=app.get_end_date().strftime("%d del %m de %Y")
+    fecha_inicio=datetimeToString(app.get_start_date())
+    print(datetimeToString(app.get_start_date()))
+    fecha_fin=datetimeToString(app.get_end_date())
     director = str(app.directors_name)
-    nombre_solicitante = str(app.id_Teacher.name)
+    nombre_solicitante = str(app.id_Teacher.name) +" "+ str(app.id_Teacher.last_name)
     email_solicitante = str(app.id_Teacher.mail)
     director = ""
     try:
@@ -91,15 +102,15 @@ def peticion_docente_doc(app,replacement_teachers):
     except:
         pass
 
-    intro="Por la presente ruego a usted tenga a bien autorizar una Comisión "+tipo_comision \
+    intro="Por la presente ruego a Ud. tenga a bien autorizar una Comisión "+tipo_comision \
           +" "+ con_o_sin_remuneracion+" goce de remuneraciones, del "\
-          +fecha_inicio+" al "+fecha_fin+"."
+          +fecha_inicio+" al "+fecha_fin+". "
     if len(destinos) > 1:
-        intro = intro + "Los motivos son viajar: "
+        intro = intro + "Los motivos de esta solicitud son viajar a: "
         for destination in destinos:
             intro = intro + "A "+str(destination.city)+", "+str(destination.country)+" con objeto de "+ str(destination.motive)+". "
     else:
-        intro = intro + "El motivo del viaje a "+str(destinos[0].city)+", "+str(destinos[0].country)
+        intro = intro + "El motivo de esta solicitud es que deberé viajar a "+str(destinos[0].city)+", "+str(destinos[0].country)
         intro = intro + " es " + str(destinos[0].motive)+". "
     intro = intro+"Se adjuntan los documentos pertinentes."
 
@@ -152,9 +163,14 @@ def peticion_docente_doc(app,replacement_teachers):
     financiamiento = ""
     for finance in finances:
         if finance.financed_by != None:
-            financiamiento = financiamiento+"Los gastos de "+str(finance.id_finance_type.type)
+            finance_type = str(finance.id_finance_type.type)
+            if finance_type == 'Viatico':
+                finance_type = 'Viático'
+            if finance_type == 'Inscripcion':
+                finance_type = 'Inscripción'
+            financiamiento = financiamiento+"Los gastos de "+finance_type
             if finance.amount != None:
-                financiamiento = financiamiento + " de "+str(finance.amount)+" "+str(finance.id_currency.currency)+" "
+                financiamiento = financiamiento + " de $"+str(finance.amount)+" "+str(finance.id_currency.currency)+" "
             financiamiento = financiamiento + "serán financiados por " + str(finance.financed_by)+". "
     if len(financiamiento) > 0:
         financiamiento=document.add_paragraph(prefix_financiamiento+financiamiento)
@@ -186,7 +202,7 @@ def solicitud_facultad_doc(app):
     pretitle=document.add_paragraph()
     pretitle.add_run("OFICIO N°")
     pretitle.add_run().add_break()
-    pretitle.add_run("FECHA:   "+str(date.today().strftime("%d.%m.%Y")))
+    pretitle.add_run("FECHA:   "+datetimeToString(date.today()))
     pretitle.add_run().add_break()
     pretitle.add_run("USO INTERNO FACULTAD").bold = True
     pretitle.add_run().add_break()
@@ -220,9 +236,9 @@ def solicitud_facultad_doc(app):
         p.add_run().add_break()
         p.add_run('PERIODO                                ').bold = True
         p.add_run('DEL     ').bold = True
-        p.add_run(destination.start_date.strftime("%d del %m de %Y"))
+        p.add_run(datetimeToString(destination.start_date))
         p.add_run('    AL    ').bold = True
-        p.add_run(destination.end_date.strftime("%d del %m de %Y"))
+        p.add_run(datetimeToString(destination.end_date))
         p.add_run().add_break()
         p.add_run('LUGAR                                     ').bold = True
         lugar = str(destination.city)+", "+str(destination.country)
@@ -250,7 +266,7 @@ def solicitud_facultad_doc(app):
     except:
         p.add_run(str("NO SOLICITA"))
     p.add_run().add_break()
-    p.add_run('PASAJE                                   ').bold = True
+    p.add_run('PASAJE IDA Y VUELTA    ').bold = True
     try:
         finance=Finance.objects.get(id_application=app,id_finance_type=2)
         if finance.id_currency!=None and finance.amount!=None and finance.financed_by!=None:
@@ -332,15 +348,15 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     except:
         print('error obteniendo la firma')
         print(traceback.format_exc())
-    fecha_inicio=app.get_start_date().strftime("%d del %m de %Y")
-    fecha_fin=app.get_end_date().strftime("%d del %m de %Y")
+    fecha_inicio=datetimeToString(app.get_start_date())
+    fecha_fin=datetimeToString(app.get_end_date())
 
     filename= 'compromiso_reemplazo'+str(replacement_type)+'.doc'
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
 
-    today=date.today().strftime("%d del %m de %Y")
-    today_date=document.add_paragraph(str(today))
+    today=datetimeToString(date.today())
+    today_date=document.add_paragraph(today)
     today_date.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     today_date.add_run().add_break()
 
@@ -349,7 +365,7 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     title.add_run().add_break()
     title.add_run().add_break()
     title.add_run().add_break()
-    cuerpo='Yo, '+str(replacement_teacher.name)+', me comprometo a reemplazar a '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
+    cuerpo='Yo, '+str(replacement_teacher.name)+" "+str(replacement_teacher.last_name)+', me comprometo a reemplazar a '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
     #jerarquia=replacement_teacher.hierarchy
     #jornada=replacement_teacher.working_day
 
