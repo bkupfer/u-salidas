@@ -329,7 +329,7 @@ def carta_reemplazo_any(app,replacement):
 
 def carta_reemplazo_ac_doc(app,replacement_teacher):
     solicitante=str(app.id_Teacher)
-    replacement_type="académico y docente"
+    replacement_type="académicas y docentes"
 
     return carta_reemplazo(solicitante,app,replacement_teacher,replacement_type)
 
@@ -355,17 +355,22 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     path = os.path.join(settings.MEDIA_ROOT,filename)
     document=Document()
 
-    today=datetimeToString(date.today())
+    today="Santiago, "+datetimeToString(date.today())
     today_date=document.add_paragraph(today)
     today_date.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     today_date.add_run().add_break()
-
-    title = document.add_paragraph('CARTA DE COMPROMISO DE REEMPLAZO')
+    tipo_reemplazo = str(replacement_type).upper()
+    if tipo_reemplazo == 'DOCENTE':
+        tipo_reemplazo = 'DOCENTES'
+    if tipo_reemplazo == 'ACADEMICO':
+        tipo_reemplazo = 'ACADÉMICAS'
+    title = document.add_paragraph('CARTA DE COMPROMISO DE REEMPLAZO EN FUNCIONES '+tipo_reemplazo)
     title.alignment = 1
     title.add_run().add_break()
     title.add_run().add_break()
     title.add_run().add_break()
-    cuerpo='Yo, '+str(replacement_teacher.name)+" "+str(replacement_teacher.last_name)+', me comprometo a reemplazar a '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
+    nombre_reemplazante = str(replacement_teacher.name)+" "+str(replacement_teacher.last_name)
+    cuerpo='Yo, '+nombre_reemplazante+', me comprometo a reemplazar a '+solicitante+', del '+fecha_inicio+ ' al '+fecha_fin+', ambas fechas inclusive, en todas sus actividades del tipo '+str(replacement_type)+'.'
     #jerarquia=replacement_teacher.hierarchy
     #jornada=replacement_teacher.working_day
 
@@ -376,14 +381,14 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
 
     p = document.add_paragraph()
     p.add_run().add_break()
-    p.add_run('Nombre: ').bold = True
-    p.add_run(str(replacement_teacher.name))
+    p.add_run('Nombre                           : ').bold = True
+    p.add_run(nombre_reemplazante)
     p.add_run().add_break()
-    p.add_run('Jerarquía: ').bold = True
+    p.add_run('Jerarquía                        : ').bold = True
     p.add_run(str(replacement_teacher.hierarchy))
     p.add_run().add_break()
-    p.add_run('Cargo: ').bold = True
-    p.add_run('Académico Jornada ')
+    p.add_run('Cargo                                : ').bold = True
+    p.add_run('Académico Jornada ' +str(replacement_teacher.get_working_day()))
     #p.add_run(str(jornada))
     p.add_run().add_break()
     p.add_run().add_break()
@@ -397,7 +402,7 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
         print("error al agregar la firma")
 
     signature=document.add_paragraph()
-    signature.add_run('                                                                  '+str(replacement_teacher.name)).bold=True
+    signature.add_run('                                                                  '+nombre_reemplazante).bold=True
     signature.alignment = WD_ALIGN_PARAGRAPH.CENTER
     signature.add_run().add_break()
     signature.add_run().add_break()

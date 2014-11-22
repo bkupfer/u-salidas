@@ -298,6 +298,9 @@ class Teacher(models.Model):
                     else:
                         print("curso de uds raras")
         return weeks_by_course
+    def get_working_day(self):
+        return self.working_day.working_day
+
 
 
 class Replacement(models.Model):
