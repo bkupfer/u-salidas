@@ -607,6 +607,7 @@ def saveState(app, id_state):
     stateApp.save()
 
 
+
 @login_required
 def application_review(request):
     id_app = request.GET['id']
