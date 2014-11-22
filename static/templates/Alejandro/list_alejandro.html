@@ -62,10 +62,7 @@
 											<th>Tipo de Comisión</th>
 											<th>Fecha de Creación</th>
 											<th>Fecha de Envío a Facultad</th>
-                                            <th id="RD" title="Firma Reemplazo Docente">Firma R.D</th>
-                                            <th id="RA" title="Firma Reemplazo Académico">Firma R.A</th>
-                                            <th id="JE" title="Validación Jefa de Estudios">Validación J.E.</th>
-                                            <th id="JA" title="Validación Jefa Administrativa">Validación J.A</th>
+                                            <th id="JA" title="Estado Validación Jefa Administrativa">Validación Jefa Administrativa</th>
 											<th>Días Utilizados</th>
 										</tr>
 										</thead>
@@ -83,9 +80,6 @@
                                                     {% else %}
                                                         <td>{{ app.sent_date.date }}</td>
                                                     {% endif %}
-                                                    <td class="state" align="center">{{ app.get_replacement_state }}</td>
-                                                    <td class="state" align="center">{{ app.get_academic_replacement_state }}</td>
-                                                    <td class="state" align="center">{{ app.id_days_validation_state }}</td>
                                                     <td class="state" align="center">{{ app.id_funds_validation_state }}</td>
 													<td>{{ app.used_days }}</td>
 												</tr>

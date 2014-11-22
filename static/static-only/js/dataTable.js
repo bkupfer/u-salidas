@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#PATable').dataTable( {
+    var pa = $('#PATable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -24,7 +24,8 @@ $(document).ready(function() {
             }
         }
     } );
-	$('#PDCCTable').dataTable( {
+    pa.columns.adjust().draw();
+	var pdcc = $('#PDCCTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -49,7 +50,8 @@ $(document).ready(function() {
             }
         }
     } );
-	$('#PFTable').dataTable( {
+    pdcc.columns.adjust().draw();
+	var pf = $('#PFTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -74,7 +76,8 @@ $(document).ready(function() {
             }
         }
     } );
-	$('#TdaTable').dataTable( {
+    pf.columns.adjust().draw();
+	var tda = $('#TdaTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -99,7 +102,9 @@ $(document).ready(function() {
             }
         }
     } );
-	$('#TdoTable').dataTable( {
+    tda.columns.adjust().draw();
+
+	var tdo = $('#TdoTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
             processing:     "Procesando...",
@@ -124,4 +129,5 @@ $(document).ready(function() {
             }
         }
     } );
+    tdo.columns.adjust().draw();
 } );
