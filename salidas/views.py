@@ -766,7 +766,8 @@ def days_validation(request):
                 print("report_receive_form invalid")
             return redirect('list_angelica')
 
-    return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
+    return render(request, 'Angelica/days_validation.html') #por algun motivo djanguistico misterioso esto funciona...
+    #return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
 @csrf_protect
 @login_required
