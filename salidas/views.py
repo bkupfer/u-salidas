@@ -200,11 +200,15 @@ def destinationForm(destination, newApp):
         try:
             country = destination.cleaned_data['country']
             city    = destination.cleaned_data['city']
+            other_city = destination.cleaned_data['other_city']
             start_date = destination.cleaned_data['start_date']
             end_date= destination.cleaned_data['end_date']
             motive = destination.cleaned_data['motive']
-            destiny = Destination(application=newApp,country=country, city=city, start_date=start_date,
-                                  end_date=end_date,motive=motive)
+
+            if other_city != "":
+                city = other_city
+            destiny = Destination(application=newApp,country=country, city=city, start_date=start_date, end_date=end_date,motive=motive)
+
             destiny.save()
         except:
             print("error en destinationForm method. view.py")
@@ -304,9 +308,8 @@ def new_application(request):
 
             messages.success(request, 'Solicitud enviada exitosamente!')
             return redirect(teachers_applications)
-            # Applications instance
+
         else:
-            # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta.'

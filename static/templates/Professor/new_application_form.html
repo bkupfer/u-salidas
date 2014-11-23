@@ -11,7 +11,7 @@
     <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
     <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
     <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
-    <script src="{% static "js/countries.js" %}"></script>
+    <script src="{% static "js/countries_es.js" %}"></script>
     <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
     <script src="{% static "external/jquery/jquery.js" %}"></script>
     <script src="{% static "public/js/bootstrap.min.js" %}"></script>
@@ -165,7 +165,9 @@
                                                             <p class="col-sm-2">Ciudad <label style="color:red">*</label></p>
 															<div class="col-sm-6">
 															{{ destination.city }}
+															{{ destination.other_city }}
 															</div>
+
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <br>
