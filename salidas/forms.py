@@ -51,7 +51,7 @@ class DestinationForm(forms.ModelForm):
     # Usando paises del javascript
     country = forms.CharField(widget=forms.Select(attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);"}))
     city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'}, choices=([("", "Seleccione Ciudad")])))
-    other_city = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder': u'otra ciudad'}))
+    other_city = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder': u'Otra Ciudad'}))
 
     # usando paises de la base de datos
     # country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="Seleccione País")

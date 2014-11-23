@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
     url(r'^contacto', 'salidas.views.contacto', name='contacto'),
     url(r'^acerca_de', 'salidas.views.acerca', name='acerca'),
-    # Teacher view pages
+
     # Teacher view pages
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),
     url(r'^teacher_calendar', 'salidas.views.teacher_calendar', name='teacher_calendar'),
@@ -31,11 +31,13 @@ urlpatterns = patterns('',
     url(r'^edit_application_form', 'salidas.views.edit_application', name='edit_application'),
     url(r'^list_of_applications', 'salidas.views.list_of_applications', name='list_of_applications'),
     url(r'^application_review', 'salidas.views.application_review', name='application_review'),
-#    url(r'^changeState', 'salidas.views.changeState', name='changeState'),
+    #url(r'^changeState', 'salidas.views.changeState', name='changeState'),
     url(r'^historic_calendar', 'salidas.views.historic_calendar', name='historic_calendar'),
+
     url(r'^list_alejandro', 'salidas.views.list_alejandro', name='list_alejandro'),
     url(r'^detail_alejandro', 'salidas.views.detail_alejandro', name='alejandro'),
     url(r'^finance_validation', 'salidas.views.finance_validation', name='finance_validation'),
+
     url(r'^days_validation', 'salidas.views.days_validation', name='days_validation'),
     url(r'^list_angelica', 'salidas.views.list_angelica', name='list_angelica'),
 
