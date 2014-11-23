@@ -4,7 +4,7 @@ from django.shortcuts import render, render_to_response, RequestContext
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.http import HttpResponse, Http404,HttpResponsePermanentRedirect
 from django.contrib import auth
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.contrib.auth import  authenticate
@@ -472,6 +472,9 @@ def list_of_applications(request):
 def edit_application(request):
     id_app = request.GET['id']
     last_app = Application.objects.get(pk=id_app)
+    app_state = last_app.get_state().state
+    if app_state == "Terminada":
+        raise Http404
     user=request.user
     teacher=last_app.id_Teacher
     application = NewApplicationFormEdit(request.POST or None,prefix="application",initial={'id_commission_type':last_app.id_commission_type,'used_days':last_app.used_days, 'directors_name':last_app.directors_name})
@@ -578,7 +581,7 @@ def edit_application(request):
             message = "La solicitud de salida realizada el " + str(last_app.creation_date) + " ha sido modificada.\n\n-- Este correo fue generado automaticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { id_teacher.mail }, fail_silently = True)
 
-           # messages.success(request, 'Solicitud modificada exitosamente!')
+            # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
         else:
             # for error display
