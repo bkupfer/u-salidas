@@ -816,6 +816,7 @@ def list_angelica(request):
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
 
 
+
 @csrf_exempt
 def contacto(request):
     form = contactoForm(request.POST or None)
