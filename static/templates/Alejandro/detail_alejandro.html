@@ -91,7 +91,7 @@
                     <div class="col-sm-8">
                         <br>
                         <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar </button>
-                        <button href="#myModal" type="button" class="btn btn-lg btn-danger" data-toggle="modal" name="1"> Rechazar</button>
+                        <button href="#myModal" type="button" class="btn btn-lg btn-danger" data-toggle="modal" name="reject_button"> Rechazar</button>
                     </div>
                 </div>
 		    </form>
@@ -106,19 +106,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">&times;</a>
-                <h3>¿Está seguro de rechazar la solicitud?</h3>
+                <h3>Observaciones</h3>
             </div>
             <form method="POST">  {% csrf_token %}
-            <div class="modal-body col-sm-12">
-                <label class="col-sm-2" align="right" style="margin-top: 3px;">Motivo:</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" rows="3" placeholder="Ingrese el motivo..."></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button href="#" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger" value="Rechazar" name="reject_button">Rechazar</button>
-            </div>
+				<div class="modal-body col-sm-12">
+                    <div class="col-sm-12">
+						<label class="col-sm-4" align="right" style="margin-top: 3px;">Observaciones:</label>
+						{{ reject_observation.obs }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button href="#" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-danger" name="reject_button"> Rechazado</button>
+				</div>
             </form>
         </div>
     </div>
