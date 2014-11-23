@@ -2,9 +2,9 @@
 <div class="row hidden-print">
 	<div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
 		<ul class="nav nav-tabs">
-			<li><a href="{% url 'list_alejandro' %}" title="">Listado de solicitudes</a></li>
+			<li id="1" class="active"><a href="{% url 'list_alejandro' %}" title="">Listado de solicitudes</a></li>
 		    {% if user.username%}
-            <li style="float:right;top:13px">{{user.first_name}} {{user.last_name}} <span class="glyphicon glyphicon-user"></span></li>
+            <li id="3" style="float:right;top:13px">{{user.first_name}} {{user.last_name}} <span class="glyphicon glyphicon-user"></span></li>
             {% endif %}
             <li style="float:right;"><a href="{% url 'logout' %}"  title="">Logout</a></li>
         </ul>
