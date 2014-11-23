@@ -175,4 +175,4 @@ class ReportReceiveForm(forms.Form):
     obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observaciones'}))
 
 class RejectObservationsForm(forms.Form):
-    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observaciones'}))
+    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Ingrese el motivo de su rechazo...'}))

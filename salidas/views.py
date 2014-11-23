@@ -160,7 +160,7 @@ def access_denied(request):
 
 
 #Views for teachers
-#Este es el formulario prototipo de financia
+#Este es el formulario prototipo de financia :)
 def financeForm(finance, newApp, id_finance_type):
 
     if finance.is_valid():
@@ -770,7 +770,7 @@ def days_validation(request):
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements()
-    report_receive_form = ReportReceiveForm(request.POST or None)
+    report_receive_form = RejectObservationsForm(request.POST or None)
 
     if len(request.POST) != 0:
         #si acepta mandar mail magna
