@@ -54,7 +54,7 @@ def is_in_group(user, group):
 def externo(request):
     if request.method == "POST":
         try:
-            #recibir firma todo: notece que no se puede hacer borrar del request porque es un QueryDict, es un problema?
+            #recibir firma todo: notese que no se puede hacer borrar del request porque es un QueryDict, es un problema?
             #firma = load_privatekey(FILETYPE_PEM,base64.urlsafe_b64decode(request.POST['firma']))
             #recibir llave publica
             #certificado = load_certificate(FILETYPE_PEM, urllib.request.urlopen('https://www.u-cursos.cl/upasaporte/certificado').read())
@@ -196,7 +196,6 @@ def financeForm(finance, newApp, id_finance_type):
 
 
 def destinationForm(destination, newApp):
-    print('destinationForm')
     if destination.is_valid():
         try:
             country = destination.cleaned_data['country']
@@ -492,9 +491,6 @@ def edit_application(request):
             print(traceback.format_exc())
             fins.append({'id_finance_type':finance_type})
     financeFormSet = FinanceFormSet_Edit(request.POST or None,prefix="finance",initial=fins)
-    print("asd")
-    print(financeFormSet.is_valid())
-    print(fins)
     last_dests = Destination.objects.filter(application = last_app.id)
     dess=[]
     for dest in last_dests:
@@ -531,9 +527,8 @@ def edit_application(request):
         else:
             print(destinations.errors)
         #TODO: validar financeFormSet.is_valid() y hacer que no pasen cosas raras
-        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():
+        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
             last_dests.delete()
-            print("y tu mama tambien")
             # Applications instance
             print(request.POST)
             id_teacher = teacher #Teacher.objects.get(teacher=teacher)
