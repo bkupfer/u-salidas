@@ -160,7 +160,7 @@ def access_denied(request):
 
 
 #Views for teachers
-#Este es el formulario prototipo de financia
+#Este es el formulario prototipo de financia :)
 def financeForm(finance, newApp, id_finance_type):
 
     if finance.is_valid():
@@ -531,7 +531,7 @@ def edit_application(request):
         else:
             print(destinations.errors)
         #TODO: validar financeFormSet.is_valid() y hacer que no pasen cosas raras
-        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers'] and financeFormSet.is_valid():
+        if application.is_valid() and valid_dest and request.POST['repteachers'] and request.POST['acteachers']:
             last_dests.delete()
             print("y tu mama tambien")
             # Applications instance
