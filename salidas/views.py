@@ -187,8 +187,10 @@ def financeForm(finance, newApp, id_finance_type):
             newFinance = Finance(id_application=newApp,id_finance_type=type,financed_by=fb, id_currency=currency, amount=amount)
             newFinance.save()
         else:
-            newFinance = Finance(id_application=newApp,id_finance_type=type)
-            newFinance.save()
+            print('no guarde: ' + str(type))
+            #codigo para guardar finances vacios
+            #newFinance = Finance(id_application=newApp,id_finance_type=type)
+            #newFinance.save()
     else:
         print("finance not valid")
 
@@ -608,6 +610,7 @@ def saveState(app, id_state):
     stateApp.save()
 
 
+
 @login_required
 def application_review(request):
     id_app = request.GET['id']
@@ -718,7 +721,40 @@ def detail_alejandro(request):
     destinations = Destination.objects.filter(application = id_app)
     teacher = application.id_Teacher
     finances = Finance.objects.filter(id_application=id_app)
-    return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
+    user = request.user
+    report_receive_form = ReportReceiveForm(request.POST or None)
+
+    if len(request.POST) != 0:
+        #si acepta mandar mail magna
+        if 'accept_button' in request.POST:
+            application.id_funds_validation_state = State.objects.get(pk=2) #estado aceptado
+            application.save()
+            subject = "Validacion fondos Salida"
+            message = "En relación a la salida N°:"+id_app+". Se han validado los fondos de la salida.\n\n-- Este correo fue generado automáticamente."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = True)
+            request.session['tabactive'] = 'liPDCC'
+            return redirect('list_alejandro')
+        #si rechaza mandar mail profe y magna
+        if 'reject_button' in request.POST:
+            request.session['tabactive'] = 'liPDCC'
+            application.id_days_validation_state = State.objects.get(pk=3)
+            application.save()
+            if report_receive_form.is_valid():
+                obs = report_receive_form.cleaned_data['obs']
+                subject = "Solicitud Salida: Validacion de fondos Rechazada"
+                message = "La solicitud de salida N°"+id_app+" ha sido rechazada por la jefa administrativa."
+                if obs != "":
+                    message += "\n\nSe agregó la siguiente observación:\n" + obs
+                message += "\n\n-- Este correo fue generado automaticamente."
+                send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail, EMAIL_MAGNA }, fail_silently = True)
+                return redirect('list_alejandro')
+            else:
+                print("report_receive_form invalid")
+            return redirect('list_alejandro')
+
+
+    return render(request, 'Alejandro/detail_alejandro.html', locals())
+    #return render_to_response("Alejandro/detail_alejandro.html", locals(), content_type=RequestContext(request))
 
 
 @csrf_protect
@@ -764,12 +800,12 @@ def days_validation(request):
                     message += "\n\nSe agregó la siguiente observación:\n" + obs
                 message += "\n\n-- Este correo fue generado automaticamente."
                 send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail, EMAIL_MAGNA }, fail_silently = True)
-                return redirect('list_of_applications')
+                return redirect('list_angelica')
             else:
                 print("report_receive_form invalid")
             return redirect('list_angelica')
 
-    return render(request, 'Angelica/days_validation.html') #por algun motivo djanguistico misterioso esto funciona...
+    return render(request, 'Angelica/days_validation.html', locals()) #por algun motivo djanguistico misterioso esto funciona...
     #return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
 @csrf_protect

@@ -86,12 +86,15 @@
                     </table>
                 </div>
             </div>
-            <div class="row form-group">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
-                    <button href="#myModal" type="button" data-toggle="modal" class="btn btn-lg btn-danger">Rechazar</button>
+            <form method="POST"> {% csrf_token %}
+                <div class="row form-group">
+                    <div class="col-sm-8">
+                        <br>
+                        <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar </button>
+                        <button href="#myModal" type="button" class="btn btn-lg btn-danger" data-toggle="modal" name="1"> Rechazar</button>
+                    </div>
                 </div>
-            </div>
+		    </form>
         </div>
     </div>
 
