@@ -20,7 +20,7 @@ from salidas.forms import *
 from salidas.models import *
 from salidas.models import Document as DocumentModel
 
-from usalidas.email_contat_list import *
+from usalidas.email_contact_list import *
 from django.views.generic.edit import UpdateView
 
 # For externo

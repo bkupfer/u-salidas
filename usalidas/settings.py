@@ -98,9 +98,9 @@ TEMPLATE_DIRS = (
 
 #nota, estos archivos estan solamente disponible si el modo debug esta en True
 if DEBUG:
-    MEDIA_URL = '/media/'
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'static',  'media')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static',  'static-only')
-    MEDIA_ROOT =os.path.join(BASE_DIR, 'static',  'media')
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static',  'static'),
         "/static/static-only/",
