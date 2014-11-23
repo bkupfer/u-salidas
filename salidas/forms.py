@@ -172,4 +172,7 @@ class contactoForm(forms.Form):
 class ReportReceiveForm(forms.Form):
     send_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], required=False, widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy"}))
-    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observacioens'}))
+    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observaciones'}))
+
+class RejectObservationsForm(forms.Form):
+    obs = forms.CharField(max_length = 500, required=False, widget=forms.Textarea(attrs={'placeholder': u'Observaciones'}))

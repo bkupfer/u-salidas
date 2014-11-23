@@ -719,7 +719,7 @@ def detail_alejandro(request):
     teacher = application.id_Teacher
     finances = Finance.objects.filter(id_application=id_app)
     user = request.user
-    report_receive_form = ReportReceiveForm(request.POST or None)
+    reject_observation = RejectObservationsForm(request.POST or None)
 
     if len(request.POST) != 0:
         #si acepta mandar mail magna
@@ -734,15 +734,15 @@ def detail_alejandro(request):
         #si rechaza mandar mail profe y magna
         if 'reject_button' in request.POST:
             request.session['tabactive'] = 'liPDCC'
-            application.id_days_validation_state = State.objects.get(pk=3)
+            application.id_funds_validation_state = State.objects.get(pk=3)
             application.save()
-            if report_receive_form.is_valid():
-                obs = report_receive_form.cleaned_data['obs']
+            if reject_observation.is_valid():
+                obs = reject_observation.cleaned_data['obs']
                 subject = "Solicitud Salida: Validacion de fondos Rechazada"
                 message = "La solicitud de salida N°"+id_app+" ha sido rechazada por la jefa administrativa."
                 if obs != "":
                     message += "\n\nSe agregó la siguiente observación:\n" + obs
-                message += "\n\n-- Este correo fue generado automaticamente."
+                message += "\n\n-- Este correo fue generado automaticámente."
                 send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail, EMAIL_MAGNA }, fail_silently = True)
                 return redirect('list_alejandro')
             else:
@@ -780,7 +780,7 @@ def days_validation(request):
             app.id_days_validation_state = State.objects.get(pk=2)
             app.save()
             subject = "Validacion Salida"
-            message = "En relación a la salida N°:"+id_app+". Se han validado los días utilizados y el horario del profesor reemplazante.\n\n-- Este correo fue generado automaticamente."
+            message = "En relación a la salida N°:"+id_app+". Se han validado los días utilizados y el horario del profesor reemplazante.\n\n-- Este correo fue generado automáticamente."
             send_mail(subject, message, settings.EMAIL_HOST_USER, { EMAIL_MAGNA }, fail_silently = True)
             request.session['tabactive'] = 'liPDCC'
             return redirect('list_angelica')
@@ -795,7 +795,7 @@ def days_validation(request):
                 message = "La solicitud de salida N°"+id_app+" ha sido rechazada por la jefa de dirección."
                 if obs != "":
                     message += "\n\nSe agregó la siguiente observación:\n" + obs
-                message += "\n\n-- Este correo fue generado automaticamente."
+                message += "\n\n-- Este correo fue generado automáticamente."
                 send_mail(subject, message, settings.EMAIL_HOST_USER, { teacher.mail, EMAIL_MAGNA }, fail_silently = True)
                 return redirect('list_angelica')
             else:
