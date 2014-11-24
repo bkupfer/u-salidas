@@ -586,6 +586,10 @@
                 if($("#id_destinations-" + i + "-motive").val() == "") {
                     error_msg += "Debe ingresar la Actividad a realizar para el destino N° " + (i + 1) + "\n";
                 }
+                if($("#id_destinations-" + i + "-start_date").val() == "" ||
+                   $("#id_destinations-" + i + "-end_date").val() == "") {
+                    error_msg += "Debe ingresar Fechas de Inicio y Término para el destino N° " + (i + 1) + "\n";
+                }
             });
             /* fechas de destinos */
             if($("#warning_used_days").html().trim() != "") {
