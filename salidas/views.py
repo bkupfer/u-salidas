@@ -489,6 +489,13 @@ def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("Magna/list_of_applications.html",locals(),context_instance=RequestContext(request))
 
+
+@login_required
+def notifyTeacher(teacher, replacement):
+    subject = "Nueva Solicitud de Reemplazo"
+    message = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
+    send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.mail }, fail_silently = True)
+
 @login_required
 def edit_application(request):
     id_app = request.GET['id']
@@ -564,10 +571,16 @@ def edit_application(request):
             # replacement teacher information
             executiveReplace = Teacher.objects.get(pk=request.POST['repteachers']) # executiveReplacement.cleaned_data['repteachers']
             ex_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Docente"))
+            if ex_rep.rut_teacher.rut != executiveReplace.rut:
+                notifyTeacher(id_teacher,ex_rep.rut_teacher)
+                ex_rep.id_state = State.objects.get(pk=1) #Pendiente
             ex_rep.rut_teacher=executiveReplace
             ex_rep.save()
             academicReplace = Teacher.objects.get(pk=request.POST['acteachers'])  # academicReplacement.cleaned_data['acteachers']
             ac_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Academico"))
+            if ac_rep.rut_teacher.rut != academicReplace.rut:
+                notifyTeacher(id_teacher,ac_rep.rut_teacher)
+                ac_rep.id_state = State.objects.get(pk=1) #Pendiente
             ac_rep.rut_teacher=academicReplace
             ac_rep.save()
 
