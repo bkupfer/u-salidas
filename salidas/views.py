@@ -246,20 +246,12 @@ def new_application(request):
             for dest in destinations:
                 start_date = dest.cleaned_data.get('start_date')
                 end_date = dest.cleaned_data.get('end_date')
-                if start_date != None or end_date != None:
+                if start_date != None and end_date != None:
                     if start_date<=end_date and start_date.year == end_date.year:
                         valid_dest=True
                 else:
                     break
-        # for finance in financeFormSet:
-        #     if finance.is_valid():
-        #         valid_finance = True
-        #     else:
-        #         dict = finance.errors.as_data()
-        #         #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
-        #         if len(dict) == 1:
-        #             valid_finance = False
-        #             break
+
         if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
@@ -278,7 +270,7 @@ def new_application(request):
 
             # replacement teacher information
             executiveReplace = request.POST['repteachers'] # executiveReplacement.cleaned_data['repteachers']
-            academicReplace  = request.POST['acteachers']  #  academicReplacement.cleaned_data['acteachers']
+            academicReplace  = request.POST['acteachers']  # academicReplacement.cleaned_data['acteachers']
             newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
@@ -311,7 +303,6 @@ def new_application(request):
             return redirect(teachers_applications)
 
         else:
-            #DEPRECATED
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta.'
@@ -323,8 +314,7 @@ def new_application(request):
                 err = err + '\nDebe seleccionar sus profesores reemplazantes.'
             if not valid_dest:
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
-            #YA NO MOSTRAREMOS ESTOS ERRORES
-            #messages.error(request, err)
+            messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
@@ -381,8 +371,6 @@ def replacement_list(request):
     teacher= Teacher.objects.filter(user=request.user.id)
     replacements = Replacement.objects.filter(rut_teacher=teacher)
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
-
-
 
 
 def courses_with_modulesToList(courses_with_modules):
@@ -614,6 +602,7 @@ def edit_application(request):
             # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
         else:
+            #DEPRECATED
             # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
@@ -626,7 +615,8 @@ def edit_application(request):
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
             if not valid_dest:
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
-            messages.error(request, err)
+            #YA NO USAREMOS ESTOS MENSAJES DE ERROR
+            #messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive",initial=docrep)
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic",initial=acrep)
@@ -837,13 +827,13 @@ def days_validation(request):
     return render(request, 'Angelica/days_validation.html', locals()) #por algun motivo djanguistico misterioso esto funciona...
     #return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
+
 @csrf_protect
 @login_required
 def list_angelica(request):
     user = request.user
     apps = Application.objects.all()
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
-
 
 
 @csrf_exempt
