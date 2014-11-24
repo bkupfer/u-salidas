@@ -48,10 +48,10 @@ FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
 
 class DestinationForm(forms.ModelForm):
-    country = forms.CharField(widget=forms.Select(
+    country = forms.ModelChoiceField(queryset=Country.objects.all(),empty_label="Seleccione País",widget=forms.Select(
         attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'},
-                                               choices=([("", "Seleccione Ciudad")])))
+    city = forms.ModelChoiceField(queryset=City.objects.all(),widget=forms.Select(attrs={'class': 'city form-control input-sm','disabled':'disabled'}))
+    other = forms.CharField(required=False,max_length = 100,widget=forms.TextInput(attrs={'placeholder': u'Otra Ciudad'}))
     start_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(
         attrs={'class': 'datepicker', 'data-date-format': "dd/mm/yyyy", 'onchange': "count_avaliable_days(this);"}))  #
     end_date = forms.DateField(input_formats=['%d/%m/%y', '%d/%m/%Y'], widget=forms.DateInput(

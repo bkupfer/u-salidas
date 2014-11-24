@@ -15,11 +15,11 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.models import User, Group
 from django.utils.safestring import mark_safe
+import simplejson
 
 from salidas.forms import *
 from salidas.models import *
 from salidas.models import Document as DocumentModel
-
 from usalidas.email_contat_list import *
 from django.views.generic.edit import UpdateView
 
@@ -201,6 +201,7 @@ def destinationForm(destination, newApp):
         try:
             country = destination.cleaned_data['country']
             city    = destination.cleaned_data['city']
+            print(city)
             start_date = destination.cleaned_data['start_date']
             end_date= destination.cleaned_data['end_date']
             motive = destination.cleaned_data['motive']
@@ -247,6 +248,7 @@ def new_application(request):
                         valid_dest=True
                 else:
                     break
+        print(destinations.errors)
         # for finance in financeFormSet:
         #     if finance.is_valid():
         #         valid_finance = True
@@ -834,3 +836,15 @@ def contacto(request):
 @csrf_exempt
 def acerca(request):
     return  render_to_response("General/about_us.html", locals(), content_type=RequestContext(request))
+
+@login_required
+def ajaxCities(request,pais):
+    resp = []
+    cities = City.objects.filter(country=pais)
+    for i in cities:
+                vallabel = {}
+                vallabel['City'] = i.city
+                resp.append(vallabel)
+    #Agregamos el agnio con - para que venga ordenado de mayor a menor
+    json = simplejson.dumps(resp)
+    return HttpResponse(json,content_type='application/json')

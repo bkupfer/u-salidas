@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     url(r'^nothing_to_do_here', 'salidas.views.nothing_to_do_here', name='nothing_to_do_here'),
     url(r'^contacto', 'salidas.views.contacto', name='contacto'),
     url(r'^acerca_de', 'salidas.views.acerca', name='acerca'),
+    url(r'^ajaxCities/(?P<pais>\w+)/$', 'salidas.views.ajaxCities', name='ajaxCities'),
+
     # Teacher view pages
     # Teacher view pages
     url(r'^new_application', 'salidas.views.new_application', name='new_application'),

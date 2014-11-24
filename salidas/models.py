@@ -45,8 +45,9 @@ class City(models.Model):
 
 class Destination(models.Model):
     application = models.ForeignKey('Application')
-    country = models.CharField(max_length=55)
-    city    = models.CharField(max_length=55)
+    country = models.ForeignKey('Country')
+    city    = models.ForeignKey('City')
+    otherCity = models.CharField(max_length=100, blank=True, null=True)
     start_date = models.DateField()
     end_date   = models.DateField()
     motive = models.TextField()

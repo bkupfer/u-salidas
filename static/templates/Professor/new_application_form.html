@@ -11,7 +11,6 @@
     <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
     <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
     <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
-    <script src="{% static "js/countries.js" %}"></script>
     <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
     <script src="{% static "external/jquery/jquery.js" %}"></script>
     <script src="{% static "public/js/bootstrap.min.js" %}"></script>
@@ -165,6 +164,14 @@
                                                             <p class="col-sm-2">Ciudad <label style="color:red">*</label></p>
 															<div class="col-sm-6">
 															{{ destination.city }}
+															</div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <br>
+                                                            <label class="col-sm-2 control-label"></label>
+                                                            <p class="col-sm-2">Otra Ciudad </p>
+															<div class="col-sm-6">
+															{{ destination.other }}
 															</div>
                                                         </div>
                                                         <div class="col-sm-12">
@@ -500,9 +507,31 @@
 </script>
 
 <script language="javascript">
-	print_country("id_destinations-0-country");
 </script>
 <script type="text/javascript">
+        function print_state(state_id, country_index, select_id){
+            var num = parseInt(select_id.substring(16,17));
+            var option_str = document.getElementById("id_destinations-"+num+"-city");
+            option_str.removeAttribute("disabled");
+            var x, i=0;
+            var country_i =country_index-1;
+            $.ajax({
+                url: '{% url 'ajaxCities' 666 %}'.replace(666,country_i),
+                type: 'get', //this is the default though, you don't actually need to always mention it
+                success: function(resp) {
+                    $.each(resp, function(index) {
+                        option_str.options[index]= new Option(resp[index].City,resp[index].City);
+                  });
+                },
+                error: function(e) {
+                    alert('Got an error dude');
+                }
+            });
+             option_str.options.length = 0;
+             for(x in state_arr){
+                option_str.options[i++]= new Option(state_arr[x],state_arr[x]);
+             }
+        }
         function  count_avaliable_days(date) {
 
             var avaliable_days=parseInt(document.getElementById("avaliable_days").innerHTML);
