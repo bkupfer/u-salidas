@@ -601,6 +601,7 @@ def edit_application(request):
             # messages.success(request, 'Solicitud modificada exitosamente!')
             return redirect(list_of_applications)
         else:
+            #DEPRECATED
             # for error display
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
@@ -613,7 +614,8 @@ def edit_application(request):
                 err = err + '\nDebe escojer sus profesores reemplazantes.'
             if not valid_dest:
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje'
-            messages.error(request, err)
+            #YA NO USAREMOS ESTOS MENSAJES DE ERROR
+            #messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, teacher.user, prefix="executive",initial=docrep)
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, teacher.user,prefix="academic",initial=acrep)
