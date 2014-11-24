@@ -24,7 +24,6 @@ $(document).ready(function() {
             }
         }
     } );
-    pa.columns.adjust().draw();
 	var pdcc = $('#PDCCTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
@@ -50,7 +49,6 @@ $(document).ready(function() {
             }
         }
     } );
-    pdcc.columns.adjust().draw();
 	var pf = $('#PFTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
@@ -76,7 +74,6 @@ $(document).ready(function() {
             }
         }
     } );
-    pf.columns.adjust().draw();
 	var tda = $('#TdaTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
@@ -102,8 +99,6 @@ $(document).ready(function() {
             }
         }
     } );
-    tda.columns.adjust().draw();
-
 	var tdo = $('#TdoTable').dataTable( {
         "order": [[ 0, "desc" ]],
         language: {
@@ -129,5 +124,4 @@ $(document).ready(function() {
             }
         }
     } );
-    tdo.columns.adjust().draw();
 } );
