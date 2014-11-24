@@ -34,6 +34,7 @@ import os, os.path
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from salidas.calendar import *
 import traceback
+import json
 
 # Views for all users
 def home(request):
@@ -380,10 +381,26 @@ def replacement_list(request):
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 
+
+
+def courses_with_modulesToList(courses_with_modules):
+    list = []
+    for course in courses_with_modules:
+        for module in courses_with_modules[course]:
+            #entry = {'start':module.get_start_time(), 'end':module.get_end_time(), 'title': course.name}
+            list+=(course.name,module.get_week_day_number(),module.get_start_time(),module.get_end_time())
+    return list
+
+
 #todo: bloquear obtencion de id que no pertenece a usuario
 @login_required
 def replacement_requests(request):
     replacement = Replacement.objects.get(pk=request.GET['id'])
+    teacher = replacement.rut_teacher
+    appliant_teacher = replacement.get_appliant_teacher()
+    teacher_courses_list = courses_with_modulesToList(teacher.get_courses_with_modules())
+    appliant_teacher_courses_list = courses_with_modulesToList(appliant_teacher.get_courses_with_modules())
+
     if 'accept_button' in request.POST:
         replacement.id_state = State.objects.get(pk=2)
         replacement.save()
@@ -506,15 +523,15 @@ def edit_application(request):
             docrep=reps.rut_teacher
         else:
             acrep=reps.rut_teacher
-    try:
-        print(DocumentModel)
-        last_docs=DocumentModel.objects.filter(id_application=last_app)
-        in_docs=[]
-        for doc in last_docs:
-            in_docs.append({'file':doc.file})
-    except:
-        in_docs=[]
-    documents = DocumentFormSet_Edit(request.POST or None, request.FILES or None, prefix="documents",initial=in_docs)
+    #try:
+    #    print(DocumentModel)
+    #    last_docs=DocumentModel.objects.filter(id_application=last_app)
+    #    in_docs=[]
+    #    for doc in last_docs:
+    #        in_docs.append({'file':doc.file})
+    #except:
+    #    in_docs=[]
+    #documents = DocumentFormSet_Edit(request.POST or None, request.FILES or None, prefix="documents",initial=in_docs)
 
     if request.method == 'POST':
         valid_dest=False
@@ -567,12 +584,12 @@ def edit_application(request):
                 destinationForm(destination, last_app)
 
             #TODO delete other documents?
-            try:
-                last_docs.delete()
-            except:
-                print("error deleting last documents (?)")
-            for document in documents:
-                documentForm(document, last_app)
+            #try:
+            #    last_docs.delete()
+            #except:
+            #    print("error deleting last documents (?)")
+            #for document in documents:
+            #    documentForm(document, last_app)
 
             # sending notification mail
             subject = "Solicitud de salida modificada"
