@@ -787,6 +787,10 @@ def days_validation(request):
     app = Application.objects.get(pk = id_app)
     actual_state = app.get_state()
     teacher = app.id_Teacher
+    collided_modules = teacher.get_modules_with_collision()
+    modules_as_string = ""
+    for module in collided_modules:
+        modules_as_string = modules_as_string +" , "+ str(module.block)
     comm_type = app.id_commission_type
     dest = Destination.objects.filter(application = app.id)
     replacements = app.get_replacements()

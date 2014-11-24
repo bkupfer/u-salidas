@@ -10,12 +10,12 @@
 <link href="{% static "public/css/bootstrap.min.css" %}" rel="stylesheet">
 <link href="{% static "public/css/docs.min.css" %}" rel="stylesheet">
 <link href="{% static "css/estilos.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
-    <script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
-    <script src="{% static "external/jquery/jquery.js" %}"></script>
-    <script src="{% static "public/js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
-    <script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
+<link href="{% static "public/css/datepicker.css" %}" rel="stylesheet">
+<script src="{% static "public/js/jquery-1.11.0.min.js" %}"></script>
+<script src="{% static "external/jquery/jquery.js" %}"></script>
+<script src="{% static "public/js/bootstrap.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
+<script src="{% static "public/js/bootstrap-datepicker.js" %}"></script>
 
 
 <title>Salidas DCC</title>
@@ -92,7 +92,10 @@
 						<tr>
 											<td>{{ replacement.type }}</td>
 											<td>{{ replacement.rut_teacher }}</td>
-											<td> No hecho todavia, se debiese indicar docencia compartida</td>
+                                            <td>{% if replacement.type.type == 'Docente' %}
+											     {{ modules_as_string }}
+                                                {% endif %}
+                                            </td>
 						</tr>
 									{% endfor %}
 				</table>

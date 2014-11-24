@@ -281,6 +281,19 @@ class Teacher(models.Model):
                 replacement.append((teacher.pk,teacher))
                 i+=1
         return replacement
+    def get_modules_with_collision(self):
+        y_modules = self.get_modules()
+        my_modules = set(y_modules)
+        modules=[]
+        teachers = Teacher.objects.all().exclude(pk=self.pk)
+        for teacher in teachers:
+            their_modules=set(teacher.get_modules())
+            if not my_modules.isdisjoint(their_modules):
+                for my_module in my_modules:
+                    modules.append(my_module)
+        modules = set(modules)
+        return modules
+
 
     def get_teaching_weeks_by_course(self):
         his_applications=Application.objects.filter(id_Teacher=self)
