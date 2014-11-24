@@ -15,13 +15,73 @@
 	<script src="{% static "public/js/bootstrap.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/filestyle.js" %}"></script>
 
+    <link rel='stylesheet' href={% static "fullcalendar/fullcalendar.css" %}/>
+    <script src={% static "fullcalendar/lib/jquery.min.js" %}></script>
+    <script src={% static "fullcalendar/lib/moment.min.js" %}></script>
+    <script src={% static "fullcalendar/fullcalendar.js" %}></script>
+    <script src={% static "fullcalendar/lang/es.js" %}></script>
+
+    <script>
+
+    $(document).ready(function() {
+
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: ''
+			},
+			selectable: true,
+			selectHelper: true,
+            defaultView: 'agendaWeek',
+            events:[]
+
+        });
+
+        $('#calendar').fullCalendar( 'addEventSource',
+        function(start, end, callback) {
+            // When requested, dynamically generate virtual
+            // events for every monday and wednesday.
+            var events = [];
+
+            for (loop = start.getTime();
+                 loop <= end.getTime();
+                 loop = loop + (24 * 60 * 60 * 1000)) {
+
+                var test_date = new Date(loop);
+
+                if (test_date.is().monday()) {
+                    // we're in Moday, create the event
+                    events.push({
+                        title: 'I hate mondays - Garfield',
+                        start: test_date
+                    });
+                }
+
+                if (test_date.is().wednesday()) {
+                    // we're in Wednesday, create the Wednesday event
+                    events.push({
+                        title: 'It\'s the middle of the week!',
+                        start: test_date
+                    });
+                }
+            } // for loop
+
+            // return events generated
+            callback( events );
+        });
+    });
+
+    </script>
+
 
     <title>Salidas DCC</title>
 
 </head>
 
 <body>
-
+{{ appliant_teacher_courses_list }}
+{{ teacher_courses_list }}
 <div class="container-fluid">
 
     {% include "Navbar/navbar_teacher.html" %}
@@ -102,7 +162,7 @@
                 </div>
 
                 <div class="col-md-6">
-                     <!--Acá colocar horario-->
+                     <div id='calendar'></div>
                 </div>
             </div>
 
@@ -135,4 +195,4 @@
 
 </body>
 </html>
- 
+

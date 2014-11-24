@@ -225,6 +225,14 @@ class Teacher(models.Model):
         for course in courses:
             modules+=(course.get_modules())
         return modules
+    def get_courses_with_modules(self):
+        courses = self.get_courses()
+        course_module= []
+        for course in courses:
+            course_module+=(course,course.get_modules())
+        #convertir la lista de cursos-modulos en un diccionario
+        course_module =dict(course_module[i:i+2] for i in range(0, len(course_module), 2))
+        return course_module
 
     def get_applications(self):
         his_applications = Application.objects.filter(id_Teacher=self)
@@ -359,9 +367,18 @@ class Module(models.Model):
     def __str__(self):
         return self.block
     def get_week_day(self):
-        #TODO retorna un string con el día de la semana
-        return 'lunes'  #todo: que posiblemente no debe ser siempre lunes (?)
-
+        weekDict={1:'Lunes', 2:'Martes', 3:'Miercoles', 4:'Jueves', 5:'Viernes', 6:'Sábado', 7:'Domingo'}
+        return weekDict[self.get_week_day_number()]
+    def get_week_day_number(self):
+        return int(str(self.block).split('.')[0])
+    def get_module_number(self):
+        return int(str(self.block).split('.')[1])
+    def get_start_time(self):
+        start_timeDict={1:'08:30:00', 2:'10:15:00', 3:'12:00:00', 4:'14:30:00', 5:'16:15:00', 6:'18:00:00', 7:'19:45:00', 8:'21:15:00'}
+        return start_timeDict[self.get_module_number()]
+    def get_end_time(self):
+        end_timeDict={1:'10:00:00', 2:'11:45:00', 3:'13:30:00', 4:'16:00:00', 5:'17:45:00', 6:'19:30:00', 7:'21:00:00', 8:'22:45:00'}
+        return end_timeDict[self.get_module_number()]
 
 class CourseHasModule(models.Model):
     id_Course = models.ForeignKey('Course')
