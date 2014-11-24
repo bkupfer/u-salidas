@@ -311,6 +311,7 @@ def new_application(request):
             return redirect(teachers_applications)
 
         else:
+            #DEPRECATED
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta.'
@@ -322,7 +323,8 @@ def new_application(request):
                 err = err + '\nDebe seleccionar sus profesores reemplazantes.'
             if not valid_dest:
                 err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
-            messages.error(request, err)
+            #YA NO MOSTRAREMOS ESTOS ERRORES
+            #messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
