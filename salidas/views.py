@@ -147,7 +147,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect(login)
+    return redirect(login2)
 
 
 # Not registered user (student of something..)
@@ -240,27 +240,9 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
 
     if request.method == 'POST':
-        valid_dest= False
-        valid_finance= True
-        if destinations.is_valid():
-            for dest in destinations:
-                start_date = dest.cleaned_data.get('start_date')
-                end_date = dest.cleaned_data.get('end_date')
-                if start_date != None or end_date != None:
-                    if start_date<=end_date and start_date.year == end_date.year:
-                        valid_dest=True
-                else:
-                    break
-        # for finance in financeFormSet:
-        #     if finance.is_valid():
-        #         valid_finance = True
-        #     else:
-        #         dict = finance.errors.as_data()
-        #         #si contiene 0->valido,1->invalido,2->el formset sigue siendo valido
-        #         if len(dict) == 1:
-        #             valid_finance = False
-        #             break
-        if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
+        valid_finance = True
+        valid_destinations = True
+        if application.is_valid() and valid_finance and valid_destinations and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
@@ -278,7 +260,7 @@ def new_application(request):
 
             # replacement teacher information
             executiveReplace = request.POST['repteachers'] # executiveReplacement.cleaned_data['repteachers']
-            academicReplace  = request.POST['acteachers']  #  academicReplacement.cleaned_data['acteachers']
+            academicReplace  = request.POST['acteachers']  # academicReplacement.cleaned_data['acteachers']
             newExecutiveReplacement = Replacement(rut_teacher=Teacher.objects.get(pk=executiveReplace), id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Docente"))
             newAcademicReplacement  = Replacement(rut_teacher=Teacher.objects.get(pk=academicReplace),  id_Application=newApp, id_state=daysv, type=ReplacementType.objects.get(type="Academico"))
             newExecutiveReplacement.save()
@@ -311,20 +293,18 @@ def new_application(request):
             return redirect(teachers_applications)
 
         else:
-            #DEPRECATED
             err = 'Error en el envío del formulario.'
             if not application.is_valid():
                 err = err + '\nInformación del viaje incompleta.'
             if not valid_finance:
                 err = err + '\nInformación de montos solicitados incompleta, cada monto debe estar asociado a un tipo de moneda.'
-            if not destinations.is_valid():
+            if not valid_destinations:
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe seleccionar sus profesores reemplazantes.'
-            if not valid_dest:
-                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
-            #YA NO MOSTRAREMOS ESTOS ERRORES
-            #messages.error(request, err)
+
+
+            messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
     academicReplacement  = AcademicReplacementApplicationForm(request.POST, user,prefix="academic")
@@ -493,6 +473,13 @@ def list_of_applications(request):
     apps = Application.objects.all()
     return render_to_response("Magna/list_of_applications.html",locals(),context_instance=RequestContext(request))
 
+
+@login_required
+def notifyTeacher(teacher, replacement):
+    subject = "Nueva Solicitud de Reemplazo"
+    message = "El profesor " + teacher.__str__() + " le ha enviado una nueva solicitud de reemplazo.\n\n--Este correo fue generado automaticamente."
+    send_mail(subject, message, settings.EMAIL_HOST_USER, { replacement.mail }, fail_silently = True)
+
 @login_required
 def edit_application(request):
     id_app = request.GET['id']
@@ -568,10 +555,16 @@ def edit_application(request):
             # replacement teacher information
             executiveReplace = Teacher.objects.get(pk=request.POST['repteachers']) # executiveReplacement.cleaned_data['repteachers']
             ex_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Docente"))
+            if ex_rep.rut_teacher.rut != executiveReplace.rut:
+                notifyTeacher(id_teacher,ex_rep.rut_teacher)
+                ex_rep.id_state = State.objects.get(pk=1) #Pendiente
             ex_rep.rut_teacher=executiveReplace
             ex_rep.save()
             academicReplace = Teacher.objects.get(pk=request.POST['acteachers'])  # academicReplacement.cleaned_data['acteachers']
             ac_rep=Replacement.objects.get(id_Application=last_app,type=ReplacementType.objects.get(type="Academico"))
+            if ac_rep.rut_teacher.rut != academicReplace.rut:
+                notifyTeacher(id_teacher,ac_rep.rut_teacher)
+                ac_rep.id_state = State.objects.get(pk=1) #Pendiente
             ac_rep.rut_teacher=academicReplace
             ac_rep.save()
 
@@ -830,13 +823,13 @@ def days_validation(request):
     return render(request, 'Angelica/days_validation.html', locals()) #por algun motivo djanguistico misterioso esto funciona...
     #return render_to_response("Angelica/days_validation.html", locals(), content_type=RequestContext(request))
 
+
 @csrf_protect
 @login_required
 def list_angelica(request):
     user = request.user
     apps = Application.objects.all()
     return render_to_response("Angelica/list_angelica.html", locals(), content_type=RequestContext(request))
-
 
 
 @csrf_exempt

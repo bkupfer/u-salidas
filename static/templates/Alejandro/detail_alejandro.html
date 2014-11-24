@@ -95,7 +95,16 @@
                     </div>
                 </div>
 		    </form>
+         <div class="col-sm-12" align="right">
+        <div id="generateDoc" class="btn btn-success ">
+            <i class="glyphicon glyphicon-file"></i>&nbsp;Exportar Documentos Adjuntos
         </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+    </div>
     </div>
 
 </div>
@@ -124,4 +133,13 @@
     </div>
 </div>
 
+<script>
+    $(function(){
+        $('#generateDoc').click(function(){
+            var base = '{{ host }}';
+            var url=base+'getattachedfiles/?id={{ id_app }}';
+            window.location.href = url;
+        });
+	});
+</script>
 </html>

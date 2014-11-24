@@ -43,7 +43,7 @@ urlpatterns = patterns('',
 
     # Documents
     url(r'^getfiles', 'salidas.documentViews.getfiles',name='exportar_doc'),
-
+    url(r'^getattachedfiles', 'salidas.documentViews.getattachedfiles',name='getattachedfiles'),
     # Django's admin site
     url(r'^admin/', include(admin.site.urls)),
 

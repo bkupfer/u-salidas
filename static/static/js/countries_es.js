@@ -227,7 +227,7 @@ function print_state(state_id, state_index, country_id)
 	var x, i=0; state_index;
 	var state_arr = s_a[state_index].split("|");
     option_str.options.length = 0;
-    option_str.options[i++]= new Option("Seleccione Ciudad","");
+    option_str.options[i++]= new Option("Seleccione Ciudad","otra_ciudad");
 	for(x in state_arr){
             option_str.options[i++]= new Option(state_arr[x],state_arr[x]);
 	}

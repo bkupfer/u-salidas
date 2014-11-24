@@ -67,7 +67,7 @@
                                             {% if rep.id_Application.get_state.state == "Pendiente DCC" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}"> {{ rep.id_Application.id }} </a></td>
-                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.id_Application.creation_date.date }}</td>
                                                     <td>{{ rep.get_appliant_teacher }}</td>
                                                     <td>{{ rep.type }}</td>
                                                     <td>{{ rep.get_state }}</td>
@@ -99,7 +99,7 @@
                                             {% if rep.id_Application.get_state.state == "Pendiente Facultad" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
-                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.id_Application.creation_date.date }}</td>
                                                     <td>{{ rep.get_appliant_teacher }}</td>
                                                     <td>{{ rep.type }}</td>
                                                     <td>{{ rep.get_state }}</td>
@@ -131,7 +131,7 @@
                                             {% if rep.id_Application.get_state.state == "Terminada" %}
                                                 <tr>
                                                     <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
-                                                    <td>{{ rep.id_Application.creation_date }}</td>
+                                                    <td>{{ rep.id_Application.creation_date.date }}</td>
                                                     <td>{{ rep.get_appliant_teacher }}</td>
                                                     <td>{{ rep.type }}</td>
                                                     <td>{{ rep.get_state }}</td>
@@ -163,7 +163,7 @@
                                             {% if rep.id_Application.get_state.state != "Pendiente aprobacion" %}
                                             <tr>
                                                 <td><a href="replacement_requests?id={{ rep.id }}">{{ rep.id_Application.id }} </a></td>
-                                                <td>{{ rep.id_Application.creation_date }}</td>
+                                                <td>{{ rep.id_Application.creation_date.date }}</td>
                                                 <td>{{ rep.get_appliant_teacher }}</td>
                                                 <td>{{ rep.type }}</td>
                                                 <td>{{ rep.get_state }}</td>
