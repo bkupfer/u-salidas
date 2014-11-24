@@ -147,7 +147,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect(login)
+    return redirect(login2)
 
 
 # Not registered user (student of something..)
