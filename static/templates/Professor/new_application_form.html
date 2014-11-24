@@ -603,12 +603,20 @@
                 error_msg += "Debe escoger Reemplazo Académico\n";
             }
             /* fin validaciones */
-            if(error_msg != "") {
-                alert(error_msg);
-            }
-            else {
+            var fechas_error_msg = document.getElementById("warning_used_days").innerHTML;
+            if(fechas_error_msg.substring(0, 12) == "Usted tiene " && fechas_error_msg.length < 63 && error_msg == "Existe un error en las fechas de los destinos\n") {
+                alert("El número de días solicitado supera sus días disponibles. No obstante su solicitud se enviará de todos modos, con una alerta para la Secretaria de Dirección.");
                 $("#new_app_form").submit();
             }
+            else {
+                if (error_msg != "") {
+                    alert(error_msg);
+                }
+                else {
+                    $("#new_app_form").submit();
+                }
+            }
+
         });
     });
 </script>
