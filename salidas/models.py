@@ -112,7 +112,7 @@ class Application(models.Model):
 
     def get_documents(self):
         docs = Document.objects.filter(id_application=self)
-        return files
+        return docs
 
     def get_replacements(self):
         replacements = Replacement.objects.filter(id_Application = self)

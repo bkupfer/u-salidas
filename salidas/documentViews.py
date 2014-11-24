@@ -425,3 +425,37 @@ def carta_reemplazo(solicitante,app,replacement_teacher,replacement_type):
     #document.add_picture('image-filename.png')
     document.save(path)
     return path
+
+
+def getattachedfiles(request):
+
+    id_app = request.GET['id']
+    app = Application.objects.get(pk = id_app)
+    documents = app.get_documents()
+
+    # Folder name in ZIP archive which contains the above files
+    # E.g [thearchive.zip]/somefiles/file2.txt
+    zip_subdir = "documentos"
+    zip_filename = "%s.zip" % zip_subdir
+
+    # Open StringIO to grab in-memory ZIP contents
+    f = io.BytesIO()
+    # The zip compressor
+    zf = zipfile.ZipFile(f, "w")
+
+    for fpath in documents:
+        # Calculate path for file in zip
+        fdir, fname = os.path.split(fpath.file.name)
+        zip_path = os.path.join(zip_subdir, fname)
+        file_path = os.path.join(settings.MEDIA_ROOT,fpath.file.name)
+        # Add file, at correct path
+        zf.write(file_path, zip_path)
+    # Must close zip for all contents to be written
+    zf.close()
+
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = HttpResponse(f.getvalue(),content_type='application/zip')
+    # ..and correct content-disposition
+    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+    return resp

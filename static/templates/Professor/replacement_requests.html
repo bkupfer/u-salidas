@@ -34,7 +34,18 @@
 			selectable: true,
 			selectHelper: true,
             defaultView: 'agendaWeek',
-            events:[]
+            events:[
+				{
+					title: 'Click for Google',
+					url: 'http://google.com/',
+					start: '2014-11-28'
+				},
+                {
+					title: 'Click for Google',
+					url: 'http://google.com/',
+					start: '2014-11-28'
+				}
+			]
 
         });
 
@@ -149,7 +160,7 @@
                         <div class="row">
                         </div>
                         <hr/>
-                    {% if replacement.id_state.state == "Pendiente" %}
+                    {% if replacement.get_state.state == "Pendiente" %}
                         <div class="row form-group">
                             <div class="col-sm-12">
 	  						    <button type="submit" class="btn btn-lg btn-primary" name="accept_button"> Aceptar</button>
