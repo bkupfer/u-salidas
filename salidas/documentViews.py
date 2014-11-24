@@ -37,7 +37,7 @@ def getfiles(request):
     id_app = request.GET['id']
     app = Application.objects.get(pk = id_app)
     filenames.append(solicitud_facultad_doc(app))
-
+    documents = app.get_documents()
 
     solicitante=str(app.id_Teacher)
     replacements=app.get_replacements()
@@ -71,6 +71,13 @@ def getfiles(request):
         # Add file, at correct path
         zf.write(fpath, zip_path)
 
+    for fpath in documents:
+        # Calculate path for file in zip
+        fdir, fname = os.path.split(fpath.file.name)
+        zip_path = os.path.join(zip_subdir, fname)
+        file_path = os.path.join(settings.MEDIA_ROOT,fpath.file.name)
+        # Add file, at correct path
+        zf.write(file_path, zip_path)
     # Must close zip for all contents to be written
     zf.close()
 
