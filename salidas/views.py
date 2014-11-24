@@ -34,7 +34,7 @@ import os, os.path
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from salidas.calendar import *
 import traceback
-import json
+import simplejson
 
 # Views for all users
 def home(request):
@@ -383,15 +383,19 @@ def replacement_list(request):
     return render_to_response("Professor/replacement_list.html", locals(), context_instance=RequestContext(request))
 
 
-
-
 def courses_with_modulesToList(courses_with_modules):
     list = []
+    dayDict={1:'24', 2:'25', 3:'26', 4:'27', 5:'28', 6:'29', 7:'30'}
+
     for course in courses_with_modules:
         for module in courses_with_modules[course]:
+            entry={}
+            entry['start']="2011-11-"+dayDict[module.get_week_day_number()]+"T"+module.get_start_time()
+            entry['end']="2011-11-"+dayDict[module.get_week_day_number()]+"T"+module.get_end_time()
+            entry['title']=str(course.name)
             #entry = {'start':module.get_start_time(), 'end':module.get_end_time(), 'title': course.name}
-            list+=(course.name,module.get_week_day_number(),module.get_start_time(),module.get_end_time())
-    return list
+            list.append(entry)
+    return simplejson.dumps(list)
 
 
 #todo: bloquear obtencion de id que no pertenece a usuario

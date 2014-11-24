@@ -22,21 +22,24 @@
     <script src={% static "fullcalendar/lang/es.js" %}></script>
 
     <script>
-
     $(document).ready(function() {
 
+
 		$('#calendar').fullCalendar({
+
 			header: {
-				left: 'prev,next today',
+				left: '',
 				center: 'title',
 				right: ''
 			},
 			selectable: true,
 			selectHelper: true,
             defaultView: 'agendaWeek',
-            events:[]
+            events: "{{ appliant_teacher_courses_list|safe }}"
+
 
         });
+        $('#calendar').fullCalendar('gotoDate', '2014-11-30');
 
         $('#calendar').fullCalendar( 'addEventSource',
         function(start, end, callback) {
@@ -80,8 +83,6 @@
 </head>
 
 <body>
-{{ appliant_teacher_courses_list }}
-{{ teacher_courses_list }}
 <div class="container-fluid">
 
     {% include "Navbar/navbar_teacher.html" %}
@@ -162,7 +163,7 @@
                 </div>
 
                 <div class="col-md-6">
-                     <div id='calendar'></div>
+                     <!--<div id='calendar'></div>-->
                 </div>
             </div>
 
