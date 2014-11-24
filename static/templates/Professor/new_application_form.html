@@ -52,7 +52,7 @@
                 {% endif %}
 
                 <!-- THE FORM -->
-                <form method="POST" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
+                <form method="POST" id="new_app_form" enctype="multipart/form-data" action="{% url 'new_application' %}"> {% csrf_token %}
 
                 <!-- Informacion del viaje: tipo de comision -->
                 <div class="row">
@@ -307,7 +307,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-sm-7">
-                            <input type="submit" class="btn btn-lg btn-primary" value="Enviar solicitud"/>
+                            <input type="submit" id="submit_btn" class="btn btn-lg btn-primary" value="Enviar solicitud"/>
                         </div>
                     </div>
                 </div>
@@ -458,7 +458,9 @@
             }
             return false;
         }
-
+        function isNumeric(n) {
+          return /^\d+$/.test(n);
+        }
         function addForm2(btn, prefix) {
             var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
@@ -504,6 +506,105 @@
         });
         $(".delete").click(function() {
             count_avaliable_days(0);
+        });
+        $("#submit_btn").click(function(e) {
+            e.preventDefault();
+            /* validaciones */
+            var error_msg = "";
+            /* tipo comision */
+            if($("#id_application-id_commission_type").val() == "") {
+                error_msg += "Debe seleccionar un tipo de comisión.\n";
+            }
+            /* montos */
+            //se ingreso monto de inscripcion
+            if($("#id_finance-0-amount").val() != "") {
+                if(isNumeric($("#id_finance-0-amount").val())) {
+                    var string_error_inscripcion = "Ha ingresado un monto para  Inscripción: debe ";
+                    var error_inscripcion = false;
+                    if($("#id_finance-0-id_currency").val() == "") {
+                        error_inscripcion = true;
+                        string_error_inscripcion += "completar tipo de moneda";
+                        if($("#id_finance-0-financed_by").val() != "") string_error_inscripcion += "\n";
+                    }
+                    if($("#id_finance-0-financed_by").val() == "") {
+                        error_inscripcion = true;
+                        if ($("#id_finance-0-id_currency").val() == "") string_error_inscripcion += " e ";
+                        string_error_inscripcion += "indicar por quén será financiado\n";
+                    }
+                    if(error_inscripcion) error_msg += string_error_inscripcion;
+                }
+            }
+            //se ingreso monto de pasajes
+            if($("#id_finance-1-amount").val() != "") {
+                if(isNumeric($("#id_finance-1-amount").val())) {
+                    var string_error_pasajes = "Ha ingresado un monto para Pasajes, debe ";
+                    var error_pasajes = false;
+                    if ($("#id_finance-1-id_currency").val() == "") {
+                        error_pasajes = true;
+                        string_error_pasajes += "completar tipo de moneda";
+                        if ($("#id_finance-1-financed_by").val() != "") string_error_pasajes += "\n";
+                    }
+                    if ($("#id_finance-1-financed_by").val() == "") {
+                        error_pasajes = true;
+                        if ($("#id_finance-1-id_currency").val() == "") string_error_pasajes += " e ";
+                        string_error_pasajes += "indicar por quén será financiado\n";
+                    }
+                }
+                if(error_pasajes) error_msg += string_error_pasajes;
+            }
+            //se ingreso monto de viatico
+            if($("#id_finance-2-amount").val() != "") {
+                if(isNumeric($("#id_finance-2-amount").val())) {
+                    var string_error_viatico = "Ha ingresado un monto para  Viático, debe ";
+                    var error_viatico = false;
+                    if ($("#id_finance-2-id_currency").val() == "") {
+                        error_viatico = true;
+                        string_error_viatico += "completar tipo de moneda";
+                        if($("#id_finance-2-financed_by").val() != "") string_error_viatico += "\n";
+                    }
+                    if ($("#id_finance-2-financed_by").val() == "") {
+                        error_viatico = true;
+                        if ($("#id_finance-2-id_currency").val() == "") string_error_viatico += " e ";
+                        string_error_viatico += "indicar por quén será financiado\n";
+                    }
+                    if(error_viatico) error_msg += string_error_viatico;
+                }
+            }
+            /* destinos */
+            $(".city").each(function(i) {
+                if($(this).val() == "") {
+                    if($("#id_destinations-" + i + "-other_city").val() == "") {
+                        error_msg += "Debe escoger una ciudad para el destino N° " + (i + 1) + "\n";
+                    }
+                    else {
+                        if($("#id_destinations-" + i + "-country").val() == "") {
+                            error_msg += "Aunque la ciudad no esté listada, debe escoger un país para el destino N° " + (i + 1) + "\n";
+                        }
+                    }
+                }
+                if($("#id_destinations-" + i + "-motive").val() == "") {
+                    error_msg += "Debe ingresar la Actividad a realizar para el destino N° " + (i + 1) + "\n";
+                }
+            });
+            /* fechas de destinos */
+            if($("#warning_used_days").html().trim() != "") {
+                error_msg += "Existe un error en las fechas de los destinos\n";
+            }
+            /* reemplazo docente */
+            if($("#id_repteachers").val() == "") {
+                error_msg += "Debe escoger Reemplazo Docente\n";
+            }
+            /* reemplazo docente */
+            if($("#id_acteachers").val() == "") {
+                error_msg += "Debe escoger Reemplazo Académico\n";
+            }
+            /* fin validaciones */
+            if(error_msg != "") {
+                alert(error_msg);
+            }
+            else {
+                $("#new_app_form").submit();
+            }
         });
     });
 </script>
