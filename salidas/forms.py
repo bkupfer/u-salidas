@@ -40,9 +40,6 @@ class FinanceForm(forms.ModelForm):
         exclude = {'id_application','id_finance_type'}
 
 
-# class FinanceDccForm(FinanceForm):
-#     checkbox = forms.BooleanField(required=True, label="Chequéate esta buey")
-
 FinanceFormSet = formset_factory(FinanceForm, max_num=3, extra=3)
 FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 
@@ -50,10 +47,10 @@ FinanceFormSet_Edit= formset_factory(FinanceForm,extra=0)
 class DestinationForm(forms.ModelForm):
     # Usando paises del javascript
     country = forms.CharField(widget=forms.Select(attrs={'class': 'form-control input-sm','onchange': "print_state('state',this.selectedIndex, this.id);"}))
-    city = forms.CharField(widget=forms.Select(attrs={'class': 'city form-control input-sm'}, choices=([("", "Seleccione Ciudad")])))
+    city = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'city form-control input-sm'}, choices=([("", "Seleccione Ciudad")])))
     other_city = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder': u'Otra Ciudad'}))
 
-    # usando paises de la base de datos
+    # Usando paises de la base de datos
     # country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="Seleccione País")
     # city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Seleccione Ciudad")
 

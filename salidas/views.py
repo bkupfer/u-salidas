@@ -240,19 +240,9 @@ def new_application(request):
     documents = DocumentFormSet(request.POST or None, request.FILES or None, prefix="documents")
 
     if request.method == 'POST':
-        valid_dest= False
-        valid_finance= True
-        if destinations.is_valid():
-            for dest in destinations:
-                start_date = dest.cleaned_data.get('start_date')
-                end_date = dest.cleaned_data.get('end_date')
-                if start_date != None and end_date != None:
-                    if start_date<=end_date and start_date.year == end_date.year:
-                        valid_dest=True
-                else:
-                    break
-
-        if application.is_valid() and valid_dest and valid_finance and request.POST['repteachers'] and request.POST['acteachers']:
+        valid_finance = True
+        valid_destinations = True
+        if application.is_valid() and valid_finance and valid_destinations and request.POST['repteachers'] and request.POST['acteachers']:
             # Applications instance
             id_teacher = Teacher.objects.get(user=request.user)
             ct = application.cleaned_data['id_commission_type']
@@ -308,12 +298,12 @@ def new_application(request):
                 err = err + '\nInformación del viaje incompleta.'
             if not valid_finance:
                 err = err + '\nInformación de montos solicitados incompleta, cada monto debe estar asociado a un tipo de moneda.'
-            if not destinations.is_valid():
+            if not valid_destinations:
                 err = err + '\nInformación respecto de los destinos incompleta.'
             if not request.POST['repteachers'] or not request.POST['acteachers']:
                 err = err + '\nDebe seleccionar sus profesores reemplazantes.'
-            if not valid_dest:
-                err += '\nLas fechas de fin del viaje deben ser mayores o iguales a las de inicio del viaje.'
+
+
             messages.error(request, err)
 
     executiveReplacement = ReplacementApplicationForm(request.POST, user, prefix="executive")
